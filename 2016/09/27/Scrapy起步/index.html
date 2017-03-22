@@ -1,0 +1,903 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Scrapy使用," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Scrapy爬取知乎用户信息以及人际拓扑关系1.生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
+
+tutorial/  
+   scrapy.cfg  
+   tutorial/  
+    __init__.py">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scrapy爬取知乎用户信息以及人际拓扑关系">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2016/09/27/Scrapy起步/index.html">
+<meta property="og:site_name" content="我就是我,是不一样的烟火">
+<meta property="og:description" content="Scrapy爬取知乎用户信息以及人际拓扑关系1.生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
+
+tutorial/  
+   scrapy.cfg  
+   tutorial/  
+    __init__.py">
+<meta property="og:image" content="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png">
+<meta property="og:updated_time" content="2017-03-22T09:38:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scrapy爬取知乎用户信息以及人际拓扑关系">
+<meta name="twitter:description" content="Scrapy爬取知乎用户信息以及人际拓扑关系1.生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
+
+tutorial/  
+   scrapy.cfg  
+   tutorial/  
+    __init__.py">
+<meta name="twitter:image" content="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2016/09/27/Scrapy起步/"/>
+
+
+
+
+
+  <title> Scrapy爬取知乎用户信息以及人际拓扑关系 | 我就是我,是不一样的烟火 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我就是我,是不一样的烟火</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/27/Scrapy起步/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://pic3.zhimg.com/50/v2-e522332fd43c2fd61a81da66665bd3a2_l.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Scrapy爬取知乎用户信息以及人际拓扑关系
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-27T16:29:15+08:00">
+                2016-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Scrapy爬取知乎用户信息以及人际拓扑关系"><a href="#Scrapy爬取知乎用户信息以及人际拓扑关系" class="headerlink" title="Scrapy爬取知乎用户信息以及人际拓扑关系"></a>Scrapy爬取知乎用户信息以及人际拓扑关系</h1><h2 id="1-生成项目"><a href="#1-生成项目" class="headerlink" title="1.生成项目"></a>1.生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
+<pre>
+tutorial/  
+   scrapy.cfg  
+   tutorial/  
+    __init__.py  
+       items.py  
+       pipelines.py  
+       settings.py  
+       spiders/  
+           __init__.py   
+ </pre>
+
+<h2 id="2-源码分析"><a href="#2-源码分析" class="headerlink" title="2.源码分析"></a>2.源码分析</h2><h3 id="2-1文件成员介绍"><a href="#2-1文件成员介绍" class="headerlink" title="2.1文件成员介绍"></a>2.1文件成员介绍</h3><p>2.1.1 items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.<br>2.1.2 pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</p>
+<p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
+<p>以下是item pipeline的一些典型应用：</p>
+<ul>
+<li>清理HTML数据</li>
+<li>验证爬取的数据(检查item包含某些字段)</li>
+<li>查重(并丢弃)</li>
+<li>将爬取结果保存到数据库中<br>编写你自己的item pipeline<br>编写你自己的item pipeline很简单，每个item pipeline组件是一个独立的Python类，同时必须实现以下方法:</li>
+</ul>
+<p>process_item(self, item, spider)<br>每个item pipeline组件都需要调用该方法，这个方法必须返回一个 Item (或任何继承类)对象， 或是抛出 DropItem 异常，被丢弃的item将不会被之后的pipeline组件所处理。<br>该项目中就在该类中实现把数据持久化到mango数据库中</p>
+<p>参数:<br>item (Item 对象) – 被爬取的item<br>spider (Spider 对象) – 爬取该item的spider  </p>
+<pre>
+import os
+
+from pymongo import MongoClient
+from zhihu.settings import MONGO_URI, PROJECT_DIR
+from zhihu.items import ZhihuPeopleItem, ZhihuRelationItem
+from zhihu.tools.async import download_pic
+
+
+class ZhihuPipeline(object):
+    """
+    存储数据
+    """
+    def __init__(self, mongo_uri, mongo_db, image_dir):
+        self.mongo_uri = mongo_uri
+        self.mongo_db = mongo_db
+        self.image_dir = image_dir
+        self.client = None
+        self.db= None
+    def process_item(self, item, spider):
+        """
+        处理item
+        """
+        if isinstance(item, ZhihuPeopleItem):
+            self._process_people(item)
+        elif isinstance(item, ZhihuRelationItem):
+            self._process_relation(item)
+        return item
+</pre>
+2.1.3 settings.py :配置文件,提供爬虫系统参数的可配置化  
+2.1.4 spiders : 这个是一个包,可以定制自己的爬虫代码.如ZhihuSipder这个类就是知乎爬虫的启动类.
+### 2.2 技术要点
+2.2.1 CrawlSpider  
+这里采用CrawlSpider,这个继承了Spider的且,非常适合做全站数据爬取的类.
+<pre>
+class ZhihuSipder(CrawlSpider):
+    name = "zhihu"
+    allowed_domains = ["www.zhihu.com"]
+    start_url = "https://www.zhihu.com/people/hua-zi-xu-95"
+</pre>
+简析上面的三个参数:
+1.name:这个参数是每个自定义爬虫必须要有的,唯一辨别你的自定义爬虫,name当然也是使用命令启动爬虫的一个决定因素.启动命令:scrapy crawl zhihu,其中的zhihu就是name属性.
+2.allowed_domains:链接中必须包含的域名.
+3.start_url:爬虫的入口地址,这里就是以我本人的知乎主页为入口.
+2.2.2 FormRequest做登陆模块
+<pre>
+from scrapy.http import Request, FormRequest
+    def post_login(self, response):
+        """
+        解析登陆页面，发送登陆表单
+        """
+        self.xsrf = Selector(response).xpath(
+            '//input[@name="_xsrf"]/@value'
+        ).extract()[0]
+        return [FormRequest(
+            'https://www.zhihu.com/login/email',
+            method='POST',
+            meta={'cookiejar': response.meta['cookiejar']},
+            formdata={
+                '_xsrf': self.xsrf,
+                'email': 'xxxxxxxxx',
+                'password': 'xxxxxxxxx',
+                'remember_me': 'true'},
+            callback=self.after_login
+        )]
+</pre>
+2.2.3 Requests and Responses
+Scrapy使用 Request 和 Response 对象爬取web站点。
+
+一般来说，Request 对象在spiders中被生成并且最终传递到 下载器(Downloader)，下载器对其进行处理并返回一个 Response 对象， Response 对象还会返回到生成request的spider中。
+
+所有 Request and Response 的子类都会实现一些在基类中非必要的 功能。它们会在 Request subclasses 和 Response subclasses 两部分进行详细的说明。
+下面是Request构造函数
+<pre>
+class Request(object_ref):
+    def __init__(self, url, callback=None, method='GET', headers=None, body=None,
+                 cookies=None, meta=None, encoding='utf-8', priority=0,
+                 dont_filter=False, errback=None):
+        self._encoding = encoding  # this one has to be set first
+        self.method = str(method).upper()
+        self._set_url(url)
+        self._set_body(body)
+        assert isinstance(priority, int), "Request priority not an integer: %r" % priority
+       self.priority = priority
+        assert callback or not errback, "Cannot use errback without a callback"
+        self.callback = callback
+        self.errback = errback
+        self.cookies = cookies or {}
+        self.headers = Headers(headers or {}, encoding=encoding)
+        self.dont_filter = dont_filter
+        self._meta = dict(meta) if meta else None
+</pre>
+
+<p>特别注意:参数:dont_filter<br>dont_filter(boolean) – indicates that this request should not be filtered by the scheduler. This is used when you want to perform an identical request multiple times, to ignore the duplicates filter. Use it with care, or you will get into crawling loops. Default to False.<br>解释:scrapy url去重  Request对象参数的dont_filter=False,默认就是false 如程序所示,默认就是要进行url去重<br>show code:</p>
+<p><pre><br>    def enqueue_request(self, request):<br>    //核心判断 注意  not 取否<br>        if not request.dont_filter and self.df.request_seen(request):<br>            self.df.log(request, self.spider)<br>            return False<br>        dqok = self._dqpush(request)<br>        if dqok:<br>            self.stats.inc_value(‘scheduler/enqueued/disk’, spider=self.spider)<br>        else:<br>            self._mqpush(request)<br>            self.stats.inc_value(‘scheduler/enqueued/memory’, spider=self.spider)<br>        self.stats.inc_value(‘scheduler/enqueued’, spider=self.spider)<br>        return True<br></pre><br>ps:  scrapy 中判断重复内容的方法(RFPDupeFilter)</p>
+<h2 id="3-源码地址"><a href="#3-源码地址" class="headerlink" title="3 源码地址"></a>3 源码地址</h2><p><a href="https://github.com/ronghuaxu?tab=stars" target="_blank" rel="external">github地址</a><br>该目录下的知乎爬虫项目,即可下载源码.</p>
+<h2 id="4-每日推荐"><a href="#4-每日推荐" class="headerlink" title="4 每日推荐"></a>4 每日推荐</h2><p>linux下命令窗口分配显示一遍查看使用说明,一般敲代码.        软件名:  tmux<br>效果图:<br><img src="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png" alt="效果图"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Scrapy使用/" rel="tag"># Scrapy使用</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/23/java并发编程/" rel="next" title="java并发编程读书笔记">
+                <i class="fa fa-chevron-left"></i> java并发编程读书笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://pic3.zhimg.com/50/v2-e522332fd43c2fd61a81da66665bd3a2_l.jpg"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scrapy爬取知乎用户信息以及人际拓扑关系"><span class="nav-number">1.</span> <span class="nav-text">Scrapy爬取知乎用户信息以及人际拓扑关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-生成项目"><span class="nav-number">1.1.</span> <span class="nav-text">1.生成项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-源码分析"><span class="nav-number">1.2.</span> <span class="nav-text">2.源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1文件成员介绍"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1文件成员介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-源码地址"><span class="nav-number">1.3.</span> <span class="nav-text">3 源码地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-每日推荐"><span class="nav-number">1.4.</span> <span class="nav-text">4 每日推荐</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

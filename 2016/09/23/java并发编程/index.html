@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="code talk" />
+  <meta name="keywords" content="java并发编程," />
 
 
 
@@ -87,15 +87,25 @@
 
 
 
-<meta name="description" content="展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="我就是我,是不一样的烟火">
-<meta property="og:url" content="https://ronghuaxu.github.io/index.html/archives/index.html">
+<meta name="description" content="#java并发编程读书笔记
+##1.线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
+###原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
+###竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java并发编程读书笔记">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.">
+<meta property="og:description" content="#java并发编程读书笔记
+##1.线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
+###原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
+###竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友">
+<meta property="og:updated_time" content="2017-03-22T09:55:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我就是我,是不一样的烟火">
-<meta name="twitter:description" content="展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.">
+<meta name="twitter:title" content="java并发编程读书笔记">
+<meta name="twitter:description" content="#java并发编程读书笔记
+##1.线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
+###原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
+###竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友">
 
 
 
@@ -123,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/archives/"/>
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/"/>
 
 
 
 
 
-  <title> 归档 | 我就是我,是不一样的烟火 </title>
+  <title> java并发编程读书笔记 | 我就是我,是不一样的烟火 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -154,7 +164,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,140 +278,192 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 3 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/09/27/Scrapy起步/" itemprop="url">
-              
-                <span itemprop="name">Scrapy爬取知乎用户信息以及人际拓扑关系</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-27T16:29:15+08:00"
-              content="2016-09-27" >
-          09-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/09/23/java并发编程/" itemprop="url">
-              
-                <span itemprop="name">java并发编程读书笔记</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-23T16:55:34+08:00"
-              content="2016-09-23" >
-          09-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/09/07/webmagic/" itemprop="url">
-              
-                <span itemprop="name">Webmagic学习总结</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-07T15:09:05+08:00"
-              content="2016-09-07" >
-          09-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://pic3.zhimg.com/50/v2-e522332fd43c2fd61a81da66665bd3a2_l.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java并发编程读书笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-23T16:55:34+08:00">
+                2016-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>#java并发编程读书笔记</p>
+<p>##1.线程安全性<br>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
+<p>###原子性<br>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
+<p>###竞态条件<br>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
+<p>###活跃性和性能<br>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
+<p>##2.对象的共享</p>
+<p>###可见性<br><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
+<p>###过期数据<br>当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的<br>同步化setter是不够的,调用get的线程仍然看得到过期值</p>
+<p>###非原子的64位操作<br>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
+<p>###锁和可见性<br>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
+<p>###Volatile变量<br>访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java并发编程/" rel="tag"># java并发编程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/07/webmagic/" rel="next" title="Webmagic学习总结">
+                <i class="fa fa-chevron-left"></i> Webmagic学习总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/09/27/Scrapy起步/" rel="prev" title="Scrapy爬取知乎用户信息以及人际拓扑关系">
+                Scrapy爬取知乎用户信息以及人际拓扑关系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -409,6 +471,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -634,11 +700,9 @@
   
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
 
 
   
