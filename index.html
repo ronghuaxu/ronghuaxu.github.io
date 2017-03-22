@@ -642,17 +642,15 @@ class Request(object_ref):
       
         
           
-            <p>#java并发编程读书笔记</p>
-<p>##1.线程安全性<br>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
-<p>###原子性<br>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
-<p>###竞态条件<br>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
-<p>###活跃性和性能<br>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
-<p>##2.对象的共享</p>
-<p>###可见性<br><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
-<p>###过期数据<br>当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的<br>同步化setter是不够的,调用get的线程仍然看得到过期值</p>
-<p>###非原子的64位操作<br>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
-<p>###锁和可见性<br>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
-<p>###Volatile变量<br>访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.</p>
+            <h1 id="java并发编程读书笔记"><a href="#java并发编程读书笔记" class="headerlink" title="java并发编程读书笔记"></a>java并发编程读书笔记</h1><h2 id="1-线程安全性"><a href="#1-线程安全性" class="headerlink" title="1.线程安全性"></a>1.线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
+<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><p>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
+<h3 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h3><p>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
+<h3 id="活跃性和性能"><a href="#活跃性和性能" class="headerlink" title="活跃性和性能"></a>活跃性和性能</h3><p>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
+<h2 id="2-对象的共享"><a href="#2-对象的共享" class="headerlink" title="2.对象的共享"></a>2.对象的共享</h2><h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
+<h3 id="过期数据"><a href="#过期数据" class="headerlink" title="过期数据"></a>过期数据</h3><p>当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的<br>同步化setter是不够的,调用get的线程仍然看得到过期值</p>
+<h3 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h3><p>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
+<h3 id="锁和可见性"><a href="#锁和可见性" class="headerlink" title="锁和可见性"></a>锁和可见性</h3><p>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
+<h3 id="Volatile变量"><a href="#Volatile变量" class="headerlink" title="Volatile变量"></a>Volatile变量</h3><p>访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.</p>
 
           
         
@@ -795,22 +793,18 @@ class Request(object_ref):
       
         
           
-            <h1 id="Webmagic学习总结"><a href="#Webmagic学习总结" class="headerlink" title="Webmagic学习总结"></a>Webmagic学习总结</h1><p>##1.    WebMagic概览<br>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
+            <h1 id="Webmagic学习总结"><a href="#Webmagic学习总结" class="headerlink" title="Webmagic学习总结"></a>Webmagic学习总结</h1><h2 id="1-WebMagic概览"><a href="#1-WebMagic概览" class="headerlink" title="1.    WebMagic概览"></a>1.    WebMagic概览</h2><p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
 <p>这部分提供非常简单、灵活的API，在基本不改变开发模式的情况下，编写一个爬虫。</p>
 <p>扩展部分(webmagic-extension)提供一些便捷的功能，例如注解模式编写爬虫等。同时内置了一些常用的组件，便于爬虫开发。</p>
 <p>另外WebMagic还包括一些外围扩展和一个正在开发的产品化项目webmagic-avalon。</p>
-<p>##2.    核心组件</p>
-<p>###2.1 结构图<br><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="webmagic"></p>
-<p>###2.2 四大组件</p>
-<ul>
+<h2 id="2-核心组件"><a href="#2-核心组件" class="headerlink" title="2.    核心组件"></a>2.    核心组件</h2><h3 id="1-结构图"><a href="#1-结构图" class="headerlink" title="1 结构图"></a>1 结构图</h3><p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="webmagic"></p>
+<h3 id="2-四大组件"><a href="#2-四大组件" class="headerlink" title="2 四大组件"></a>2 四大组件</h3><ul>
 <li>1.Downloader:下载器</li>
 <li>2.PageProcessor:抽取器</li>
 <li>3.Scheduler:调度器</li>
 <li>4.Pipeline:结果处理器</li>
 </ul>
-<p>##3. 源码分析(主类Spider)</p>
-<p>###3.1 各组件初始化及可扩展</p>
-<p>####3.1.1<br>初始化Scheduler:(默认QueueScheduler)<br><code>protected Scheduler scheduler = new QueueScheduler();</code></p>
+<h2 id="3-源码分析-主类Spider"><a href="#3-源码分析-主类Spider" class="headerlink" title="3. 源码分析(主类Spider)"></a>3. 源码分析(主类Spider)</h2><h3 id="1-各组件初始化及可扩展"><a href="#1-各组件初始化及可扩展" class="headerlink" title="1 各组件初始化及可扩展"></a>1 各组件初始化及可扩展</h3><h4 id="1-初始化Scheduler"><a href="#1-初始化Scheduler" class="headerlink" title="1 初始化Scheduler"></a>1 初始化Scheduler</h4><p>初始化Scheduler:(默认QueueScheduler)<br><code>protected Scheduler scheduler = new QueueScheduler();</code></p>
 <p>采用新的Scheduler:</p>
 <pre>
 public Spider setScheduler(Scheduler scheduler) {
@@ -828,7 +822,7 @@ public Spider setScheduler(Scheduler scheduler) {
     }
 </pre>
 
-<p>####3.1.2<br>初始化Downloader:(默认HttpClientDownloader)</p>
+<h4 id="2-初始化Downloader"><a href="#2-初始化Downloader" class="headerlink" title="2 初始化Downloader"></a>2 初始化Downloader</h4><p>初始化Downloader:(默认HttpClientDownloader)</p>
 <pre>
  protected void initComponent() {
         if (downloader == null) {
@@ -857,19 +851,17 @@ public Spider setScheduler(Scheduler scheduler) {
         startTime = new Date();
     }  </pre>
 
-<p>####3.1.3<br>初始化Pipeline:(默认ConsolePipeline)  </p>
-<p>####3.1.4<br>初始化PageProcessor:(用户自定义完成,按需求抽取html)</p>
-<p>###3.2 如何实现多线程</p>
-<p>####3.2.1<br>初始化线程池(默认Executors.newFixedThreadPool(threadNum))<br>Executors.newFixedThreadPool作用:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待.</p>
+<h4 id="3-初始化Pipeline"><a href="#3-初始化Pipeline" class="headerlink" title="3 初始化Pipeline"></a>3 初始化Pipeline</h4><p>初始化Pipeline:(默认ConsolePipeline)  </p>
+<h4 id="4-初始化PageProcessor"><a href="#4-初始化PageProcessor" class="headerlink" title="4 初始化PageProcessor"></a>4 初始化PageProcessor</h4><p>初始化PageProcessor:(用户自定义完成,按需求抽取html)</p>
+<h3 id="2-如何实现多线程"><a href="#2-如何实现多线程" class="headerlink" title="2 如何实现多线程"></a>2 如何实现多线程</h3><h4 id="1-初始化线程池"><a href="#1-初始化线程池" class="headerlink" title="1  初始化线程池"></a>1  初始化线程池</h4><p>(默认Executors.newFixedThreadPool(threadNum))<br>Executors.newFixedThreadPool作用:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待.</p>
 <pre>
  public CountableThreadPool(int threadNum) {
         this.threadNum = threadNum;
         this.executorService = Executors.newFixedThreadPool(threadNum);
     }
 </pre>
-####3.2.2  
-多线程并发控制
-<pre>
+
+<h4 id="2-多线程并发控制"><a href="#2-多线程并发控制" class="headerlink" title="2 多线程并发控制"></a>2 多线程并发控制</h4><pre>
 public void execute(final Runnable runnable) {
         if (threadAlive.get() >= threadNum) {
             try {
@@ -904,29 +896,15 @@ public void execute(final Runnable runnable) {
         });
     }
 </pre>
-####3.2.3 Java中的ReentrantLock和synchronized两种锁定机制的对比
->ReentrantLock默认情况下为不公平锁
-<pre>private ReentrantLock lock = new ReentrantLock(); //参数默认false，不公平锁
-private ReentrantLock lock = new ReentrantLock(true); //公平锁
-        try {
-            lock.lock(); //如果被其它资源锁定，会在此等待锁释放，达到暂停的效果
-            //操作
-        } finally {
-            lock.unlock();
-        }</pre>
-        不公平锁与公平锁的区别：
-公平情况下，操作会排一个队按顺序执行，来保证执行顺序。（会消耗更多的时间来排队）
-不公平情况下，是无序状态允许插队，jvm会自动计算如何处理更快速来调度插队。（如果不关心顺序，这个速度会更快）  
 
-#### 3.2.4 AtomicInteger && CAS
-  >AtomicInteger，一个提供原子操作的Integer的类。在Java语言中，++i和i++操作并不是线程安全的，在使用的时候，不可避免的会用到synchronized关键字。而AtomicInteger则通过一种线程安全的加减操作接口。
-首先要说一下，AtomicInteger类compareAndSet通过原子操作实现了CAS操作，最底层基于汇编语言实现  
-CAS是Compare And Set的一个简称，如下理解：  
-1，已知当前内存里面的值current和预期要修改成的值new传入  
-2，内存中AtomicInteger对象地址对应的真实值(因为有可能别修改)real与current对比，相等表示real未被修改过，是“安全”的，将new赋给real结束然后返回；不相等说明real已经被修改，结束并重新执行1直到修改成功  
-
-####3.2.5 程序如何终止
-<pre>
+<h4 id="3-Java中的ReentrantLock和synchronized两种锁定机制的对比"><a href="#3-Java中的ReentrantLock和synchronized两种锁定机制的对比" class="headerlink" title="3 Java中的ReentrantLock和synchronized两种锁定机制的对比"></a>3 Java中的ReentrantLock和synchronized两种锁定机制的对比</h4><blockquote>
+<p>ReentrantLock默认情况下为不公平锁</p>
+<p><pre>private ReentrantLock lock = new ReentrantLock(); //参数默认false，不公平锁<br>private ReentrantLock lock = new ReentrantLock(true); //公平锁<br>        try {<br>            lock.lock(); //如果被其它资源锁定，会在此等待锁释放，达到暂停的效果<br>            //操作<br>        } finally {<br>            lock.unlock();<br>        }</pre><br>        不公平锁与公平锁的区别：<br>公平情况下，操作会排一个队按顺序执行，来保证执行顺序。（会消耗更多的时间来排队）<br>不公平情况下，是无序状态允许插队，jvm会自动计算如何处理更快速来调度插队。（如果不关心顺序，这个速度会更快）  </p>
+</blockquote>
+<h4 id="4-AtomicInteger-amp-amp-CAS"><a href="#4-AtomicInteger-amp-amp-CAS" class="headerlink" title="4 AtomicInteger &amp;&amp; CAS"></a>4 AtomicInteger &amp;&amp; CAS</h4><blockquote>
+<p>AtomicInteger，一个提供原子操作的Integer的类。在Java语言中，++i和i++操作并不是线程安全的，在使用的时候，不可避免的会用到synchronized关键字。而AtomicInteger则通过一种线程安全的加减操作接口。<br>首先要说一下，AtomicInteger类compareAndSet通过原子操作实现了CAS操作，最底层基于汇编语言实现<br>CAS是Compare And Set的一个简称，如下理解：<br>1，已知当前内存里面的值current和预期要修改成的值new传入<br>2，内存中AtomicInteger对象地址对应的真实值(因为有可能别修改)real与current对比，相等表示real未被修改过，是“安全”的，将new赋给real结束然后返回；不相等说明real已经被修改，结束并重新执行1直到修改成功  </p>
+</blockquote>
+<h4 id="5-程序如何终止"><a href="#5-程序如何终止" class="headerlink" title="5 程序如何终止"></a>5 程序如何终止</h4><pre>
 //while循环结束,则程序完成任务并终止
  while (!Thread.currentThread().isInterrupted() && stat.get() == STAT_RUNNING) {
             Request request = scheduler.poll(this);
@@ -941,8 +919,7 @@ CAS是Compare And Set的一个简称，如下理解：
             }
 </pre>
 
-<p>###3.3HttpClient使用http连接池发送http请求</p>
-<p>将用户设置的线程数设置为httpclient最大连接池数</p>
+<h3 id="3-HttpClient使用http连接池发送http请求"><a href="#3-HttpClient使用http连接池发送http请求" class="headerlink" title="3 HttpClient使用http连接池发送http请求"></a>3 HttpClient使用http连接池发送http请求</h3><p>将用户设置的线程数设置为httpclient最大连接池数</p>
 <pre>
 public void setThread(int thread) {
         httpClientGenerator.setPoolSize(thread);
@@ -957,7 +934,7 @@ public void setThread(int thread) {
     }
 </pre>  
 
-<p>###3.4 URL在Scheduler中去重<br>将下载结果页面中的链接抽取出来并放入scheduler中</p>
+<h3 id="4-URL在Scheduler中去重"><a href="#4-URL在Scheduler中去重" class="headerlink" title="4 URL在Scheduler中去重"></a>4 URL在Scheduler中去重</h3><p>将下载结果页面中的链接抽取出来并放入scheduler中</p>
 <pre>
  public void push(Request request, Task task) {
         logger.trace("get a candidate url {}", request.getUrl());
@@ -966,11 +943,9 @@ public void setThread(int thread) {
             pushWhenNoDuplicate(request, task);
         }
     }
-</pre>  
-####3.4.1 redischeduler URL去重复
+</pre>      
 
-
-<pre>boolean isDuplicate = jedis.sismember(getSetKey(task), request.getUrl());</pre>  
+<h4 id="1-redischedulerURL去重复"><a href="#1-redischedulerURL去重复" class="headerlink" title="1 redischedulerURL去重复"></a>1 redischedulerURL去重复</h4><pre>boolean isDuplicate = jedis.sismember(getSetKey(task), request.getUrl());</pre>  
 
 <pre>
 //获得key值
@@ -1009,15 +984,13 @@ public RedisScheduler(String host) {
 <blockquote>
 <p>System.out.println(jedis.sismember(“sname”, “minxr”));// 判断 minxr是否是sname集合的元素   </p>
 </blockquote>
-<p>####3.4.2 bloomFilter URL去重复</p>
-<pre>boolean isDuplicate = bloomFilter.mightContain(getUrl(request));</pre>
+<h4 id="2-bloomFilter-URL去重复"><a href="#2-bloomFilter-URL去重复" class="headerlink" title="2 bloomFilter URL去重复"></a>2 bloomFilter URL去重复</h4><pre>boolean isDuplicate = bloomFilter.mightContain(getUrl(request));</pre>
 
 
 <blockquote>
 <p>Bloom-Filter，即布隆过滤器，1970年由Bloom中提出。它可以用于检索一个元素是否在一个集合中。<br>Bloom Filter（BF）是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。它是一个判断元素是否存在集合的快速的概率算法。Bloom Filter有可能会出现错误判断，但不会漏掉判断。也就是Bloom Filter判断元素不再集合，那肯定不在。如果判断元素存在集合中，有一定的概率判断错误。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter比其他常见的算法（如hash，折半查找）极大节省了空间。<br>优点：<br>1)节约缓存空间（空值的映射），不再需要空值映射。<br>2)减少数据库或缓存的请求次数。<br>3)提升业务的处理效率以及业务隔离性。<br>缺点：<br>1)存在误判的概率。<br>2)传统的Bloom Filter不能作删除操作。   </p>
 </blockquote>
-<p>####3.4.3  hashset  URL去重复</p>
-<pre>
+<h4 id="3-hashset-URL去重复"><a href="#3-hashset-URL去重复" class="headerlink" title="3  hashset  URL去重复"></a>3  hashset  URL去重复</h4><pre>
 //初始化set
 private Set<string> urls = Sets.newSetFromMap(new ConcurrentHashMap<string, boolean="">());
 //判断url是否在set中
@@ -1028,10 +1001,44 @@ public boolean isDuplicate(Request request, Task task) {
 
 
 
-<p>###3.5 抽取部分API<br>| 方法        | 说明           | 示例  |<br>| ————- |:————-:| —–:|<br>| xpath(String xpath)      | 使用XPath选择| html.xpath(“//div[@class=’title’]”)|<br>| $(String selector)    | 使用Css选择器选择|   html.$(“div.title”) |<br>| css(String selector)      |   功能同$()，使用Css选择器选择  |  html.css(“div.title”) |<br>|regex(String regex)    |  使用正则表达式抽取    |  html.regex(“(.*?)\”) |<br>| replace(String regex, String replacement)    |  替换内容    |  html.replace(“\”,””)  |<br>这部分抽取API返回的都是一个Selectable接口，意思是说，抽取是支持链式调用的。</p>
-<p>###3.6 代理池</p>
-<p>####3.6.1 代理池初始化:</p>
-<pre> 
+<h3 id="5-抽取部分API"><a href="#5-抽取部分API" class="headerlink" title="5 抽取部分API"></a>5 抽取部分API</h3><table>
+<thead>
+<tr>
+<th>方法</th>
+<th style="text-align:center">说明</th>
+<th style="text-align:right">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xpath(String xpath)</td>
+<td style="text-align:center">使用XPath选择</td>
+<td style="text-align:right">html.xpath(“//div[@class=’title’]”)</td>
+</tr>
+<tr>
+<td>$(String selector)</td>
+<td style="text-align:center">使用Css选择器选择</td>
+<td style="text-align:right">html.$(“div.title”)</td>
+</tr>
+<tr>
+<td>css(String selector)</td>
+<td style="text-align:center">功能同$()，使用Css选择器选择</td>
+<td style="text-align:right">html.css(“div.title”)</td>
+</tr>
+<tr>
+<td>regex(String regex)</td>
+<td style="text-align:center">使用正则表达式抽取</td>
+<td style="text-align:right">html.regex(“(.*?)\”)</td>
+</tr>
+<tr>
+<td>replace(String regex, String replacement)</td>
+<td style="text-align:center">替换内容</td>
+<td style="text-align:right">html.replace(“\”,””)</td>
+</tr>
+</tbody>
+</table>
+<p>这部分抽取API返回的都是一个Selectable接口，意思是说，抽取是支持链式调用的。</p>
+<h3 id="6-代理池"><a href="#6-代理池" class="headerlink" title="6 代理池"></a>6 代理池</h3><h4 id="1-代理池初始化"><a href="#1-代理池初始化" class="headerlink" title="1 代理池初始化:"></a>1 代理池初始化:</h4><pre> 
 //从以往保存的本地文件中读取代理信息作为新的代理池
 public SimpleProxyPool() {
         this(null, true);
@@ -1056,8 +1063,7 @@ public SimpleProxyPool(List<string[]> httpProxyList, boolean isUseLastProxy) {
 </string[]></string[]></pre>
 
 
-<p>####3.6.2 通过httpProxyList为代理池赋值</p>
-<pre>
+<h4 id="2-通过httpProxyList为代理池赋值"><a href="#2-通过httpProxyList为代理池赋值" class="headerlink" title="2 通过httpProxyList为代理池赋值"></a>2 通过httpProxyList为代理池赋值</h4><pre>
 String[] source = { "::0.0.0.1:0", "::0.0.0.2:0", "::0.0.0.3:0", "::0.0.0.4:0" };
         for (String line : source) {
             httpProxyList.add(new String[] {line.split(":")[0], line.split(":")[1], line.split(":")[2], line.split(":")[3] });
@@ -1065,8 +1071,7 @@ String[] source = { "::0.0.0.1:0", "::0.0.0.2:0", "::0.0.0.3:0", "::0.0.0.4:0" }
 </pre>
 
 
-<p>####3.6.3 本地文件Proxy获存储与获取:定时任务</p>
-<pre>
+<h4 id="3-本地文件Proxy获存储与获取-定时任务"><a href="#3-本地文件Proxy获存储与获取-定时任务" class="headerlink" title="3 本地文件Proxy获存储与获取:定时任务"></a>3 本地文件Proxy获存储与获取:定时任务</h4><pre>
 //定时任务
 private TimerTask saveProxyTask = new TimerTask() {
 
@@ -1088,7 +1093,7 @@ if (isUseLastProxy) {
 
 
 <p>saveProxyTask()函数负责把最新的代理池ip写入到本地指定文件  </p>
-<p>####3.6.4 使用JDK自带PriorityQueue管理Proxy<br>目的:可以根据compareTo方法制定的优先取出代理池中使用间隔较短的代理(一开始默认都为1.5s)优先取出并执行.  </p>
+<h4 id="4-使用JDK自带PriorityQueue管理Proxy"><a href="#4-使用JDK自带PriorityQueue管理Proxy" class="headerlink" title="4 使用JDK自带PriorityQueue管理Proxy"></a>4 使用JDK自带PriorityQueue管理Proxy</h4><p>目的:可以根据compareTo方法制定的优先取出代理池中使用间隔较短的代理(一开始默认都为1.5s)优先取出并执行.  </p>
 <pre>
 public int compareTo(Delayed o) {
         Proxy that = (Proxy) o;
@@ -1206,9 +1211,7 @@ public static boolean validateProxy(HttpHost p) {
     }
 </pre>  
 
-<p>###3.7 OOSpider 使用注解配置化</p>
-<p>####3.7.1  注解的使用</p>
-<pre>
+<h3 id="7-OOSpider-使用注解配置化"><a href="#7-OOSpider-使用注解配置化" class="headerlink" title="7 OOSpider 使用注解配置化"></a>7 OOSpider 使用注解配置化</h3><h4 id="1-注解的使用"><a href="#1-注解的使用" class="headerlink" title="1  注解的使用"></a>1  注解的使用</h4><pre>
 //使用特有的抽取器
 class ModelPageProcessor implements PageProcessor 
     @Override
