@@ -87,32 +87,38 @@
 
 
 
-<meta name="description" content="Scrapy爬取知乎用户信息以及人际拓扑关系1.生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
+<meta name="description" content="生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
 
 tutorial/  
    scrapy.cfg  
    tutorial/  
-    __init__.py">
+    __init__.py  
+       items.py  
+       pipel">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Scrapy爬取知乎用户信息以及人际拓扑关系">
 <meta property="og:url" content="https://ronghuaxu.github.io/index.html/2016/09/27/Scrapy起步/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="Scrapy爬取知乎用户信息以及人际拓扑关系1.生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
+<meta property="og:description" content="生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
 
 tutorial/  
    scrapy.cfg  
    tutorial/  
-    __init__.py">
+    __init__.py  
+       items.py  
+       pipel">
 <meta property="og:image" content="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png">
-<meta property="og:updated_time" content="2017-03-22T09:38:13.000Z">
+<meta property="og:updated_time" content="2017-03-23T01:47:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy爬取知乎用户信息以及人际拓扑关系">
-<meta name="twitter:description" content="Scrapy爬取知乎用户信息以及人际拓扑关系1.生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
+<meta name="twitter:description" content="生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
 
 tutorial/  
    scrapy.cfg  
    tutorial/  
-    __init__.py">
+    __init__.py  
+       items.py  
+       pipel">
 <meta name="twitter:image" content="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png">
 
 
@@ -390,7 +396,7 @@ tutorial/
       
 
       
-        <h1 id="Scrapy爬取知乎用户信息以及人际拓扑关系"><a href="#Scrapy爬取知乎用户信息以及人际拓扑关系" class="headerlink" title="Scrapy爬取知乎用户信息以及人际拓扑关系"></a>Scrapy爬取知乎用户信息以及人际拓扑关系</h1><h2 id="1-生成项目"><a href="#1-生成项目" class="headerlink" title="1.生成项目"></a>1.生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
+        <h2 id="生成项目"><a href="#生成项目" class="headerlink" title="生成项目"></a>生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
 <pre>
 tutorial/  
    scrapy.cfg  
@@ -403,8 +409,7 @@ tutorial/
            __init__.py   
  </pre>
 
-<h2 id="2-源码分析"><a href="#2-源码分析" class="headerlink" title="2.源码分析"></a>2.源码分析</h2><h3 id="2-1文件成员介绍"><a href="#2-1文件成员介绍" class="headerlink" title="2.1文件成员介绍"></a>2.1文件成员介绍</h3><p>2.1.1 items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.<br>2.1.2 pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</p>
-<p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="文件成员介绍"><a href="#文件成员介绍" class="headerlink" title="文件成员介绍"></a>文件成员介绍</h3><h4 id="items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备"><a href="#items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备" class="headerlink" title="items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备."></a>items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.</h4><h4 id="pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。"><a href="#pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。" class="headerlink" title="pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。"></a>pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</h4><p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
 <p>以下是item pipeline的一些典型应用：</p>
 <ul>
 <li>清理HTML数据</li>
@@ -445,8 +450,8 @@ class ZhihuPipeline(object):
 </pre>
 2.1.3 settings.py :配置文件,提供爬虫系统参数的可配置化  
 2.1.4 spiders : 这个是一个包,可以定制自己的爬虫代码.如ZhihuSipder这个类就是知乎爬虫的启动类.
-### 2.2 技术要点
-2.2.1 CrawlSpider  
+###  技术要点
+####2.2.1 CrawlSpider  
 这里采用CrawlSpider,这个继承了Spider的且,非常适合做全站数据爬取的类.
 <pre>
 class ZhihuSipder(CrawlSpider):
@@ -509,8 +514,8 @@ class Request(object_ref):
 
 <p>特别注意:参数:dont_filter<br>dont_filter(boolean) – indicates that this request should not be filtered by the scheduler. This is used when you want to perform an identical request multiple times, to ignore the duplicates filter. Use it with care, or you will get into crawling loops. Default to False.<br>解释:scrapy url去重  Request对象参数的dont_filter=False,默认就是false 如程序所示,默认就是要进行url去重<br>show code:</p>
 <p><pre><br>    def enqueue_request(self, request):<br>    //核心判断 注意  not 取否<br>        if not request.dont_filter and self.df.request_seen(request):<br>            self.df.log(request, self.spider)<br>            return False<br>        dqok = self._dqpush(request)<br>        if dqok:<br>            self.stats.inc_value(‘scheduler/enqueued/disk’, spider=self.spider)<br>        else:<br>            self._mqpush(request)<br>            self.stats.inc_value(‘scheduler/enqueued/memory’, spider=self.spider)<br>        self.stats.inc_value(‘scheduler/enqueued’, spider=self.spider)<br>        return True<br></pre><br>ps:  scrapy 中判断重复内容的方法(RFPDupeFilter)</p>
-<h2 id="3-源码地址"><a href="#3-源码地址" class="headerlink" title="3 源码地址"></a>3 源码地址</h2><p><a href="https://github.com/ronghuaxu?tab=stars" target="_blank" rel="external">github地址</a><br>该目录下的知乎爬虫项目,即可下载源码.</p>
-<h2 id="4-每日推荐"><a href="#4-每日推荐" class="headerlink" title="4 每日推荐"></a>4 每日推荐</h2><p>linux下命令窗口分配显示一遍查看使用说明,一般敲代码.        软件名:  tmux<br>效果图:<br><img src="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png" alt="效果图"></p>
+<h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><p><a href="https://github.com/ronghuaxu?tab=stars" target="_blank" rel="external">github地址</a><br>该目录下的知乎爬虫项目,即可下载源码.</p>
+<h2 id="每日推荐"><a href="#每日推荐" class="headerlink" title="每日推荐"></a>每日推荐</h2><p>linux下命令窗口分配显示一遍查看使用说明,一般敲代码.        软件名:  tmux<br>效果图:<br><img src="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png" alt="效果图"></p>
 
       
     </div>
@@ -562,6 +567,10 @@ class Request(object_ref):
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/13/自动问答系统/" rel="prev" title="微信基于电信业务的自动问答系统 (微信公众号的开发)">
+                微信基于电信业务的自动问答系统 (微信公众号的开发) <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -633,7 +642,7 @@ class Request(object_ref):
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -655,7 +664,7 @@ class Request(object_ref):
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -728,7 +737,7 @@ class Request(object_ref):
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Scrapy爬取知乎用户信息以及人际拓扑关系"><span class="nav-number">1.</span> <span class="nav-text">Scrapy爬取知乎用户信息以及人际拓扑关系</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-生成项目"><span class="nav-number">1.1.</span> <span class="nav-text">1.生成项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-源码分析"><span class="nav-number">1.2.</span> <span class="nav-text">2.源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1文件成员介绍"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1文件成员介绍</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-源码地址"><span class="nav-number">1.3.</span> <span class="nav-text">3 源码地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-每日推荐"><span class="nav-number">1.4.</span> <span class="nav-text">4 每日推荐</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成项目"><span class="nav-number">1.</span> <span class="nav-text">生成项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件成员介绍"><span class="nav-number">2.1.</span> <span class="nav-text">文件成员介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备"><span class="nav-number">2.1.1.</span> <span class="nav-text">items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。"><span class="nav-number">2.1.2.</span> <span class="nav-text">pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码地址"><span class="nav-number">3.</span> <span class="nav-text">源码地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#每日推荐"><span class="nav-number">4.</span> <span class="nav-text">每日推荐</span></a></li></ol></div>
             
 
           </div>

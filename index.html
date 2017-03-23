@@ -280,6 +280,155 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/02/13/自动问答系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://pic3.zhimg.com/50/v2-e522332fd43c2fd61a81da66665bd3a2_l.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/13/自动问答系统/" itemprop="url">
+                  微信基于电信业务的自动问答系统 (微信公众号的开发)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-13T16:01:21+08:00">
+                2017-02-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本系统使用lucene的全文检索引擎工具包和基于java语言开发的轻量级的中文分词工具包IK Analyzer,来分析用户对微信平台的提问,并从数据库中检索出最匹配的问题,如果精确度够高,就直接返回对应数据库中该问题的答案,如果精确度属于中等阈值,系统会给用户提示一些较相似的问题提示用户输入更精确的问题.如果阈值偏低,则默认用户的问题过于复杂,系统给予友好提示等.</p>
+<p>##系统准备<br>1.Git and JDK 6 update 20 or later<br>2.mysql 5.5 or later</p>
+<p>##系统配置修改<br>配置修改:<br>wechat4j.properties<br>    you server url<br>wechat.url=<a href="http://inc.dareyan.cn/" target="_blank" rel="external">http://inc.dareyan.cn/</a><br>    you wechat token<br>wechat.token=xurh<br>    message secret key,if don’t set then message is cleartext<br>wechat.encodingaeskey=<strong>**</strong><br>    wechat appid<br>wechat.appid=<strong>**</strong><br>    wechat app secret<br>wechat.appsecret=<strong>**</strong><br>数据库配置:<br>db/DBHelper.java<br><code>public static final String URL = &quot;jdbc:mysql://127.0.0.1/tmp_grad?characterEncoding=UTF-8&quot;;</code></p>
+<p><code>public static final String NAME = &quot;com.mysql.jdbc.Driver&quot;;</code></p>
+<p>  <code>public static final String USER = &quot;root&quot;;</code></p>
+<p>   <code>public static final String PASSWORD = &quot;123qwe,./&quot;;</code></p>
+<h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><p><a href="https://github.com/ronghuaxu/wechat" target="_blank" rel="external">github开源地址</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/27/Scrapy起步/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -379,7 +528,7 @@
       
         
           
-            <h1 id="Scrapy爬取知乎用户信息以及人际拓扑关系"><a href="#Scrapy爬取知乎用户信息以及人际拓扑关系" class="headerlink" title="Scrapy爬取知乎用户信息以及人际拓扑关系"></a>Scrapy爬取知乎用户信息以及人际拓扑关系</h1><h2 id="1-生成项目"><a href="#1-生成项目" class="headerlink" title="1.生成项目"></a>1.生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
+            <h2 id="生成项目"><a href="#生成项目" class="headerlink" title="生成项目"></a>生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
 <pre>
 tutorial/  
    scrapy.cfg  
@@ -392,8 +541,7 @@ tutorial/
            __init__.py   
  </pre>
 
-<h2 id="2-源码分析"><a href="#2-源码分析" class="headerlink" title="2.源码分析"></a>2.源码分析</h2><h3 id="2-1文件成员介绍"><a href="#2-1文件成员介绍" class="headerlink" title="2.1文件成员介绍"></a>2.1文件成员介绍</h3><p>2.1.1 items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.<br>2.1.2 pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</p>
-<p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="文件成员介绍"><a href="#文件成员介绍" class="headerlink" title="文件成员介绍"></a>文件成员介绍</h3><h4 id="items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备"><a href="#items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备" class="headerlink" title="items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备."></a>items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.</h4><h4 id="pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。"><a href="#pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。" class="headerlink" title="pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。"></a>pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</h4><p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
 <p>以下是item pipeline的一些典型应用：</p>
 <ul>
 <li>清理HTML数据</li>
@@ -434,8 +582,8 @@ class ZhihuPipeline(object):
 </pre>
 2.1.3 settings.py :配置文件,提供爬虫系统参数的可配置化  
 2.1.4 spiders : 这个是一个包,可以定制自己的爬虫代码.如ZhihuSipder这个类就是知乎爬虫的启动类.
-### 2.2 技术要点
-2.2.1 CrawlSpider  
+###  技术要点
+####2.2.1 CrawlSpider  
 这里采用CrawlSpider,这个继承了Spider的且,非常适合做全站数据爬取的类.
 <pre>
 class ZhihuSipder(CrawlSpider):
@@ -498,8 +646,8 @@ class Request(object_ref):
 
 <p>特别注意:参数:dont_filter<br>dont_filter(boolean) – indicates that this request should not be filtered by the scheduler. This is used when you want to perform an identical request multiple times, to ignore the duplicates filter. Use it with care, or you will get into crawling loops. Default to False.<br>解释:scrapy url去重  Request对象参数的dont_filter=False,默认就是false 如程序所示,默认就是要进行url去重<br>show code:</p>
 <p><pre><br>    def enqueue_request(self, request):<br>    //核心判断 注意  not 取否<br>        if not request.dont_filter and self.df.request_seen(request):<br>            self.df.log(request, self.spider)<br>            return False<br>        dqok = self._dqpush(request)<br>        if dqok:<br>            self.stats.inc_value(‘scheduler/enqueued/disk’, spider=self.spider)<br>        else:<br>            self._mqpush(request)<br>            self.stats.inc_value(‘scheduler/enqueued/memory’, spider=self.spider)<br>        self.stats.inc_value(‘scheduler/enqueued’, spider=self.spider)<br>        return True<br></pre><br>ps:  scrapy 中判断重复内容的方法(RFPDupeFilter)</p>
-<h2 id="3-源码地址"><a href="#3-源码地址" class="headerlink" title="3 源码地址"></a>3 源码地址</h2><p><a href="https://github.com/ronghuaxu?tab=stars" target="_blank" rel="external">github地址</a><br>该目录下的知乎爬虫项目,即可下载源码.</p>
-<h2 id="4-每日推荐"><a href="#4-每日推荐" class="headerlink" title="4 每日推荐"></a>4 每日推荐</h2><p>linux下命令窗口分配显示一遍查看使用说明,一般敲代码.        软件名:  tmux<br>效果图:<br><img src="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png" alt="效果图"></p>
+<h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><p><a href="https://github.com/ronghuaxu?tab=stars" target="_blank" rel="external">github地址</a><br>该目录下的知乎爬虫项目,即可下载源码.</p>
+<h2 id="每日推荐"><a href="#每日推荐" class="headerlink" title="每日推荐"></a>每日推荐</h2><p>linux下命令窗口分配显示一遍查看使用说明,一般敲代码.        软件名:  tmux<br>效果图:<br><img src="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png" alt="效果图"></p>
 
           
         
@@ -642,11 +790,11 @@ class Request(object_ref):
       
         
           
-            <h1 id="java并发编程读书笔记"><a href="#java并发编程读书笔记" class="headerlink" title="java并发编程读书笔记"></a>java并发编程读书笔记</h1><h2 id="1-线程安全性"><a href="#1-线程安全性" class="headerlink" title="1.线程安全性"></a>1.线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
+            <h2 id="线程安全性"><a href="#线程安全性" class="headerlink" title="线程安全性"></a>线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
 <h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><p>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
 <h3 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h3><p>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
 <h3 id="活跃性和性能"><a href="#活跃性和性能" class="headerlink" title="活跃性和性能"></a>活跃性和性能</h3><p>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
-<h2 id="2-对象的共享"><a href="#2-对象的共享" class="headerlink" title="2.对象的共享"></a>2.对象的共享</h2><h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
+<h2 id="对象的共享"><a href="#对象的共享" class="headerlink" title="对象的共享"></a>对象的共享</h2><h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
 <h3 id="过期数据"><a href="#过期数据" class="headerlink" title="过期数据"></a>过期数据</h3><p>当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的<br>同步化setter是不够的,调用get的线程仍然看得到过期值</p>
 <h3 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h3><p>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
 <h3 id="锁和可见性"><a href="#锁和可见性" class="headerlink" title="锁和可见性"></a>锁和可见性</h3><p>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
@@ -793,18 +941,18 @@ class Request(object_ref):
       
         
           
-            <h1 id="Webmagic学习总结"><a href="#Webmagic学习总结" class="headerlink" title="Webmagic学习总结"></a>Webmagic学习总结</h1><h2 id="1-WebMagic概览"><a href="#1-WebMagic概览" class="headerlink" title="1.    WebMagic概览"></a>1.    WebMagic概览</h2><p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
+            <h2 id="WebMagic概览"><a href="#WebMagic概览" class="headerlink" title="WebMagic概览"></a>WebMagic概览</h2><p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
 <p>这部分提供非常简单、灵活的API，在基本不改变开发模式的情况下，编写一个爬虫。</p>
 <p>扩展部分(webmagic-extension)提供一些便捷的功能，例如注解模式编写爬虫等。同时内置了一些常用的组件，便于爬虫开发。</p>
 <p>另外WebMagic还包括一些外围扩展和一个正在开发的产品化项目webmagic-avalon。</p>
-<h2 id="2-核心组件"><a href="#2-核心组件" class="headerlink" title="2.    核心组件"></a>2.    核心组件</h2><h3 id="1-结构图"><a href="#1-结构图" class="headerlink" title="1 结构图"></a>1 结构图</h3><p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="webmagic"></p>
-<h3 id="2-四大组件"><a href="#2-四大组件" class="headerlink" title="2 四大组件"></a>2 四大组件</h3><ul>
+<h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><h3 id="结构图"><a href="#结构图" class="headerlink" title="结构图"></a>结构图</h3><p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="webmagic"></p>
+<h3 id="四大组件"><a href="#四大组件" class="headerlink" title="四大组件"></a>四大组件</h3><ul>
 <li>1.Downloader:下载器</li>
 <li>2.PageProcessor:抽取器</li>
 <li>3.Scheduler:调度器</li>
 <li>4.Pipeline:结果处理器</li>
 </ul>
-<h2 id="3-源码分析-主类Spider"><a href="#3-源码分析-主类Spider" class="headerlink" title="3. 源码分析(主类Spider)"></a>3. 源码分析(主类Spider)</h2><h3 id="1-各组件初始化及可扩展"><a href="#1-各组件初始化及可扩展" class="headerlink" title="1 各组件初始化及可扩展"></a>1 各组件初始化及可扩展</h3><h4 id="1-初始化Scheduler"><a href="#1-初始化Scheduler" class="headerlink" title="1 初始化Scheduler"></a>1 初始化Scheduler</h4><p>初始化Scheduler:(默认QueueScheduler)<br><code>protected Scheduler scheduler = new QueueScheduler();</code></p>
+<h2 id="源码分析-主类Spider"><a href="#源码分析-主类Spider" class="headerlink" title="源码分析(主类Spider)"></a>源码分析(主类Spider)</h2><h3 id="各组件初始化及可扩展"><a href="#各组件初始化及可扩展" class="headerlink" title="各组件初始化及可扩展"></a>各组件初始化及可扩展</h3><h4 id="初始化Scheduler"><a href="#初始化Scheduler" class="headerlink" title="初始化Scheduler"></a>初始化Scheduler</h4><p>初始化Scheduler:(默认QueueScheduler)<br><code>protected Scheduler scheduler = new QueueScheduler();</code></p>
 <p>采用新的Scheduler:</p>
 <pre>
 public Spider setScheduler(Scheduler scheduler) {
@@ -822,7 +970,7 @@ public Spider setScheduler(Scheduler scheduler) {
     }
 </pre>
 
-<h4 id="2-初始化Downloader"><a href="#2-初始化Downloader" class="headerlink" title="2 初始化Downloader"></a>2 初始化Downloader</h4><p>初始化Downloader:(默认HttpClientDownloader)</p>
+<h4 id="初始化Downloader"><a href="#初始化Downloader" class="headerlink" title="初始化Downloader"></a>初始化Downloader</h4><p>初始化Downloader:(默认HttpClientDownloader)</p>
 <pre>
  protected void initComponent() {
         if (downloader == null) {
@@ -851,9 +999,9 @@ public Spider setScheduler(Scheduler scheduler) {
         startTime = new Date();
     }  </pre>
 
-<h4 id="3-初始化Pipeline"><a href="#3-初始化Pipeline" class="headerlink" title="3 初始化Pipeline"></a>3 初始化Pipeline</h4><p>初始化Pipeline:(默认ConsolePipeline)  </p>
-<h4 id="4-初始化PageProcessor"><a href="#4-初始化PageProcessor" class="headerlink" title="4 初始化PageProcessor"></a>4 初始化PageProcessor</h4><p>初始化PageProcessor:(用户自定义完成,按需求抽取html)</p>
-<h3 id="2-如何实现多线程"><a href="#2-如何实现多线程" class="headerlink" title="2 如何实现多线程"></a>2 如何实现多线程</h3><h4 id="1-初始化线程池"><a href="#1-初始化线程池" class="headerlink" title="1  初始化线程池"></a>1  初始化线程池</h4><p>(默认Executors.newFixedThreadPool(threadNum))<br>Executors.newFixedThreadPool作用:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待.</p>
+<h4 id="初始化Pipeline"><a href="#初始化Pipeline" class="headerlink" title="初始化Pipeline"></a>初始化Pipeline</h4><p>初始化Pipeline:(默认ConsolePipeline)  </p>
+<h4 id="初始化PageProcessor"><a href="#初始化PageProcessor" class="headerlink" title="初始化PageProcessor"></a>初始化PageProcessor</h4><p>初始化PageProcessor:(用户自定义完成,按需求抽取html)</p>
+<h3 id="如何实现多线程"><a href="#如何实现多线程" class="headerlink" title="如何实现多线程"></a>如何实现多线程</h3><h4 id="初始化线程池"><a href="#初始化线程池" class="headerlink" title="初始化线程池"></a>初始化线程池</h4><p>(默认Executors.newFixedThreadPool(threadNum))<br>Executors.newFixedThreadPool作用:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待.</p>
 <pre>
  public CountableThreadPool(int threadNum) {
         this.threadNum = threadNum;
@@ -861,7 +1009,7 @@ public Spider setScheduler(Scheduler scheduler) {
     }
 </pre>
 
-<h4 id="2-多线程并发控制"><a href="#2-多线程并发控制" class="headerlink" title="2 多线程并发控制"></a>2 多线程并发控制</h4><pre>
+<h4 id="多线程并发控制"><a href="#多线程并发控制" class="headerlink" title="多线程并发控制"></a>多线程并发控制</h4><pre>
 public void execute(final Runnable runnable) {
         if (threadAlive.get() >= threadNum) {
             try {
@@ -897,14 +1045,14 @@ public void execute(final Runnable runnable) {
     }
 </pre>
 
-<h4 id="3-Java中的ReentrantLock和synchronized两种锁定机制的对比"><a href="#3-Java中的ReentrantLock和synchronized两种锁定机制的对比" class="headerlink" title="3 Java中的ReentrantLock和synchronized两种锁定机制的对比"></a>3 Java中的ReentrantLock和synchronized两种锁定机制的对比</h4><blockquote>
+<h4 id="Java中的ReentrantLock和synchronized两种锁定机制的对比"><a href="#Java中的ReentrantLock和synchronized两种锁定机制的对比" class="headerlink" title="Java中的ReentrantLock和synchronized两种锁定机制的对比"></a>Java中的ReentrantLock和synchronized两种锁定机制的对比</h4><blockquote>
 <p>ReentrantLock默认情况下为不公平锁</p>
 <p><pre>private ReentrantLock lock = new ReentrantLock(); //参数默认false，不公平锁<br>private ReentrantLock lock = new ReentrantLock(true); //公平锁<br>        try {<br>            lock.lock(); //如果被其它资源锁定，会在此等待锁释放，达到暂停的效果<br>            //操作<br>        } finally {<br>            lock.unlock();<br>        }</pre><br>        不公平锁与公平锁的区别：<br>公平情况下，操作会排一个队按顺序执行，来保证执行顺序。（会消耗更多的时间来排队）<br>不公平情况下，是无序状态允许插队，jvm会自动计算如何处理更快速来调度插队。（如果不关心顺序，这个速度会更快）  </p>
 </blockquote>
-<h4 id="4-AtomicInteger-amp-amp-CAS"><a href="#4-AtomicInteger-amp-amp-CAS" class="headerlink" title="4 AtomicInteger &amp;&amp; CAS"></a>4 AtomicInteger &amp;&amp; CAS</h4><blockquote>
+<h4 id="AtomicInteger-amp-amp-CAS"><a href="#AtomicInteger-amp-amp-CAS" class="headerlink" title="AtomicInteger &amp;&amp; CAS"></a>AtomicInteger &amp;&amp; CAS</h4><blockquote>
 <p>AtomicInteger，一个提供原子操作的Integer的类。在Java语言中，++i和i++操作并不是线程安全的，在使用的时候，不可避免的会用到synchronized关键字。而AtomicInteger则通过一种线程安全的加减操作接口。<br>首先要说一下，AtomicInteger类compareAndSet通过原子操作实现了CAS操作，最底层基于汇编语言实现<br>CAS是Compare And Set的一个简称，如下理解：<br>1，已知当前内存里面的值current和预期要修改成的值new传入<br>2，内存中AtomicInteger对象地址对应的真实值(因为有可能别修改)real与current对比，相等表示real未被修改过，是“安全”的，将new赋给real结束然后返回；不相等说明real已经被修改，结束并重新执行1直到修改成功  </p>
 </blockquote>
-<h4 id="5-程序如何终止"><a href="#5-程序如何终止" class="headerlink" title="5 程序如何终止"></a>5 程序如何终止</h4><pre>
+<h4 id="程序如何终止"><a href="#程序如何终止" class="headerlink" title="程序如何终止"></a>程序如何终止</h4><pre>
 //while循环结束,则程序完成任务并终止
  while (!Thread.currentThread().isInterrupted() && stat.get() == STAT_RUNNING) {
             Request request = scheduler.poll(this);
@@ -919,7 +1067,7 @@ public void execute(final Runnable runnable) {
             }
 </pre>
 
-<h3 id="3-HttpClient使用http连接池发送http请求"><a href="#3-HttpClient使用http连接池发送http请求" class="headerlink" title="3 HttpClient使用http连接池发送http请求"></a>3 HttpClient使用http连接池发送http请求</h3><p>将用户设置的线程数设置为httpclient最大连接池数</p>
+<h3 id="HttpClient使用http连接池发送http请求"><a href="#HttpClient使用http连接池发送http请求" class="headerlink" title="HttpClient使用http连接池发送http请求"></a>HttpClient使用http连接池发送http请求</h3><p>将用户设置的线程数设置为httpclient最大连接池数</p>
 <pre>
 public void setThread(int thread) {
         httpClientGenerator.setPoolSize(thread);
@@ -934,7 +1082,7 @@ public void setThread(int thread) {
     }
 </pre>  
 
-<h3 id="4-URL在Scheduler中去重"><a href="#4-URL在Scheduler中去重" class="headerlink" title="4 URL在Scheduler中去重"></a>4 URL在Scheduler中去重</h3><p>将下载结果页面中的链接抽取出来并放入scheduler中</p>
+<h3 id="URL在Scheduler中去重"><a href="#URL在Scheduler中去重" class="headerlink" title="URL在Scheduler中去重"></a>URL在Scheduler中去重</h3><p>将下载结果页面中的链接抽取出来并放入scheduler中</p>
 <pre>
  public void push(Request request, Task task) {
         logger.trace("get a candidate url {}", request.getUrl());
@@ -945,7 +1093,7 @@ public void setThread(int thread) {
     }
 </pre>      
 
-<h4 id="1-redischedulerURL去重复"><a href="#1-redischedulerURL去重复" class="headerlink" title="1 redischedulerURL去重复"></a>1 redischedulerURL去重复</h4><pre>boolean isDuplicate = jedis.sismember(getSetKey(task), request.getUrl());</pre>  
+<h4 id="redischedulerURL去重复"><a href="#redischedulerURL去重复" class="headerlink" title="redischedulerURL去重复"></a>redischedulerURL去重复</h4><pre>boolean isDuplicate = jedis.sismember(getSetKey(task), request.getUrl());</pre>  
 
 <pre>
 //获得key值
@@ -984,13 +1132,13 @@ public RedisScheduler(String host) {
 <blockquote>
 <p>System.out.println(jedis.sismember(“sname”, “minxr”));// 判断 minxr是否是sname集合的元素   </p>
 </blockquote>
-<h4 id="2-bloomFilter-URL去重复"><a href="#2-bloomFilter-URL去重复" class="headerlink" title="2 bloomFilter URL去重复"></a>2 bloomFilter URL去重复</h4><pre>boolean isDuplicate = bloomFilter.mightContain(getUrl(request));</pre>
+<h4 id="bloomFilter-URL去重复"><a href="#bloomFilter-URL去重复" class="headerlink" title="bloomFilter URL去重复"></a>bloomFilter URL去重复</h4><pre>boolean isDuplicate = bloomFilter.mightContain(getUrl(request));</pre>
 
 
 <blockquote>
 <p>Bloom-Filter，即布隆过滤器，1970年由Bloom中提出。它可以用于检索一个元素是否在一个集合中。<br>Bloom Filter（BF）是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。它是一个判断元素是否存在集合的快速的概率算法。Bloom Filter有可能会出现错误判断，但不会漏掉判断。也就是Bloom Filter判断元素不再集合，那肯定不在。如果判断元素存在集合中，有一定的概率判断错误。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter比其他常见的算法（如hash，折半查找）极大节省了空间。<br>优点：<br>1)节约缓存空间（空值的映射），不再需要空值映射。<br>2)减少数据库或缓存的请求次数。<br>3)提升业务的处理效率以及业务隔离性。<br>缺点：<br>1)存在误判的概率。<br>2)传统的Bloom Filter不能作删除操作。   </p>
 </blockquote>
-<h4 id="3-hashset-URL去重复"><a href="#3-hashset-URL去重复" class="headerlink" title="3  hashset  URL去重复"></a>3  hashset  URL去重复</h4><pre>
+<h4 id="hashset-URL去重复"><a href="#hashset-URL去重复" class="headerlink" title="hashset  URL去重复"></a>hashset  URL去重复</h4><pre>
 //初始化set
 private Set<string> urls = Sets.newSetFromMap(new ConcurrentHashMap<string, boolean="">());
 //判断url是否在set中
@@ -1001,7 +1149,7 @@ public boolean isDuplicate(Request request, Task task) {
 
 
 
-<h3 id="5-抽取部分API"><a href="#5-抽取部分API" class="headerlink" title="5 抽取部分API"></a>5 抽取部分API</h3><table>
+<h3 id="抽取部分API"><a href="#抽取部分API" class="headerlink" title="抽取部分API"></a>抽取部分API</h3><table>
 <thead>
 <tr>
 <th>方法</th>
@@ -1063,7 +1211,7 @@ public SimpleProxyPool(List<string[]> httpProxyList, boolean isUseLastProxy) {
 </string[]></string[]></pre>
 
 
-<h4 id="2-通过httpProxyList为代理池赋值"><a href="#2-通过httpProxyList为代理池赋值" class="headerlink" title="2 通过httpProxyList为代理池赋值"></a>2 通过httpProxyList为代理池赋值</h4><pre>
+<h4 id="通过httpProxyList为代理池赋值"><a href="#通过httpProxyList为代理池赋值" class="headerlink" title="通过httpProxyList为代理池赋值"></a>通过httpProxyList为代理池赋值</h4><pre>
 String[] source = { "::0.0.0.1:0", "::0.0.0.2:0", "::0.0.0.3:0", "::0.0.0.4:0" };
         for (String line : source) {
             httpProxyList.add(new String[] {line.split(":")[0], line.split(":")[1], line.split(":")[2], line.split(":")[3] });
@@ -1071,7 +1219,7 @@ String[] source = { "::0.0.0.1:0", "::0.0.0.2:0", "::0.0.0.3:0", "::0.0.0.4:0" }
 </pre>
 
 
-<h4 id="3-本地文件Proxy获存储与获取-定时任务"><a href="#3-本地文件Proxy获存储与获取-定时任务" class="headerlink" title="3 本地文件Proxy获存储与获取:定时任务"></a>3 本地文件Proxy获存储与获取:定时任务</h4><pre>
+<h4 id="本地文件Proxy获存储与获取-定时任务"><a href="#本地文件Proxy获存储与获取-定时任务" class="headerlink" title="本地文件Proxy获存储与获取:定时任务"></a>本地文件Proxy获存储与获取:定时任务</h4><pre>
 //定时任务
 private TimerTask saveProxyTask = new TimerTask() {
 
@@ -1093,7 +1241,7 @@ if (isUseLastProxy) {
 
 
 <p>saveProxyTask()函数负责把最新的代理池ip写入到本地指定文件  </p>
-<h4 id="4-使用JDK自带PriorityQueue管理Proxy"><a href="#4-使用JDK自带PriorityQueue管理Proxy" class="headerlink" title="4 使用JDK自带PriorityQueue管理Proxy"></a>4 使用JDK自带PriorityQueue管理Proxy</h4><p>目的:可以根据compareTo方法制定的优先取出代理池中使用间隔较短的代理(一开始默认都为1.5s)优先取出并执行.  </p>
+<h4 id="使用JDK自带PriorityQueue管理Proxy"><a href="#使用JDK自带PriorityQueue管理Proxy" class="headerlink" title="使用JDK自带PriorityQueue管理Proxy"></a>使用JDK自带PriorityQueue管理Proxy</h4><p>目的:可以根据compareTo方法制定的优先取出代理池中使用间隔较短的代理(一开始默认都为1.5s)优先取出并执行.  </p>
 <pre>
 public int compareTo(Delayed o) {
         Proxy that = (Proxy) o;
@@ -1211,7 +1359,7 @@ public static boolean validateProxy(HttpHost p) {
     }
 </pre>  
 
-<h3 id="7-OOSpider-使用注解配置化"><a href="#7-OOSpider-使用注解配置化" class="headerlink" title="7 OOSpider 使用注解配置化"></a>7 OOSpider 使用注解配置化</h3><h4 id="1-注解的使用"><a href="#1-注解的使用" class="headerlink" title="1  注解的使用"></a>1  注解的使用</h4><pre>
+<h3 id="OOSpider-使用注解配置化"><a href="#OOSpider-使用注解配置化" class="headerlink" title="OOSpider 使用注解配置化"></a>OOSpider 使用注解配置化</h3><h4 id="注解的使用"><a href="#注解的使用" class="headerlink" title="注解的使用"></a>注解的使用</h4><pre>
 //使用特有的抽取器
 class ModelPageProcessor implements PageProcessor 
     @Override
@@ -1311,7 +1459,7 @@ class ModelPageProcessor implements PageProcessor
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1333,7 +1481,7 @@ class ModelPageProcessor implements PageProcessor
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
