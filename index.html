@@ -380,8 +380,8 @@
         
           
             <p>本系统使用lucene的全文检索引擎工具包和基于java语言开发的轻量级的中文分词工具包IK Analyzer,来分析用户对微信平台的提问,并从数据库中检索出最匹配的问题,如果精确度够高,就直接返回对应数据库中该问题的答案,如果精确度属于中等阈值,系统会给用户提示一些较相似的问题提示用户输入更精确的问题.如果阈值偏低,则默认用户的问题过于复杂,系统给予友好提示等.</p>
-<p>##系统准备<br>1.Git and JDK 6 update 20 or later<br>2.mysql 5.5 or later</p>
-<p>##系统配置修改<br>配置修改:<br>wechat4j.properties<br>    you server url<br>wechat.url=<a href="http://inc.dareyan.cn/" target="_blank" rel="external">http://inc.dareyan.cn/</a><br>    you wechat token<br>wechat.token=xurh<br>    message secret key,if don’t set then message is cleartext<br>wechat.encodingaeskey=<strong>**</strong><br>    wechat appid<br>wechat.appid=<strong>**</strong><br>    wechat app secret<br>wechat.appsecret=<strong>**</strong><br>数据库配置:<br>db/DBHelper.java<br><code>public static final String URL = &quot;jdbc:mysql://127.0.0.1/tmp_grad?characterEncoding=UTF-8&quot;;</code></p>
+<h2 id="系统准备"><a href="#系统准备" class="headerlink" title="系统准备"></a>系统准备</h2><p>1.Git and JDK 6 update 20 or later<br>2.mysql 5.5 or later</p>
+<h2 id="系统配置修改"><a href="#系统配置修改" class="headerlink" title="系统配置修改"></a>系统配置修改</h2><p>配置修改:<br>wechat4j.properties<br>    you server url<br>wechat.url=<a href="http://inc.dareyan.cn/" target="_blank" rel="external">http://inc.dareyan.cn/</a><br>    you wechat token<br>wechat.token=xurh<br>    message secret key,if don’t set then message is cleartext<br>wechat.encodingaeskey=<strong>**</strong><br>    wechat appid<br>wechat.appid=<strong>**</strong><br>    wechat app secret<br>wechat.appsecret=<strong>**</strong><br>数据库配置:<br>db/DBHelper.java<br><code>public static final String URL = &quot;jdbc:mysql://127.0.0.1/tmp_grad?characterEncoding=UTF-8&quot;;</code></p>
 <p><code>public static final String NAME = &quot;com.mysql.jdbc.Driver&quot;;</code></p>
 <p>  <code>public static final String USER = &quot;root&quot;;</code></p>
 <p>   <code>public static final String PASSWORD = &quot;123qwe,./&quot;;</code></p>
@@ -1186,7 +1186,7 @@ public boolean isDuplicate(Request request, Task task) {
 </tbody>
 </table>
 <p>这部分抽取API返回的都是一个Selectable接口，意思是说，抽取是支持链式调用的。</p>
-<h3 id="6-代理池"><a href="#6-代理池" class="headerlink" title="6 代理池"></a>6 代理池</h3><h4 id="1-代理池初始化"><a href="#1-代理池初始化" class="headerlink" title="1 代理池初始化:"></a>1 代理池初始化:</h4><pre> 
+<h3 id="代理池"><a href="#代理池" class="headerlink" title="代理池"></a>代理池</h3><h4 id="代理池初始化"><a href="#代理池初始化" class="headerlink" title="代理池初始化:"></a>代理池初始化:</h4><pre> 
 //从以往保存的本地文件中读取代理信息作为新的代理池
 public SimpleProxyPool() {
         this(null, true);
