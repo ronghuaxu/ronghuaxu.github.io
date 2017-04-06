@@ -1,0 +1,835 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="hexo,github," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前言工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo+github搭建个人博客">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/06/hexo+github搭建个人博客/index.html">
+<meta property="og:site_name" content="我就是我,是不一样的烟火">
+<meta property="og:description" content="前言工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy09p3fxj310c0h2ack.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecycfvehmj31kw0jfwk5.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecyfqxsc3j312s0fo78b.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy7a7nedj30t80isac3.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecynsa3fij30oa0jqq6v.jpg">
+<meta property="og:updated_time" content="2017-04-06T06:57:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hexo+github搭建个人博客">
+<meta name="twitter:description" content="前言工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/06/hexo+github搭建个人博客/"/>
+
+
+
+
+
+  <title> hexo+github搭建个人博客 | 我就是我,是不一样的烟火 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我就是我,是不一样的烟火</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/06/hexo+github搭建个人博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                hexo+github搭建个人博客
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-06T14:15:13+08:00">
+                2017-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/软实力/" itemprop="url" rel="index">
+                    <span itemprop="name">软实力</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg" alt=""></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十分繁琐.还好有大牛已经考虑到我们的感受,<a href="https://hexo.io/zh-cn/" target="_blank" rel="external">hexo</a>,<a href="http://jekyll.com.cn/" target="_blank" rel="external">jekyll</a>配合github就可以搭建博客，github作为服务器这样还省去了租用服务器的费用.下面简单介绍下个人博客的整个制作过程.</p>
+<h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p>部署服务器需要使用github，所以git成了必要工具。</p>
+<pre><code>sudo apt-get install git
+</code></pre><h3 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h3><p>我直接在node.js的官网下载二进制包来安装的，下载过后，解压，设置软链接。</p>
+<pre><code>ln -s /your/nodejs/dir/bin/node /usr/local/bin/node
+ln -s /your/nodejs/dir/bin/npm /usr/local/bin/npm
+</code></pre><p>将上面路径替换成你的nodejs真实路径，也可以直接将node可执行文件拷贝到/usr/local/bin目录下。</p>
+<p>npm 是nodejs的包管理工具.</p>
+<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><pre><code>sudo npm install -g hexo-cli
+</code></pre><p>安装hexo需要使用npm包管理器来安装，安装好后运行hexo命令，控制台提示说找不到该命令，让我郁闷了一哈，后来才发现hexo命令在/your/nodejs/dir/bin/目录下，还是老办法，设置软链接。</p>
+<pre><code>ln -s /your/nodejs/dir/bin/hexo /usr/local/bin/hexo
+</code></pre><h3 id="建立站点"><a href="#建立站点" class="headerlink" title="建立站点"></a>建立站点</h3><p>进入一个本地磁盘目录(目录里面必须没有其他文件),或可以新建一个文件夹blog,然后使用命令进入这个文件内</p>
+<pre><code>hexo init blog
+</code></pre><p>blog目录就是你的站点根目录，目录里面的_config.yml是站点配置文件，后面还会说到主题配置文件，每一个主题都用一个_config.yml文件，不要搞混了，到目前为止博客环境已经搭建完成。</p>
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><p>博客搭建好了，没有run起来感觉心里是虚的，接下来我们把博客run起来看，首先生成静态页面。</p>
+<pre><code>hexo generate(可以缩写成g)
+</code></pre><p>启动本地服务，在浏览器输入<a href="http://localhost:4000就可以看效果了。" target="_blank" rel="external">http://localhost:4000就可以看效果了。</a></p>
+<pre><code>hexo server(可以缩写成s)
+</code></pre><p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy09p3fxj310c0h2ack.jpg" alt=""><br>看到上图出现，说明本地搭建博客成功。</p>
+<h3 id="配置github"><a href="#配置github" class="headerlink" title="配置github"></a>配置github</h3><p>hexo生成的静态页面是要上传到github上面的，所以需要配置好github，首先需要在github上建立一个仓库，仓库名格式是username.github.io，比如我的就是ronghuaxu.github.io，不要乱取，不然配置不成功。之后编辑站点配置文件在末尾加入。</p>
+<pre><code>deploy:
+      type: git
+      repo: https://github.com/ronghuaxu/ronghuaxu.github.io.git
+      branch: master
+</code></pre><p>repo行需要替换成你自己的仓库路径，保存之后运行如下命令。</p>
+<pre><code>npm install hexo-deployer-git --save
+hexo deploy(可以缩写成d)
+</code></pre><p>至此hexo已经关联好了github，在浏览器输入<a href="http://username.github.io/，比如我的是[http://ronghuaxu.github.io/](http://ronghuaxu.github.io/)就可以浏览了，github默认提供的是一个二级域名，你也可去阿里云购买域名，替换掉github提供的。" target="_blank" rel="external">http://username.github.io/，比如我的是[http://ronghuaxu.github.io/](http://ronghuaxu.github.io/)就可以浏览了，github默认提供的是一个二级域名，你也可去阿里云购买域名，替换掉github提供的。</a></p>
+<h3 id="阿里云域名替换"><a href="#阿里云域名替换" class="headerlink" title="阿里云域名替换"></a>阿里云域名替换</h3><p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecycfvehmj31kw0jfwk5.jpg" alt=""></p>
+<ul>
+<li>如上图所示添加如上的两条解析规则,其中151.101.72.133是我的<a href="http://ronghuaxu.github.io/">http://ronghuaxu.github.io/</a>对应的ip地址,这个地址你可以使用chrome审查网络请求可以查看.</li>
+</ul>
+<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecyfqxsc3j312s0fo78b.jpg" alt=""></p>
+<ul>
+<li><b>在source文件夹里创建CNAME文件</b>，不带任何后缀，里面添加你的域名信息，如：morningsun.com（注意前面不添加<a href="http://）更换成功后的域名[http://morningsun.site/](http://morningsun.site/" target="_blank" rel="external">http://）更换成功后的域名[http://morningsun.site/](http://morningsun.site/</a>)</li>
+</ul>
+<h3 id="创建一个标签页"><a href="#创建一个标签页" class="headerlink" title="创建一个标签页"></a>创建一个标签页</h3><pre><code>hexo new page &quot;about&quot; 
+hexo clean
+hexo generate(可以缩写成g)
+hexo deploy(可以缩写成d)
+</code></pre><p>同理可以创建categories(分类),tags(标签).</p>
+<h3 id="发表文章"><a href="#发表文章" class="headerlink" title="发表文章"></a>发表文章</h3><ul>
+<li><p>使用命令</p>
+<pre><code>hexo new &quot;xxxxxxxx&quot; 
+hexo clean
+hexo generate(可以缩写成g)
+hexo deploy(可以缩写成d)
+</code></pre><p>以上是发表文章的步骤，执行hexo new 之后会在站点目录的source/_posts/目录下生成.md结尾的博客</p>
+</li>
+<li><p>直接在source/_posts/目录下放入Markdown文件<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy7a7nedj30t80isac3.jpg" alt=""></p>
+</li>
+<li><p>带上分类和标签以便更好地管理blog(在Maekdown文件前,带上文章地<b>title,tags,categories</b>可以方便实现)<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecynsa3fij30oa0jqq6v.jpg" alt=""></p>
+</li>
+</ul>
+<p>我用的<a href="http://macdown.uranusjr.com/" target="_blank" rel="external">MacDown</a>来写博客的。针对自己的喜欢,可以选择适合自己的Markdown软件来编写自己的博客.</p>
+<h3 id="设置主题"><a href="#设置主题" class="headerlink" title="设置主题"></a>设置主题</h3><p>我使用的是<a href="http://theme-next.iissnan.com/" target="_blank" rel="external">NexT</a>主题，目前github星星数最多的一个主题，主题界面一般，主要是文档齐全吧，所以很受人们欢迎，我也建议新手使用该主题，主题配置参考NexT官方文档。</p>
+<h3 id="多电脑发布博客"><a href="#多电脑发布博客" class="headerlink" title="多电脑发布博客"></a>多电脑发布博客</h3><p>公司电脑和家用电脑都可以写博客，当环境搭建好后，怎么进行文章同步呢，我使用的是github，我在github上创建了一个名为blog的仓库用来存放博客文件，你需要将本地站点blog目录进行hexo clean之后，hexo clean执行过后就是删除public里面生成的静态页面等操作，将剩下的文件放入github同步就可以了。</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档
+</a></p>
+<p><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">NexT主题官方文档</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/" rel="tag"># hexo</a>
+          
+            <a href="/tags/github/" rel="tag"># github</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/06/你可以不上大学,但你不能停止学习/" rel="next" title="你可以不上大学，但你不能停止学习">
+                <i class="fa fa-chevron-left"></i> 你可以不上大学，但你不能停止学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装git"><span class="nav-number">1.1.</span> <span class="nav-text">安装git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装node-js"><span class="nav-number">1.2.</span> <span class="nav-text">安装node.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装hexo"><span class="nav-number">1.3.</span> <span class="nav-text">安装hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建立站点"><span class="nav-number">1.4.</span> <span class="nav-text">建立站点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地调试"><span class="nav-number">1.5.</span> <span class="nav-text">本地调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置github"><span class="nav-number">1.6.</span> <span class="nav-text">配置github</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阿里云域名替换"><span class="nav-number">1.7.</span> <span class="nav-text">阿里云域名替换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个标签页"><span class="nav-number">1.8.</span> <span class="nav-text">创建一个标签页</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发表文章"><span class="nav-number">1.9.</span> <span class="nav-text">发表文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置主题"><span class="nav-number">1.10.</span> <span class="nav-text">设置主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多电脑发布博客"><span class="nav-number">1.11.</span> <span class="nav-text">多电脑发布博客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">1.12.</span> <span class="nav-text">参考文章</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

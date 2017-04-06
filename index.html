@@ -280,6 +280,209 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/06/hexo+github搭建个人博客/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/06/hexo+github搭建个人博客/" itemprop="url">
+                  hexo+github搭建个人博客
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-06T14:15:13+08:00">
+                2017-04-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/软实力/" itemprop="url" rel="index">
+                    <span itemprop="name">软实力</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg" alt=""></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十分繁琐.还好有大牛已经考虑到我们的感受,<a href="https://hexo.io/zh-cn/" target="_blank" rel="external">hexo</a>,<a href="http://jekyll.com.cn/" target="_blank" rel="external">jekyll</a>配合github就可以搭建博客，github作为服务器这样还省去了租用服务器的费用.下面简单介绍下个人博客的整个制作过程.</p>
+<h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p>部署服务器需要使用github，所以git成了必要工具。</p>
+<pre><code>sudo apt-get install git
+</code></pre><h3 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h3><p>我直接在node.js的官网下载二进制包来安装的，下载过后，解压，设置软链接。</p>
+<pre><code>ln -s /your/nodejs/dir/bin/node /usr/local/bin/node
+ln -s /your/nodejs/dir/bin/npm /usr/local/bin/npm
+</code></pre><p>将上面路径替换成你的nodejs真实路径，也可以直接将node可执行文件拷贝到/usr/local/bin目录下。</p>
+<p>npm 是nodejs的包管理工具.</p>
+<h3 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h3><pre><code>sudo npm install -g hexo-cli
+</code></pre><p>安装hexo需要使用npm包管理器来安装，安装好后运行hexo命令，控制台提示说找不到该命令，让我郁闷了一哈，后来才发现hexo命令在/your/nodejs/dir/bin/目录下，还是老办法，设置软链接。</p>
+<pre><code>ln -s /your/nodejs/dir/bin/hexo /usr/local/bin/hexo
+</code></pre><h3 id="建立站点"><a href="#建立站点" class="headerlink" title="建立站点"></a>建立站点</h3><p>进入一个本地磁盘目录(目录里面必须没有其他文件),或可以新建一个文件夹blog,然后使用命令进入这个文件内</p>
+<pre><code>hexo init blog
+</code></pre><p>blog目录就是你的站点根目录，目录里面的_config.yml是站点配置文件，后面还会说到主题配置文件，每一个主题都用一个_config.yml文件，不要搞混了，到目前为止博客环境已经搭建完成。</p>
+<h3 id="本地调试"><a href="#本地调试" class="headerlink" title="本地调试"></a>本地调试</h3><p>博客搭建好了，没有run起来感觉心里是虚的，接下来我们把博客run起来看，首先生成静态页面。</p>
+<pre><code>hexo generate(可以缩写成g)
+</code></pre><p>启动本地服务，在浏览器输入<a href="http://localhost:4000就可以看效果了。" target="_blank" rel="external">http://localhost:4000就可以看效果了。</a></p>
+<pre><code>hexo server(可以缩写成s)
+</code></pre><p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy09p3fxj310c0h2ack.jpg" alt=""><br>看到上图出现，说明本地搭建博客成功。</p>
+<h3 id="配置github"><a href="#配置github" class="headerlink" title="配置github"></a>配置github</h3><p>hexo生成的静态页面是要上传到github上面的，所以需要配置好github，首先需要在github上建立一个仓库，仓库名格式是username.github.io，比如我的就是ronghuaxu.github.io，不要乱取，不然配置不成功。之后编辑站点配置文件在末尾加入。</p>
+<pre><code>deploy:
+      type: git
+      repo: https://github.com/ronghuaxu/ronghuaxu.github.io.git
+      branch: master
+</code></pre><p>repo行需要替换成你自己的仓库路径，保存之后运行如下命令。</p>
+<pre><code>npm install hexo-deployer-git --save
+hexo deploy(可以缩写成d)
+</code></pre><p>至此hexo已经关联好了github，在浏览器输入<a href="http://username.github.io/，比如我的是[http://ronghuaxu.github.io/](http://ronghuaxu.github.io/)就可以浏览了，github默认提供的是一个二级域名，你也可去阿里云购买域名，替换掉github提供的。" target="_blank" rel="external">http://username.github.io/，比如我的是[http://ronghuaxu.github.io/](http://ronghuaxu.github.io/)就可以浏览了，github默认提供的是一个二级域名，你也可去阿里云购买域名，替换掉github提供的。</a></p>
+<h3 id="阿里云域名替换"><a href="#阿里云域名替换" class="headerlink" title="阿里云域名替换"></a>阿里云域名替换</h3><p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecycfvehmj31kw0jfwk5.jpg" alt=""></p>
+<ul>
+<li>如上图所示添加如上的两条解析规则,其中151.101.72.133是我的<a href="http://ronghuaxu.github.io/">http://ronghuaxu.github.io/</a>对应的ip地址,这个地址你可以使用chrome审查网络请求可以查看.</li>
+</ul>
+<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecyfqxsc3j312s0fo78b.jpg" alt=""></p>
+<ul>
+<li><b>在source文件夹里创建CNAME文件</b>，不带任何后缀，里面添加你的域名信息，如：morningsun.com（注意前面不添加<a href="http://）更换成功后的域名[http://morningsun.site/](http://morningsun.site/" target="_blank" rel="external">http://）更换成功后的域名[http://morningsun.site/](http://morningsun.site/</a>)</li>
+</ul>
+<h3 id="创建一个标签页"><a href="#创建一个标签页" class="headerlink" title="创建一个标签页"></a>创建一个标签页</h3><pre><code>hexo new page &quot;about&quot; 
+hexo clean
+hexo generate(可以缩写成g)
+hexo deploy(可以缩写成d)
+</code></pre><p>同理可以创建categories(分类),tags(标签).</p>
+<h3 id="发表文章"><a href="#发表文章" class="headerlink" title="发表文章"></a>发表文章</h3><ul>
+<li><p>使用命令</p>
+<pre><code>hexo new &quot;xxxxxxxx&quot; 
+hexo clean
+hexo generate(可以缩写成g)
+hexo deploy(可以缩写成d)
+</code></pre><p>以上是发表文章的步骤，执行hexo new 之后会在站点目录的source/_posts/目录下生成.md结尾的博客</p>
+</li>
+<li><p>直接在source/_posts/目录下放入Markdown文件<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy7a7nedj30t80isac3.jpg" alt=""></p>
+</li>
+<li><p>带上分类和标签以便更好地管理blog(在Maekdown文件前,带上文章地<b>title,tags,categories</b>可以方便实现)<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecynsa3fij30oa0jqq6v.jpg" alt=""></p>
+</li>
+</ul>
+<p>我用的<a href="http://macdown.uranusjr.com/" target="_blank" rel="external">MacDown</a>来写博客的。针对自己的喜欢,可以选择适合自己的Markdown软件来编写自己的博客.</p>
+<h3 id="设置主题"><a href="#设置主题" class="headerlink" title="设置主题"></a>设置主题</h3><p>我使用的是<a href="http://theme-next.iissnan.com/" target="_blank" rel="external">NexT</a>主题，目前github星星数最多的一个主题，主题界面一般，主要是文档齐全吧，所以很受人们欢迎，我也建议新手使用该主题，主题配置参考NexT官方文档。</p>
+<h3 id="多电脑发布博客"><a href="#多电脑发布博客" class="headerlink" title="多电脑发布博客"></a>多电脑发布博客</h3><p>公司电脑和家用电脑都可以写博客，当环境搭建好后，怎么进行文章同步呢，我使用的是github，我在github上创建了一个名为blog的仓库用来存放博客文件，你需要将本地站点blog目录进行hexo clean之后，hexo clean执行过后就是删除public里面生成的静态页面等操作，将剩下的文件放入github同步就可以了。</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo官方文档
+</a></p>
+<p><a href="http://theme-next.iissnan.com/getting-started.html" target="_blank" rel="external">NexT主题官方文档</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/06/你可以不上大学,但你不能停止学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1485,153 +1688,6 @@ class Request(object_ref):
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/23/IMovie使用教程/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="华子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我就是我,是不一样的烟火">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/23/IMovie使用教程/" itemprop="url">
-                  IMovie使用教程
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-23T16:55:34+08:00">
-                2016-09-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/IMovie/" itemprop="url" rel="index">
-                    <span itemprop="name">IMovie</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="IMovie快速入门"><a href="#IMovie快速入门" class="headerlink" title="IMovie快速入门"></a>IMovie快速入门</h2><p><a href="http://help.apple.com/imovie/mac/10.1/" target="_blank" rel="external">苹果官网IMovie介绍</a><br><img src="https://ww3.sinaimg.cn/large/006tNc79gy1fe5zs5ece1j31kw0ymaki.jpg" alt=""></p>
-<h2 id="什么是-iMovie？"><a href="#什么是-iMovie？" class="headerlink" title="什么是 iMovie？"></a>什么是 iMovie？</h2><p>通过 iMovie，您可以在 Mac 上查看、编辑和共享影片。</p>
-<h3 id="浏览项目"><a href="#浏览项目" class="headerlink" title="浏览项目"></a>浏览项目</h3><p>“项目”视图可让您直接访问资源库中的所有影片项目。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0002_ProjectPane.png" alt=""></p>
-<h3 id="编辑影片"><a href="#编辑影片" class="headerlink" title="编辑影片"></a>编辑影片</h3><p>您可以从资源库查看和添加片段、编辑影片、以及添加音乐和效果。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0001_iMovieFullCallouts.png" alt=""></p>
-<h3 id="共享影片"><a href="#共享影片" class="headerlink" title="共享影片"></a>共享影片</h3><p>影片制作完成后，您可以在 iMovie Theater 中观看、将影片共享到 iTunes 或将影片共享到网上。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0509_TheaterProjects.png" alt=""></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1740,6 +1796,153 @@ class Request(object_ref):
 <h3 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h3><p>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
 <h3 id="锁和可见性"><a href="#锁和可见性" class="headerlink" title="锁和可见性"></a>锁和可见性</h3><p>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
 <h3 id="Volatile变量"><a href="#Volatile变量" class="headerlink" title="Volatile变量"></a>Volatile变量</h3><p>访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/23/IMovie使用教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/09/23/IMovie使用教程/" itemprop="url">
+                  IMovie使用教程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-23T16:55:34+08:00">
+                2016-09-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/IMovie/" itemprop="url" rel="index">
+                    <span itemprop="name">IMovie</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="IMovie快速入门"><a href="#IMovie快速入门" class="headerlink" title="IMovie快速入门"></a>IMovie快速入门</h2><p><a href="http://help.apple.com/imovie/mac/10.1/" target="_blank" rel="external">苹果官网IMovie介绍</a><br><img src="https://ww3.sinaimg.cn/large/006tNc79gy1fe5zs5ece1j31kw0ymaki.jpg" alt=""></p>
+<h2 id="什么是-iMovie？"><a href="#什么是-iMovie？" class="headerlink" title="什么是 iMovie？"></a>什么是 iMovie？</h2><p>通过 iMovie，您可以在 Mac 上查看、编辑和共享影片。</p>
+<h3 id="浏览项目"><a href="#浏览项目" class="headerlink" title="浏览项目"></a>浏览项目</h3><p>“项目”视图可让您直接访问资源库中的所有影片项目。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0002_ProjectPane.png" alt=""></p>
+<h3 id="编辑影片"><a href="#编辑影片" class="headerlink" title="编辑影片"></a>编辑影片</h3><p>您可以从资源库查看和添加片段、编辑影片、以及添加音乐和效果。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0001_iMovieFullCallouts.png" alt=""></p>
+<h3 id="共享影片"><a href="#共享影片" class="headerlink" title="共享影片"></a>共享影片</h3><p>影片制作完成后，您可以在 iMovie Theater 中观看、将影片共享到 iTunes 或将影片共享到网上。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0509_TheaterProjects.png" alt=""></p>
 
           
         
@@ -1925,590 +2128,13 @@ class Request(object_ref):
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/07/webmagic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="华子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我就是我,是不一样的烟火">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/09/07/webmagic/" itemprop="url">
-                  Webmagic学习总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-07T15:09:05+08:00">
-                2016-09-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="WebMagic概览"><a href="#WebMagic概览" class="headerlink" title="WebMagic概览"></a>WebMagic概览</h2><p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
-<p>这部分提供非常简单、灵活的API，在基本不改变开发模式的情况下，编写一个爬虫。</p>
-<p>扩展部分(webmagic-extension)提供一些便捷的功能，例如注解模式编写爬虫等。同时内置了一些常用的组件，便于爬虫开发。</p>
-<p>另外WebMagic还包括一些外围扩展和一个正在开发的产品化项目webmagic-avalon。</p>
-<h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><h3 id="结构图"><a href="#结构图" class="headerlink" title="结构图"></a>结构图</h3><p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="webmagic"></p>
-<h3 id="四大组件"><a href="#四大组件" class="headerlink" title="四大组件"></a>四大组件</h3><ul>
-<li>1.Downloader:下载器</li>
-<li>2.PageProcessor:抽取器</li>
-<li>3.Scheduler:调度器</li>
-<li>4.Pipeline:结果处理器</li>
-</ul>
-<h2 id="源码分析-主类Spider"><a href="#源码分析-主类Spider" class="headerlink" title="源码分析(主类Spider)"></a>源码分析(主类Spider)</h2><h3 id="各组件初始化及可扩展"><a href="#各组件初始化及可扩展" class="headerlink" title="各组件初始化及可扩展"></a>各组件初始化及可扩展</h3><h4 id="初始化Scheduler"><a href="#初始化Scheduler" class="headerlink" title="初始化Scheduler"></a>初始化Scheduler</h4><p>初始化Scheduler:(默认QueueScheduler)<br><code>protected Scheduler scheduler = new QueueScheduler();</code></p>
-<p>采用新的Scheduler:</p>
-<pre>
-public Spider setScheduler(Scheduler scheduler) {
-        checkIfRunning();
-        Scheduler oldScheduler = this.scheduler;
-        this.scheduler = scheduler;
-        if (oldScheduler != null) {
-            Request request;
-            while ((request = oldScheduler.poll(this)) != null) {
-            //复制原来的url到新的scheduler
-                this.scheduler.push(request, this);
-            }
-        }
-        return this;
-    }
-</pre>
-
-<h4 id="初始化Downloader"><a href="#初始化Downloader" class="headerlink" title="初始化Downloader"></a>初始化Downloader</h4><p>初始化Downloader:(默认HttpClientDownloader)</p>
-<pre>
- protected void initComponent() {
-        if (downloader == null) {
-        //用户没有自定义Downloader,默认为HttpClientDownloader()
-            this.downloader = new HttpClientDownloader();
-        }
-        if (pipelines.isEmpty()) {
-        //用户没有自定义Pipeline,默认为ConsolePipeline()
-            pipelines.add(new ConsolePipeline());
-        }
-        downloader.setThread(threadNum);
-        if (threadPool == null || threadPool.isShutdown()) {
-               //自定义线程池
-            if (executorService != null && !executorService.isShutdown()) {
-                threadPool = new CountableThreadPool(threadNum, executorService);
-            } else {
-                threadPool = new CountableThreadPool(threadNum);
-            }
-        }
-        if (startRequests != null) {
-            for (Request request : startRequests) {
-                scheduler.push(request, this);
-            }
-            startRequests.clear();
-        }
-        startTime = new Date();
-    }  </pre>
-
-<h4 id="初始化Pipeline"><a href="#初始化Pipeline" class="headerlink" title="初始化Pipeline"></a>初始化Pipeline</h4><p>初始化Pipeline:(默认ConsolePipeline)  </p>
-<h4 id="初始化PageProcessor"><a href="#初始化PageProcessor" class="headerlink" title="初始化PageProcessor"></a>初始化PageProcessor</h4><p>初始化PageProcessor:(用户自定义完成,按需求抽取html)</p>
-<h3 id="如何实现多线程"><a href="#如何实现多线程" class="headerlink" title="如何实现多线程"></a>如何实现多线程</h3><h4 id="初始化线程池"><a href="#初始化线程池" class="headerlink" title="初始化线程池"></a>初始化线程池</h4><p>(默认Executors.newFixedThreadPool(threadNum))<br>Executors.newFixedThreadPool作用:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待.</p>
-<pre>
- public CountableThreadPool(int threadNum) {
-        this.threadNum = threadNum;
-        this.executorService = Executors.newFixedThreadPool(threadNum);
-    }
-</pre>
-
-<h4 id="多线程并发控制"><a href="#多线程并发控制" class="headerlink" title="多线程并发控制"></a>多线程并发控制</h4><pre>
-public void execute(final Runnable runnable) {
-        if (threadAlive.get() >= threadNum) {
-            try {
-                reentrantLock.lock();//同步锁  下面为保护代码块
-                while (threadAlive.get() >= threadNum) {
-                    try {
-                        condition.await();
-                    } catch (InterruptedException e) {
-                    }
-                }
-            } finally {
-                reentrantLock.unlock();
-            }
-        }
-        threadAlive.incrementAndGet();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    runnable.run();
-                } finally {
-                    try {
-                        reentrantLock.lock();
-                        threadAlive.decrementAndGet();
-                        //线程数量减少一个时，通过signal()方法通知前面condition.await()的线程
-                        condition.signal();
-                    } finally {
-                        reentrantLock.unlock();
-                    }
-                }
-            }
-        });
-    }
-</pre>
-
-<h4 id="Java中的ReentrantLock和synchronized两种锁定机制的对比"><a href="#Java中的ReentrantLock和synchronized两种锁定机制的对比" class="headerlink" title="Java中的ReentrantLock和synchronized两种锁定机制的对比"></a>Java中的ReentrantLock和synchronized两种锁定机制的对比</h4><blockquote>
-<p>ReentrantLock默认情况下为不公平锁</p>
-<p><pre>private ReentrantLock lock = new ReentrantLock(); //参数默认false，不公平锁<br>private ReentrantLock lock = new ReentrantLock(true); //公平锁<br>        try {<br>            lock.lock(); //如果被其它资源锁定，会在此等待锁释放，达到暂停的效果<br>            //操作<br>        } finally {<br>            lock.unlock();<br>        }</pre><br>        不公平锁与公平锁的区别：<br>公平情况下，操作会排一个队按顺序执行，来保证执行顺序。（会消耗更多的时间来排队）<br>不公平情况下，是无序状态允许插队，jvm会自动计算如何处理更快速来调度插队。（如果不关心顺序，这个速度会更快）  </p>
-</blockquote>
-<h4 id="AtomicInteger-amp-amp-CAS"><a href="#AtomicInteger-amp-amp-CAS" class="headerlink" title="AtomicInteger &amp;&amp; CAS"></a>AtomicInteger &amp;&amp; CAS</h4><blockquote>
-<p>AtomicInteger，一个提供原子操作的Integer的类。在Java语言中，++i和i++操作并不是线程安全的，在使用的时候，不可避免的会用到synchronized关键字。而AtomicInteger则通过一种线程安全的加减操作接口。<br>首先要说一下，AtomicInteger类compareAndSet通过原子操作实现了CAS操作，最底层基于汇编语言实现<br>CAS是Compare And Set的一个简称，如下理解：<br>1，已知当前内存里面的值current和预期要修改成的值new传入<br>2，内存中AtomicInteger对象地址对应的真实值(因为有可能别修改)real与current对比，相等表示real未被修改过，是“安全”的，将new赋给real结束然后返回；不相等说明real已经被修改，结束并重新执行1直到修改成功  </p>
-</blockquote>
-<h4 id="程序如何终止"><a href="#程序如何终止" class="headerlink" title="程序如何终止"></a>程序如何终止</h4><pre>
-//while循环结束,则程序完成任务并终止
- while (!Thread.currentThread().isInterrupted() && stat.get() == STAT_RUNNING) {
-            Request request = scheduler.poll(this);
-            //当scheduler内目标URL为空时
-            if (request == null) {
-                //线程池中已经没有线程在运行了, exitWhenComplete默认为true
-                if (threadPool.getThreadAlive() == 0 && exitWhenComplete) {
-                    break;
-                }
-                // wait until new url added
-                waitNewUrl();
-            }
-</pre>
-
-<h3 id="HttpClient使用http连接池发送http请求"><a href="#HttpClient使用http连接池发送http请求" class="headerlink" title="HttpClient使用http连接池发送http请求"></a>HttpClient使用http连接池发送http请求</h3><p>将用户设置的线程数设置为httpclient最大连接池数</p>
-<pre>
-public void setThread(int thread) {
-        httpClientGenerator.setPoolSize(thread);
-    }
-</pre>
-
-<pre>
- public HttpClientGenerator setPoolSize(int poolSize) {
-        // 将最大连接数增加为poolSize
-        connectionManager.setMaxTotal(poolSize);
-        return this;
-    }
-</pre>  
-
-<h3 id="URL在Scheduler中去重"><a href="#URL在Scheduler中去重" class="headerlink" title="URL在Scheduler中去重"></a>URL在Scheduler中去重</h3><p>将下载结果页面中的链接抽取出来并放入scheduler中</p>
-<pre>
- public void push(Request request, Task task) {
-        logger.trace("get a candidate url {}", request.getUrl());
-        if (!duplicatedRemover.isDuplicate(request, task) || shouldReserved(request)) {
-            logger.debug("push to queue {}", request.getUrl());
-            pushWhenNoDuplicate(request, task);
-        }
-    }
-</pre>      
-
-<h4 id="redischedulerURL去重复"><a href="#redischedulerURL去重复" class="headerlink" title="redischedulerURL去重复"></a>redischedulerURL去重复</h4><pre>boolean isDuplicate = jedis.sismember(getSetKey(task), request.getUrl());</pre>  
-
-<pre>
-//获得key值
-protected String getSetKey(Task task) {
-        return SET_PREFIX + task.getUUID();
-    }
-//生成唯一的UUID
-public String getUUID() {
-        if (uuid != null) {
-            return uuid;
-        }
-        if (site != null) {
-            return site.getDomain();
-        }
-        uuid = UUID.randomUUID().toString();
-        return uuid;
-    }
-
-
-</pre>
-<pre>
-//RedisScheduler初始化方式,传入Redis的ip地址即可
-public RedisScheduler(String host) {
-//JedisPool使用JedisPoolConfig中默认的参数进行初始化
-        this(new JedisPool(new JedisPoolConfig(), host));
-    }
-
-    public RedisScheduler(JedisPool pool) {
-        this.pool = pool;
-        setDuplicateRemover(this);
-    }
-</pre>
-
-
-<p>RedisScheduler 中判断url是否重复的方法,因为一个Spider就是对应只有一个UUID,故上述的判断则是:判断当前的url是否是uuid集合的元素  </p>
-<blockquote>
-<p>System.out.println(jedis.sismember(“sname”, “minxr”));// 判断 minxr是否是sname集合的元素   </p>
-</blockquote>
-<h4 id="bloomFilter-URL去重复"><a href="#bloomFilter-URL去重复" class="headerlink" title="bloomFilter URL去重复"></a>bloomFilter URL去重复</h4><pre>boolean isDuplicate = bloomFilter.mightContain(getUrl(request));</pre>
-
-
-<blockquote>
-<p>Bloom-Filter，即布隆过滤器，1970年由Bloom中提出。它可以用于检索一个元素是否在一个集合中。<br>Bloom Filter（BF）是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。它是一个判断元素是否存在集合的快速的概率算法。Bloom Filter有可能会出现错误判断，但不会漏掉判断。也就是Bloom Filter判断元素不再集合，那肯定不在。如果判断元素存在集合中，有一定的概率判断错误。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter比其他常见的算法（如hash，折半查找）极大节省了空间。<br>优点：<br>1)节约缓存空间（空值的映射），不再需要空值映射。<br>2)减少数据库或缓存的请求次数。<br>3)提升业务的处理效率以及业务隔离性。<br>缺点：<br>1)存在误判的概率。<br>2)传统的Bloom Filter不能作删除操作。   </p>
-</blockquote>
-<h4 id="hashset-URL去重复"><a href="#hashset-URL去重复" class="headerlink" title="hashset  URL去重复"></a>hashset  URL去重复</h4><pre>
-//初始化set
-private Set<string> urls = Sets.newSetFromMap(new ConcurrentHashMap<string, boolean="">());
-//判断url是否在set中
-public boolean isDuplicate(Request request, Task task) {
-    return !urls.add(getUrl(request));
-}</string,></string></pre>
-
-
-
-
-<h3 id="抽取部分API"><a href="#抽取部分API" class="headerlink" title="抽取部分API"></a>抽取部分API</h3><table>
-<thead>
-<tr>
-<th>方法</th>
-<th style="text-align:center">说明</th>
-<th style="text-align:right">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>xpath(String xpath)</td>
-<td style="text-align:center">使用XPath选择</td>
-<td style="text-align:right">html.xpath(“//div[@class=’title’]”)</td>
-</tr>
-<tr>
-<td>$(String selector)</td>
-<td style="text-align:center">使用Css选择器选择</td>
-<td style="text-align:right">html.$(“div.title”)</td>
-</tr>
-<tr>
-<td>css(String selector)</td>
-<td style="text-align:center">功能同$()，使用Css选择器选择</td>
-<td style="text-align:right">html.css(“div.title”)</td>
-</tr>
-<tr>
-<td>regex(String regex)</td>
-<td style="text-align:center">使用正则表达式抽取</td>
-<td style="text-align:right">html.regex(“(.*?)\”)</td>
-</tr>
-<tr>
-<td>replace(String regex, String replacement)</td>
-<td style="text-align:center">替换内容</td>
-<td style="text-align:right">html.replace(“\”,””)</td>
-</tr>
-</tbody>
-</table>
-<p>这部分抽取API返回的都是一个Selectable接口，意思是说，抽取是支持链式调用的。</p>
-<h3 id="代理池"><a href="#代理池" class="headerlink" title="代理池"></a>代理池</h3><h4 id="代理池初始化"><a href="#代理池初始化" class="headerlink" title="代理池初始化:"></a>代理池初始化:</h4><pre> 
-//从以往保存的本地文件中读取代理信息作为新的代理池
-public SimpleProxyPool() {
-        this(null, true);
-    }
-//以往保存的本地文件中读取代理+用户输入的httpProxyList合并为新的代理池
-public SimpleProxyPool(List<string[]> httpProxyList) {
-        this(httpProxyList, true);
-    }
-//以往保存的本地文件中读取代理+用户输入的httpProxyList合并为新的代理池(后者可认为操控)
-public SimpleProxyPool(List<string[]> httpProxyList, boolean isUseLastProxy) {
-        if (httpProxyList != null) {
-            addProxy(httpProxyList.toArray(new String[httpProxyList.size()][]));
-        }
-        if (isUseLastProxy) {
-            if (!new File(proxyFilePath).exists()) {
-                setFilePath();
-            }
-            readProxyList();
-            timer.schedule(saveProxyTask, 0, saveProxyInterval);
-        }
-    }
-</string[]></string[]></pre>
-
-
-<h4 id="通过httpProxyList为代理池赋值"><a href="#通过httpProxyList为代理池赋值" class="headerlink" title="通过httpProxyList为代理池赋值"></a>通过httpProxyList为代理池赋值</h4><pre>
-String[] source = { "::0.0.0.1:0", "::0.0.0.2:0", "::0.0.0.3:0", "::0.0.0.4:0" };
-        for (String line : source) {
-            httpProxyList.add(new String[] {line.split(":")[0], line.split(":")[1], line.split(":")[2], line.split(":")[3] });
-        }
-</pre>
-
-
-<h4 id="本地文件Proxy获存储与获取-定时任务"><a href="#本地文件Proxy获存储与获取-定时任务" class="headerlink" title="本地文件Proxy获存储与获取:定时任务"></a>本地文件Proxy获存储与获取:定时任务</h4><pre>
-//定时任务
-private TimerTask saveProxyTask = new TimerTask() {
-
-        @Override
-        public void run() {
-            saveProxyList();
-            logger.info(allProxyStatus());
-        }
-    };
-//如果需要重复使用本地代理
-if (isUseLastProxy) {
-            if (!new File(proxyFilePath).exists()) {
-                setFilePath();
-            }
-            readProxyList();
-            timer.schedule(saveProxyTask, 0, saveProxyInterval);
-        }
-</pre>
-
-
-<p>saveProxyTask()函数负责把最新的代理池ip写入到本地指定文件  </p>
-<h4 id="使用JDK自带PriorityQueue管理Proxy"><a href="#使用JDK自带PriorityQueue管理Proxy" class="headerlink" title="使用JDK自带PriorityQueue管理Proxy"></a>使用JDK自带PriorityQueue管理Proxy</h4><p>目的:可以根据compareTo方法制定的优先取出代理池中使用间隔较短的代理(一开始默认都为1.5s)优先取出并执行.  </p>
-<pre>
-public int compareTo(Delayed o) {
-        Proxy that = (Proxy) o;
-        return canReuseTime > that.canReuseTime ? 1 : (canReuseTime < that.canReuseTime ? -1 : 0);
-    }
-</pre>
-<pre>
- private void siftUpComparable(int k, E x) {
-        Comparable<? super E> key = (Comparable<? super E>) x;
-        while (k > 0) {
-            int parent = (k - 1) >>> 1;
-            Object e = queue[parent];
-            if (key.compareTo((E) e) >= 0)
-                break;
-            queue[k] = e;
-            k = parent;
-        }
-        queue[k] = key;
-    }
-</pre>
-webmagic代理池的策略是：
-
-* 1. 在添加时连接相应端口做校验  
-* 2. 每个代理有1.5S的使用间隔  
-* 3. 每次失败后，下次取出代理的时间改为1.5S*失败次数  
-* 4. 如果代理失败次数超过20次，则直接丢弃  
-
-<pre>
- public void returnProxy(HttpHost host, int statusCode) {
-        Proxy p = allProxy.get(host.getAddress().getHostAddress());
-        if (p == null) {
-            return;
-        }
-        switch (statusCode) {
-              //成功
-            case Proxy.SUCCESS:
-                p.setReuseTimeInterval(reuseInterval);
-                p.setFailedNum(0);
-                p.setFailedErrorType(new ArrayList<integer>());
-                p.recordResponse();
-                p.successNumIncrement(1);
-                break;
-            //失败
-            case Proxy.ERROR_403:
-                // banned,try longer interval
-                p.fail(Proxy.ERROR_403);
-                p.setReuseTimeInterval(reuseInterval * p.getFailedNum());
-                logger.info(host + " >>>> reuseTimeInterval is >>>> " + p.getReuseTimeInterval() / 1000.0);
-                break;
-            //代理被禁
-            case Proxy.ERROR_BANNED:
-                p.fail(Proxy.ERROR_BANNED);
-                p.setReuseTimeInterval(10 * 60 * 1000 * p.getFailedNum());
-                logger.warn("this proxy is banned >>>> " + p.getHttpHost());
-                logger.info(host + " >>>> reuseTimeInterval is >>>> " + p.getReuseTimeInterval() / 1000.0);
-                break;
-            //404
-            case Proxy.ERROR_404:
-                // p.fail(Proxy.ERROR_404);
-                // p.setReuseTimeInterval(reuseInterval * p.getFailedNum());
-                break;
-            default:
-                p.fail(statusCode);
-                break;
-        }
-        //当前代理失败次数超过20:reviveTime = 2 * 60 * 60 * 1000;
-        if (p.getFailedNum() > 20) {
-            p.setReuseTimeInterval(reviveTime);
-            logger.error("remove proxy >>>> " + host + ">>>>" + p.getFailedType() + " >>>> remain proxy >>>> " + proxyQueue.size());
-            return;
-        }
-        //检验代理ip符合下列要求的:当失败次数为5的倍数的时的校验
-        if (p.getFailedNum() > 0 && p.getFailedNum() % 5 == 0) {
-            if (!ProxyUtils.validateProxy(host)) {
-                p.setReuseTimeInterval(reviveTime);
-                logger.error("remove proxy >>>> " + host + ">>>>" + p.getFailedType() + " >>>> remain proxy >>>> " + proxyQueue.size());
-                return;
-            }
-        }
-        try {
-            proxyQueue.put(p);
-        } catch (InterruptedException e) {
-            logger.warn("proxyQueue return proxy error", e);
-        }
-    }
-</integer></pre>
-使用Socket来校验代理是否有效,客户端为本地.创建与代理的连接
-<pre>
-public static boolean validateProxy(HttpHost p) {
-        if (localAddr == null) {
-            logger.error("cannot get local IP");
-            return false;
-        }
-        boolean isReachable = false;
-        Socket socket = null;
-        try {
-            socket = new Socket();
-            socket.bind(new InetSocketAddress(localAddr, 0));
-            InetSocketAddress endpointSocketAddr = new InetSocketAddress(p.getAddress().getHostAddress(), p.getPort());
-            socket.connect(endpointSocketAddr, 3000);
-            logger.debug("SUCCESS - connection established! Local: " + localAddr.getHostAddress() + " remote: " + p);
-            isReachable = true;
-        } catch (IOException e) {
-            logger.warn("FAILRE - CAN not connect! Local: " + localAddr.getHostAddress() + " remote: " + p);
-        } finally {
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    logger.warn("Error occurred while closing socket of validating proxy", e);
-                }
-            }
-        }
-        return isReachable;
-    }
-</pre>  
-
-<h3 id="OOSpider-使用注解配置化"><a href="#OOSpider-使用注解配置化" class="headerlink" title="OOSpider 使用注解配置化"></a>OOSpider 使用注解配置化</h3><h4 id="注解的使用"><a href="#注解的使用" class="headerlink" title="注解的使用"></a>注解的使用</h4><pre>
-//使用特有的抽取器
-class ModelPageProcessor implements PageProcessor 
-    @Override
-    public void process(Page page) {
-        for (PageModelExtractor pageModelExtractor : pageModelExtractorList) {
-            extractLinks(page, pageModelExtractor.getHelpUrlRegionSelector(), pageModelExtractor.getHelpUrlPatterns());
-            extractLinks(page, pageModelExtractor.getTargetUrlRegionSelector(), pageModelExtractor.getTargetUrlPatterns());
-            Object process = pageModelExtractor.process(page);
-            if (process == null || (process instanceof List && ((List) process).size() == 0)) {
-                continue;
-            }
-            postProcessPageModel(pageModelExtractor.getClazz(), process);
-            page.putField(pageModelExtractor.getClazz().getCanonicalName(), process);
-        }
-        if (page.getResultItems().getAll().size() == 0) {
-            page.getResultItems().setSkip(true);
-        }
-    }
-
-</pre>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2551,7 +2177,7 @@ class ModelPageProcessor implements PageProcessor
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2562,7 +2188,7 @@ class ModelPageProcessor implements PageProcessor
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2573,7 +2199,7 @@ class ModelPageProcessor implements PageProcessor
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">20</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
