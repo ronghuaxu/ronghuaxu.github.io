@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="TPv4," />
+  <meta name="keywords" content="mac,iterm2," />
 
 
 
@@ -87,91 +87,18 @@
 
 
 
-<meta name="description" content="引言
-IPv4地址长度是32位,它唯一地且全球性地定义了一台主机或路由器与因特网之间的一个连接
-IP地址是唯一且全球统一的
-
-
-IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
-
-三种逻辑运算介绍三种运算:非(NOT),与(AND),或(OR)   
-
-非(NOT)
-与(AND)
-或(OR)
-
-分类编织
-在IP地址诞生之初就使用了分类的概念
-这种体系结构称为分类编址
-
-
-分类在分类">
+<meta name="description" content="简介windows里有个Xshell非常的方便好使，因为它能保存你所有的ssh登录帐号信息。MAC下并没有xshell，有些也提供这样的功能，但效果都不好。iterm2是很好的终端，但却不能很好的支持多profiles，当要管理的机器较多时，就比较麻烦了。好在它有profiles设置，只是不能保存ssh登录帐号及密码，它还提供了加载profiles时执行外部命令的功能，因此，这里就可以使用sshp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IPv4协议简介">
-<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/06/IPv4协议/index.html">
+<meta property="og:title" content="Mac下，使用sshpass让iterm2支持多ssh登录信息保存">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/07/Mac下使用sshpass让iterm2支持多ssh登录信息保存/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="引言
-IPv4地址长度是32位,它唯一地且全球性地定义了一台主机或路由器与因特网之间的一个连接
-IP地址是唯一且全球统一的
-
-
-IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
-
-三种逻辑运算介绍三种运算:非(NOT),与(AND),或(OR)   
-
-非(NOT)
-与(AND)
-或(OR)
-
-分类编织
-在IP地址诞生之初就使用了分类的概念
-这种体系结构称为分类编址
-
-
-分类在分类">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpd2l7rcj30lw0jddh6.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpe7npadj30lx0g4jtt.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpf73v48j30mn0gaq4h.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpghfcssj30ha07caag.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpgpb2bej30q6084mxu.jpg">
-<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpgwa725j30pu086wf4.jpg">
-<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpj2ov24j30p20fywi6.jpg">
-<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecpjwz71xj30om0903zz.jpg">
-<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecpkqhcwqj30tk08e40u.jpg">
-<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecpl2b38pj30qc052aah.jpg">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpl6irh7j30mo07qgmp.jpg">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpm7enj9j312b0gegpz.jpg">
-<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpnh6c1sj30no0aqwgs.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpo8grktj30oj0ex0v4.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpp6njrnj30sg08240a.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpt4pypbj30pg07ojs2.jpg">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecptret81j30ss084jsq.jpg">
-<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpu85bh3j30oi0dsgn7.jpg">
-<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpudt0rcj30wo066di0.jpg">
-<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpuigit9j30um058mxx.jpg">
-<meta property="og:updated_time" content="2017-04-06T01:47:55.000Z">
+<meta property="og:description" content="简介windows里有个Xshell非常的方便好使，因为它能保存你所有的ssh登录帐号信息。MAC下并没有xshell，有些也提供这样的功能，但效果都不好。iterm2是很好的终端，但却不能很好的支持多profiles，当要管理的机器较多时，就比较麻烦了。好在它有profiles设置，只是不能保存ssh登录帐号及密码，它还提供了加载profiles时执行外部命令的功能，因此，这里就可以使用sshp">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fee1rrxfvlj31f00vkwks.jpg">
+<meta property="og:updated_time" content="2017-04-07T05:25:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="IPv4协议简介">
-<meta name="twitter:description" content="引言
-IPv4地址长度是32位,它唯一地且全球性地定义了一台主机或路由器与因特网之间的一个连接
-IP地址是唯一且全球统一的
-
-
-IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
-
-三种逻辑运算介绍三种运算:非(NOT),与(AND),或(OR)   
-
-非(NOT)
-与(AND)
-或(OR)
-
-分类编织
-在IP地址诞生之初就使用了分类的概念
-这种体系结构称为分类编址
-
-
-分类在分类">
-<meta name="twitter:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpd2l7rcj30lw0jddh6.jpg">
+<meta name="twitter:title" content="Mac下，使用sshpass让iterm2支持多ssh登录信息保存">
+<meta name="twitter:description" content="简介windows里有个Xshell非常的方便好使，因为它能保存你所有的ssh登录帐号信息。MAC下并没有xshell，有些也提供这样的功能，但效果都不好。iterm2是很好的终端，但却不能很好的支持多profiles，当要管理的机器较多时，就比较麻烦了。好在它有profiles设置，只是不能保存ssh登录帐号及密码，它还提供了加载profiles时执行外部命令的功能，因此，这里就可以使用sshp">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fee1rrxfvlj31f00vkwks.jpg">
 
 
 
@@ -199,13 +126,13 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
 
 
 
-  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/06/IPv4协议/"/>
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/07/Mac下使用sshpass让iterm2支持多ssh登录信息保存/"/>
 
 
 
 
 
-  <title> IPv4协议简介 | 我就是我,是不一样的烟火 </title>
+  <title> Mac下，使用sshpass让iterm2支持多ssh登录信息保存 | 我就是我,是不一样的烟火 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -354,7 +281,7 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/06/IPv4协议/">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/07/Mac下使用sshpass让iterm2支持多ssh登录信息保存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="华子">
@@ -375,7 +302,7 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
             
             
               
-                IPv4协议简介
+                Mac下，使用sshpass让iterm2支持多ssh登录信息保存
               
             
           </h1>
@@ -390,8 +317,8 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-06T09:20:51+08:00">
-                2017-04-06
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-07T13:25:45+08:00">
+                2017-04-07
               </time>
             
 
@@ -413,8 +340,8 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
-                    <span itemprop="name">计算机网络</span>
+                  <a href="/categories/mac/" itemprop="url" rel="index">
+                    <span itemprop="name">mac</span>
                   </a>
                 </span>
 
@@ -448,68 +375,20 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
       
 
       
-        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
-<li>IPv4地址长度是32位,它唯一地且全球性地定义了一台主机或路由器与因特网之间的一个连接</li>
-<li>IP地址是唯一且全球统一的</li>
-</ul>
-<p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpd2l7rcj30lw0jddh6.jpg" alt=""></p>
-<h3 id="IPv4的记法"><a href="#IPv4的记法" class="headerlink" title="IPv4的记法"></a>IPv4的记法</h3><p><b>IPv4的十进制和二进制表示的形式及两者之间的转化<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpe7npadj30lx0g4jtt.jpg" alt=""></b></p>
-<p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpf73v48j30mn0gaq4h.jpg" alt=""></p>
-<h3 id="三种逻辑运算"><a href="#三种逻辑运算" class="headerlink" title="三种逻辑运算"></a>三种逻辑运算</h3><p><b>介绍三种运算:非(NOT),与(AND),或(OR)   </b></p>
-<ul>
-<li>非(NOT)<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpghfcssj30ha07caag.jpg" alt=""></li>
-<li>与(AND)<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpgpb2bej30q6084mxu.jpg" alt=""></li>
-<li>或(OR)<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpgwa725j30pu086wf4.jpg" alt=""></li>
-</ul>
-<h2 id="分类编织"><a href="#分类编织" class="headerlink" title="分类编织"></a>分类编织</h2><ul>
-<li>在IP地址诞生之初就使用了分类的概念</li>
-<li>这种体系结构称为分类编址</li>
-</ul>
-<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpj2ov24j30p20fywi6.jpg" alt=""></p>
-<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>在分类编址中,地址空间共分为5类:A,B,C,D,E</p>
-<ul>
-<li>各分类地址空间占用情况<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecpjwz71xj30om0903zz.jpg" alt=""></li>
-<li>找出地址的类别<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecpkqhcwqj30tk08e40u.jpg" alt=""></li>
-<li>通过连续检查来找出地址分类<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecpl2b38pj30qc052aah.jpg" alt=""></li>
-<li>网络标识(Netid)和主机标识Hostid<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpl6irh7j30mo07qgmp.jpg" alt=""></li>
-</ul>
-<h3 id="地址类和地址块"><a href="#地址类和地址块" class="headerlink" title="地址类和地址块"></a>地址类和地址块</h3><ul>
-<li>此处以A类地址举例说明,其它类别可以类推<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpm7enj9j312b0gegpz.jpg" alt=""></li>
-<li>五类地址地址类和地址块的详细情况描述<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpnh6c1sj30no0aqwgs.jpg" alt=""></li>
-</ul>
-<h3 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h3><p>A类和B类地址块已几近耗尽,而C类地址块又太小,所以子网划分技术孕育而生<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpo8grktj30oj0ex0v4.jpg" alt=""></p>
-<h2 id="无分类编址"><a href="#无分类编址" class="headerlink" title="无分类编址"></a>无分类编址</h2><p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpp6njrnj30sg08240a.jpg" alt=""></p>
-<ul>
-<li>分类编址中划分子网并没有实际上解决地址耗尽的问题</li>
-<li>子网划分使得地址分配和路由选择变得更加困难</li>
-<li>无分类编址在分配地址时,类别的特权被取消了,在更长的IP地址IPv6到来之前,人们的一种临时解决方案</li>
-</ul>
-<h2 id="特殊地址"><a href="#特殊地址" class="headerlink" title="特殊地址"></a>特殊地址</h2><h3 id="特殊地址块"><a href="#特殊地址块" class="headerlink" title="特殊地址块"></a>特殊地址块</h3><ul>
-<li>全0地址</li>
-<li>全1地址: 受限广播地址</li>
-<li>环回地址</li>
-<li>专用地址</li>
-<li>多播地址</li>
-</ul>
-<h3 id="每个地址块中的特殊地址"><a href="#每个地址块中的特殊地址" class="headerlink" title="每个地址块中的特殊地址"></a>每个地址块中的特殊地址</h3><ul>
-<li>网络地址</li>
-<li>直接广播地址</li>
-</ul>
-<h2 id="NAT技术"><a href="#NAT技术" class="headerlink" title="NAT技术"></a>NAT技术</h2><p>NAT可用于提供在专用地址和全球地址之间的相互映射,同时也支持虚拟专用网络<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpt4pypbj30pg07ojs2.jpg" alt=""></p>
-<h3 id="地址转换"><a href="#地址转换" class="headerlink" title="地址转换"></a>地址转换</h3><p>所有外出的分组都要通过这台NAT路由器,它负责将分组中的源地址转换为全球地址.<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fecptret81j30ss084jsq.jpg" alt=""></p>
-<h3 id="转换表"><a href="#转换表" class="headerlink" title="转换表"></a>转换表</h3><p>NAT的三种方式实现唯一辨别内部的主机:1)使用一个IP地址,2)使用IP地址池,3)使用IP地址和端口地址</p>
-<ul>
-<li>使用一个ip地址</li>
-</ul>
-<p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fecpu85bh3j30oi0dsgn7.jpg" alt=""></p>
-<ul>
-<li>使用ip地址池</li>
-</ul>
-<p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecpudt0rcj30wo066di0.jpg" alt=""></p>
-<ul>
-<li>使用ip地址和端口地址</li>
-</ul>
-<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecpuigit9j30um058mxx.jpg" alt=""></p>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>windows里有个Xshell非常的方便好使，因为它能保存你所有的ssh登录帐号信息。MAC下并没有xshell，有些也提供这样的功能，但效果都不好。iterm2是很好的终端，但却不能很好的支持多profiles，当要管理的机器较多时，就比较麻烦了。好在它有profiles设置，只是不能保存ssh登录帐号及密码，它还提供了加载profiles时执行外部命令的功能，因此，这里就可以使用sshpass来帮它执行。</p>
+<h2 id="安装iterm2"><a href="#安装iterm2" class="headerlink" title="安装iterm2"></a>安装iterm2</h2><p>直接到官网下载安装: <a href="http://iterm2.com/" target="_blank" rel="external">http://iterm2.com/</a>，mac上装软件，是件很轻松的事情</p>
+<h2 id="安装sshpass"><a href="#安装sshpass" class="headerlink" title="安装sshpass"></a>安装sshpass</h2><p>下载：<a href="http://sourceforge.net/projects/sshpass/files/" target="_blank" rel="external">http://sourceforge.net/projects/sshpass/files/</a><br>解压后，进入sshpass目录，执行安装</p>
+<pre><code>./configure 
+make 
+make install
+</code></pre><p>理论上不会出什么问题，安装好后，执行命令检查是否已经OK</p>
+<pre><code>sshpass -h
+</code></pre><h2 id="配置iterm2"><a href="#配置iterm2" class="headerlink" title="配置iterm2"></a>配置iterm2</h2><p>打开iterm的profiles选项<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fee1rrxfvlj31f00vkwks.jpg" alt=""><br>添加一个新的profile，其它没什么好配置的，主要是在General的command中选择使用command，命令就是sshpass的执行命令，如：</p>
+<pre><code>/usr/local/bin/sshpass -p unionpay ssh -p 22 root@192.168.66.231
+</code></pre><p>-p unionpay 就是 192.168.66.231机器root 用户的密码<br>ssh -p22 root@192.168.66.231是说用ssh链接，端口22，root帐号和IP地址</p>
+<p>保存后，选择该profile，就可以实际ssh登录。只是如果是本机第一次登录，是不会成功的，因为ssh登录需要你yes确认，会写文件到hosts里，所以第一次会直接失败，再来一次或是先在终端里用ssh root@ip来登录一次，就可以了。</p>
+<p>这样，新建多个profile，就可以实现管理登录了。</p>
+<p>iterm2和xshell比起来还是有很多不好使的地方，比如，无法直接看到主机IP，有时候想复制一下不方便。tab上的名称不能自定义，多开几个之后，不太好区分等等。但是有总比没有好，所以，还是不错的。</p>
 
       
     </div>
@@ -539,7 +418,9 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
       
         <div class="post-tags">
           
-            <a href="/tags/TPv4/" rel="tag"># TPv4</a>
+            <a href="/tags/mac/" rel="tag"># mac</a>
+          
+            <a href="/tags/iterm2/" rel="tag"># iterm2</a>
           
         </div>
       
@@ -552,8 +433,8 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/29/提利昂·兰尼斯特-权利的游戏/" rel="next" title="提利昂·兰尼斯特：我的一切努力，不过是为了获得父亲的肯定">
-                <i class="fa fa-chevron-left"></i> 提利昂·兰尼斯特：我的一切努力，不过是为了获得父亲的肯定
+              <a href="/2017/04/06/hexo+github搭建个人博客/" rel="next" title="hexo+github搭建个人博客">
+                <i class="fa fa-chevron-left"></i> hexo+github搭建个人博客
               </a>
             
           </div>
@@ -561,10 +442,6 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/06/HTTPS/" rel="prev" title="安全http(https)">
-                安全http(https) <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -731,7 +608,7 @@ IPv4的记法IPv4的十进制和二进制表示的形式及两者之间的转化
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IPv4的记法"><span class="nav-number">1.1.</span> <span class="nav-text">IPv4的记法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三种逻辑运算"><span class="nav-number">1.2.</span> <span class="nav-text">三种逻辑运算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类编织"><span class="nav-number">2.</span> <span class="nav-text">分类编织</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类"><span class="nav-number">2.1.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址类和地址块"><span class="nav-number">2.2.</span> <span class="nav-text">地址类和地址块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子网划分"><span class="nav-number">2.3.</span> <span class="nav-text">子网划分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无分类编址"><span class="nav-number">3.</span> <span class="nav-text">无分类编址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊地址"><span class="nav-number">4.</span> <span class="nav-text">特殊地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊地址块"><span class="nav-number">4.1.</span> <span class="nav-text">特殊地址块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#每个地址块中的特殊地址"><span class="nav-number">4.2.</span> <span class="nav-text">每个地址块中的特殊地址</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NAT技术"><span class="nav-number">5.</span> <span class="nav-text">NAT技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#地址转换"><span class="nav-number">5.1.</span> <span class="nav-text">地址转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#转换表"><span class="nav-number">5.2.</span> <span class="nav-text">转换表</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装iterm2"><span class="nav-number">2.</span> <span class="nav-text">安装iterm2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装sshpass"><span class="nav-number">3.</span> <span class="nav-text">安装sshpass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置iterm2"><span class="nav-number">4.</span> <span class="nav-text">配置iterm2</span></a></li></ol></div>
             
 
           </div>
