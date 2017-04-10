@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="java并发编程," />
+  <meta name="keywords" content="mapreduce,hadoop权威指南第三版," />
 
 
 
@@ -87,22 +87,31 @@
 
 
 
-<meta name="description" content="线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
-原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
-竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A">
+<meta name="description" content="简介简单地通过一个实际的例子来对之前一直觉得高深莫测的hadoop的核心mapredue进行分析.hadoop权威指南第三版书中也有详细的讲解过程,大佬用简单的一个例子生动形象地道出了天机.以下是我个人对这个例子的总结.作者Tom White很巧妙的用实际的例子,让hadoop很自然地跃然纸上,衔接的很完美,读者的印象也更加深刻.
+挖掘气象数据集(求每年全球气温的最高温度)数据格式这里涉及成千上">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java并发编程读书笔记">
-<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/index.html">
+<meta property="og:title" content="关于MapReduce">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/10/关于MapReduce/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
-原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
-竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A">
-<meta property="og:updated_time" content="2017-03-23T01:45:59.000Z">
+<meta property="og:description" content="简介简单地通过一个实际的例子来对之前一直觉得高深莫测的hadoop的核心mapredue进行分析.hadoop权威指南第三版书中也有详细的讲解过程,大佬用简单的一个例子生动形象地道出了天机.以下是我个人对这个例子的总结.作者Tom White很巧妙的用实际的例子,让hadoop很自然地跃然纸上,衔接的很完美,读者的印象也更加深刻.
+挖掘气象数据集(求每年全球气温的最高温度)数据格式这里涉及成千上">
+<meta property="og:image" content="https://ww2.sinaimg.cn/bmiddle/006tKfTcgy1fehqknr37ij30cc0v80ts.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fehqmor3acj30t207egna.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/bmiddle/006tKfTcgy1fehqsazv4jj309a0maq3q.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fehr2s7lwcj30s805wmzb.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fehr39e88rj30rq0fqwhj.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fehr3u4nfyj30ro06a40f.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fehr4dxfu7j30rq0f0wh3.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fehr5rglo4j30rs0fe0vo.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fehrdk1oh6j30rq0boq4j.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fehrdxuepxj30sm0igjuo.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fehreguhxgj30rg074dha.jpg">
+<meta property="og:updated_time" content="2017-04-10T10:28:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java并发编程读书笔记">
-<meta name="twitter:description" content="线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
-原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
-竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A">
+<meta name="twitter:title" content="关于MapReduce">
+<meta name="twitter:description" content="简介简单地通过一个实际的例子来对之前一直觉得高深莫测的hadoop的核心mapredue进行分析.hadoop权威指南第三版书中也有详细的讲解过程,大佬用简单的一个例子生动形象地道出了天机.以下是我个人对这个例子的总结.作者Tom White很巧妙的用实际的例子,让hadoop很自然地跃然纸上,衔接的很完美,读者的印象也更加深刻.
+挖掘气象数据集(求每年全球气温的最高温度)数据格式这里涉及成千上">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/bmiddle/006tKfTcgy1fehqknr37ij30cc0v80ts.jpg">
 
 
 
@@ -130,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/"/>
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/10/关于MapReduce/"/>
 
 
 
 
 
-  <title> java并发编程读书笔记 | 我就是我,是不一样的烟火 </title>
+  <title> 关于MapReduce | 我就是我,是不一样的烟火 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -285,7 +294,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/10/关于MapReduce/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="华子">
@@ -306,7 +315,7 @@
             
             
               
-                java并发编程读书笔记
+                关于MapReduce
               
             
           </h1>
@@ -321,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-23T16:55:34+08:00">
-                2016-09-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-10T15:15:11+08:00">
+                2017-04-10
               </time>
             
 
@@ -344,8 +353,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
+                  <a href="/categories/hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">hadoop</span>
                   </a>
                 </span>
 
@@ -379,15 +388,19 @@
       
 
       
-        <h2 id="线程安全性"><a href="#线程安全性" class="headerlink" title="线程安全性"></a>线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
-<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><p>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
-<h3 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h3><p>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
-<h3 id="活跃性和性能"><a href="#活跃性和性能" class="headerlink" title="活跃性和性能"></a>活跃性和性能</h3><p>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
-<h2 id="对象的共享"><a href="#对象的共享" class="headerlink" title="对象的共享"></a>对象的共享</h2><h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
-<h3 id="过期数据"><a href="#过期数据" class="headerlink" title="过期数据"></a>过期数据</h3><p>当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的<br>同步化setter是不够的,调用get的线程仍然看得到过期值</p>
-<h3 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h3><p>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
-<h3 id="锁和可见性"><a href="#锁和可见性" class="headerlink" title="锁和可见性"></a>锁和可见性</h3><p>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
-<h3 id="Volatile变量"><a href="#Volatile变量" class="headerlink" title="Volatile变量"></a>Volatile变量</h3><p>访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.</p>
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>简单地通过一个实际的例子来对之前一直觉得高深莫测的hadoop的核心mapredue进行分析.hadoop权威指南第三版书中也有详细的讲解过程,大佬用简单的一个例子生动形象地道出了天机.以下是我个人对这个例子的总结.作者Tom White很巧妙的用实际的例子,让hadoop很自然地跃然纸上,衔接的很完美,读者的印象也更加深刻.</p>
+<h2 id="挖掘气象数据集-求每年全球气温的最高温度"><a href="#挖掘气象数据集-求每年全球气温的最高温度" class="headerlink" title="挖掘气象数据集(求每年全球气温的最高温度)"></a>挖掘气象数据集(求每年全球气温的最高温度)</h2><h3 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h3><p>这里涉及成千上万个气象台每年的数据文件,每个气象台会每隔一小时收集气象数据,每个气象台会发提供全年的记录.</p>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>将成千上万个气象台,按年份拼接成一个独立的文件.</p>
+<h2 id="使用Hadoop来分析数据"><a href="#使用Hadoop来分析数据" class="headerlink" title="使用Hadoop来分析数据"></a>使用Hadoop来分析数据</h2><p>此处先进行本地的小规模测试.下面的介绍也是小规模的测试的详细描述.这个步骤可以理解成为把大的任务分解成小任务,平均分配到每一台机子上面.本地测试也可以使得代码质量的准确性的提高.</p>
+<h3 id="map和reduce"><a href="#map和reduce" class="headerlink" title="map和reduce"></a>map和reduce</h3><p>mapreduce就是map和reduce两个工作的结合,先map后reduce.下面结合这个实例分析,来解释这两个功能.<br><img src="https://ww2.sinaimg.cn/bmiddle/006tKfTcgy1fehqknr37ij30cc0v80ts.jpg" alt=""></p>
+<p>上面就是map的操作,为reduce操作进行数据的第二次处理.<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fehqmor3acj30t207egna.jpg" alt=""></p>
+<p>MapReduce的逻辑数据流,reduce的工作如下图:</p>
+<p><img src="https://ww1.sinaimg.cn/bmiddle/006tKfTcgy1fehqsazv4jj309a0maq3q.jpg" alt=""></p>
+<h2 id="横向扩展"><a href="#横向扩展" class="headerlink" title="横向扩展"></a>横向扩展</h2><p>前面介绍了MapReduce针对少量输入数据是如何工作的,下面开始讨论大数据输入的情况.<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fehr2s7lwcj30s805wmzb.jpg" alt=""><br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fehr39e88rj30rq0fqwhj.jpg" alt=""><br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fehr3u4nfyj30ro06a40f.jpg" alt=""></p>
+<h3 id="一个reduce任务的MapReduce数据流"><a href="#一个reduce任务的MapReduce数据流" class="headerlink" title="一个reduce任务的MapReduce数据流"></a>一个reduce任务的MapReduce数据流</h3><p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fehr4dxfu7j30rq0f0wh3.jpg" alt=""></p>
+<h3 id="多个reduce任务的MapReduce数据流"><a href="#多个reduce任务的MapReduce数据流" class="headerlink" title="多个reduce任务的MapReduce数据流"></a>多个reduce任务的MapReduce数据流</h3><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fehr5rglo4j30rs0fe0vo.jpg" alt=""></p>
+<p>上图针对这个例子的解释,sort有两个分支是因为1949和1950两年的数据,后面reduce的merge中接收应该分别处理.这边的map任务和reduce任务之间的数据称为shuffle(洗牌,混洗),因为每个reduce任务的输入都是来自许多map任务(气象数据例子中以年为单位的数据块)</p>
+<h2 id="combiner函数-求最大值可以-求平均值不行"><a href="#combiner函数-求最大值可以-求平均值不行" class="headerlink" title="combiner函数(求最大值可以,求平均值不行)"></a>combiner函数(求最大值可以,求平均值不行)</h2><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fehrdk1oh6j30rq0boq4j.jpg" alt=""><br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fehrdxuepxj30sm0igjuo.jpg" alt=""><br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fehreguhxgj30rg074dha.jpg" alt=""></p>
 
       
     </div>
@@ -417,7 +430,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/java并发编程/" rel="tag"># java并发编程</a>
+            <a href="/tags/mapreduce/" rel="tag"># mapreduce</a>
+          
+            <a href="/tags/hadoop权威指南第三版/" rel="tag"># hadoop权威指南第三版</a>
           
         </div>
       
@@ -430,8 +445,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/23/致加西亚的一封信/" rel="next" title="致加西亚的一封信">
-                <i class="fa fa-chevron-left"></i> 致加西亚的一封信
+              <a href="/2017/04/07/Mac下使用sshpass让iterm2支持多ssh登录信息保存/" rel="next" title="Mac下，使用sshpass让iterm2支持多ssh登录信息保存">
+                <i class="fa fa-chevron-left"></i> Mac下，使用sshpass让iterm2支持多ssh登录信息保存
               </a>
             
           </div>
@@ -439,10 +454,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/09/27/Scrapy起步/" rel="prev" title="Scrapy爬取知乎用户信息以及人际拓扑关系">
-                Scrapy爬取知乎用户信息以及人际拓扑关系 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -609,7 +620,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程安全性"><span class="nav-number">1.</span> <span class="nav-text">线程安全性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原子性"><span class="nav-number">1.1.</span> <span class="nav-text">原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#竞态条件"><span class="nav-number">1.2.</span> <span class="nav-text">竞态条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#活跃性和性能"><span class="nav-number">1.3.</span> <span class="nav-text">活跃性和性能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的共享"><span class="nav-number">2.</span> <span class="nav-text">对象的共享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可见性"><span class="nav-number">2.1.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过期数据"><span class="nav-number">2.2.</span> <span class="nav-text">过期数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非原子的64位操作"><span class="nav-number">2.3.</span> <span class="nav-text">非原子的64位操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁和可见性"><span class="nav-number">2.4.</span> <span class="nav-text">锁和可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Volatile变量"><span class="nav-number">2.5.</span> <span class="nav-text">Volatile变量</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#挖掘气象数据集-求每年全球气温的最高温度"><span class="nav-number">2.</span> <span class="nav-text">挖掘气象数据集(求每年全球气温的最高温度)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据格式"><span class="nav-number">2.1.</span> <span class="nav-text">数据格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据预处理"><span class="nav-number">2.2.</span> <span class="nav-text">数据预处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Hadoop来分析数据"><span class="nav-number">3.</span> <span class="nav-text">使用Hadoop来分析数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#map和reduce"><span class="nav-number">3.1.</span> <span class="nav-text">map和reduce</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#横向扩展"><span class="nav-number">4.</span> <span class="nav-text">横向扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一个reduce任务的MapReduce数据流"><span class="nav-number">4.1.</span> <span class="nav-text">一个reduce任务的MapReduce数据流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个reduce任务的MapReduce数据流"><span class="nav-number">4.2.</span> <span class="nav-text">多个reduce任务的MapReduce数据流</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#combiner函数-求最大值可以-求平均值不行"><span class="nav-number">5.</span> <span class="nav-text">combiner函数(求最大值可以,求平均值不行)</span></a></li></ol></div>
             
 
           </div>
