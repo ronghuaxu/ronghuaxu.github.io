@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -106,7 +106,7 @@
 <meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fehrdk1oh6j30rq0boq4j.jpg">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fehrdxuepxj30sm0igjuo.jpg">
 <meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fehreguhxgj30rg074dha.jpg">
-<meta property="og:updated_time" content="2017-04-10T10:28:43.000Z">
+<meta property="og:updated_time" content="2017-04-12T02:27:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于MapReduce">
 <meta name="twitter:description" content="简介简单地通过一个实际的例子来对之前一直觉得高深莫测的hadoop的核心mapredue进行分析.hadoop权威指南第三版书中也有详细的讲解过程,大佬用简单的一个例子生动形象地道出了天机.以下是我个人对这个例子的总结.作者Tom White很巧妙的用实际的例子,让hadoop很自然地跃然纸上,衔接的很完美,读者的印象也更加深刻.
@@ -119,7 +119,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -410,9 +410,10 @@
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -440,7 +441,7 @@
       
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>简单地通过一个实际的例子来对之前一直觉得高深莫测的hadoop的核心mapredue进行分析.hadoop权威指南第三版书中也有详细的讲解过程,大佬用简单的一个例子生动形象地道出了天机.以下是我个人对这个例子的总结.作者Tom White很巧妙的用实际的例子,让hadoop很自然地跃然纸上,衔接的很完美,读者的印象也更加深刻.</p>
 <h2 id="挖掘气象数据集-求每年全球气温的最高温度"><a href="#挖掘气象数据集-求每年全球气温的最高温度" class="headerlink" title="挖掘气象数据集(求每年全球气温的最高温度)"></a>挖掘气象数据集(求每年全球气温的最高温度)</h2><h3 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h3><p>这里涉及成千上万个气象台每年的数据文件,每个气象台会每隔一小时收集气象数据,每个气象台会发提供全年的记录.</p>
-<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>将成千上万个气象台,按年份拼接成一个独立的文件.</p>
+<h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><p>将成千上万个气象台,按年份拼接成一个独立的文件.<br><a id="more"></a> </p>
 <h2 id="使用Hadoop来分析数据"><a href="#使用Hadoop来分析数据" class="headerlink" title="使用Hadoop来分析数据"></a>使用Hadoop来分析数据</h2><p>此处先进行本地的小规模测试.下面的介绍也是小规模的测试的详细描述.这个步骤可以理解成为把大的任务分解成小任务,平均分配到每一台机子上面.本地测试也可以使得代码质量的准确性的提高.</p>
 <h3 id="map和reduce"><a href="#map和reduce" class="headerlink" title="map和reduce"></a>map和reduce</h3><p>mapreduce就是map和reduce两个工作的结合,先map后reduce.下面结合这个实例分析,来解释这两个功能.<br><img src="https://ww2.sinaimg.cn/bmiddle/006tKfTcgy1fehqknr37ij30cc0v80ts.jpg" alt=""></p>
 <p>上面就是map的操作,为reduce操作进行数据的第二次处理.<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fehqmor3acj30t207egna.jpg" alt=""></p>
@@ -712,7 +713,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -803,6 +804,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>

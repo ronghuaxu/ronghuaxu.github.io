@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -103,7 +103,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -399,9 +399,10 @@
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -423,8 +424,7 @@
 
       
         
-          
-            <h2 id="生成项目"><a href="#生成项目" class="headerlink" title="生成项目"></a>生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
+          <h2 id="生成项目"><a href="#生成项目" class="headerlink" title="生成项目"></a>生成项目</h2><p>scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  </p>
 <pre>
 tutorial/  
    scrapy.cfg  
@@ -436,116 +436,13 @@ tutorial/
        spiders/  
            __init__.py   
  </pre>
-
-<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="文件成员介绍"><a href="#文件成员介绍" class="headerlink" title="文件成员介绍"></a>文件成员介绍</h3><h4 id="items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备"><a href="#items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备" class="headerlink" title="items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备."></a>items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.</h4><h4 id="pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。"><a href="#pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。" class="headerlink" title="pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。"></a>pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</h4><p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
-<p>以下是item pipeline的一些典型应用：</p>
-<ul>
-<li>清理HTML数据</li>
-<li>验证爬取的数据(检查item包含某些字段)</li>
-<li>查重(并丢弃)</li>
-<li>将爬取结果保存到数据库中<br>编写你自己的item pipeline<br>编写你自己的item pipeline很简单，每个item pipeline组件是一个独立的Python类，同时必须实现以下方法:</li>
-</ul>
-<p>process_item(self, item, spider)<br>每个item pipeline组件都需要调用该方法，这个方法必须返回一个 Item (或任何继承类)对象， 或是抛出 DropItem 异常，被丢弃的item将不会被之后的pipeline组件所处理。<br>该项目中就在该类中实现把数据持久化到mango数据库中</p>
-<p>参数:<br>item (Item 对象) – 被爬取的item<br>spider (Spider 对象) – 爬取该item的spider  </p>
-<pre>
-import os
-
-from pymongo import MongoClient
-from zhihu.settings import MONGO_URI, PROJECT_DIR
-from zhihu.items import ZhihuPeopleItem, ZhihuRelationItem
-from zhihu.tools.async import download_pic
-
-
-class ZhihuPipeline(object):
-    """
-    存储数据
-    """
-    def __init__(self, mongo_uri, mongo_db, image_dir):
-        self.mongo_uri = mongo_uri
-        self.mongo_db = mongo_db
-        self.image_dir = image_dir
-        self.client = None
-        self.db= None
-    def process_item(self, item, spider):
-        """
-        处理item
-        """
-        if isinstance(item, ZhihuPeopleItem):
-            self._process_people(item)
-        elif isinstance(item, ZhihuRelationItem):
-            self._process_relation(item)
-        return item
-</pre>
-2.1.3 settings.py :配置文件,提供爬虫系统参数的可配置化  
-2.1.4 spiders : 这个是一个包,可以定制自己的爬虫代码.如ZhihuSipder这个类就是知乎爬虫的启动类.
-###  技术要点
-####2.2.1 CrawlSpider  
-这里采用CrawlSpider,这个继承了Spider的且,非常适合做全站数据爬取的类.
-<pre>
-class ZhihuSipder(CrawlSpider):
-    name = "zhihu"
-    allowed_domains = ["www.zhihu.com"]
-    start_url = "https://www.zhihu.com/people/hua-zi-xu-95"
-</pre>
-简析上面的三个参数:
-1.name:这个参数是每个自定义爬虫必须要有的,唯一辨别你的自定义爬虫,name当然也是使用命令启动爬虫的一个决定因素.启动命令:scrapy crawl zhihu,其中的zhihu就是name属性.
-2.allowed_domains:链接中必须包含的域名.
-3.start_url:爬虫的入口地址,这里就是以我本人的知乎主页为入口.
-2.2.2 FormRequest做登陆模块
-<pre>
-from scrapy.http import Request, FormRequest
-    def post_login(self, response):
-        """
-        解析登陆页面，发送登陆表单
-        """
-        self.xsrf = Selector(response).xpath(
-            '//input[@name="_xsrf"]/@value'
-        ).extract()[0]
-        return [FormRequest(
-            'https://www.zhihu.com/login/email',
-            method='POST',
-            meta={'cookiejar': response.meta['cookiejar']},
-            formdata={
-                '_xsrf': self.xsrf,
-                'email': 'xxxxxxxxx',
-                'password': 'xxxxxxxxx',
-                'remember_me': 'true'},
-            callback=self.after_login
-        )]
-</pre>
-2.2.3 Requests and Responses
-Scrapy使用 Request 和 Response 对象爬取web站点。
-
-一般来说，Request 对象在spiders中被生成并且最终传递到 下载器(Downloader)，下载器对其进行处理并返回一个 Response 对象， Response 对象还会返回到生成request的spider中。
-
-所有 Request and Response 的子类都会实现一些在基类中非必要的 功能。它们会在 Request subclasses 和 Response subclasses 两部分进行详细的说明。
-下面是Request构造函数
-<pre>
-class Request(object_ref):
-    def __init__(self, url, callback=None, method='GET', headers=None, body=None,
-                 cookies=None, meta=None, encoding='utf-8', priority=0,
-                 dont_filter=False, errback=None):
-        self._encoding = encoding  # this one has to be set first
-        self.method = str(method).upper()
-        self._set_url(url)
-        self._set_body(body)
-        assert isinstance(priority, int), "Request priority not an integer: %r" % priority
-       self.priority = priority
-        assert callback or not errback, "Cannot use errback without a callback"
-        self.callback = callback
-        self.errback = errback
-        self.cookies = cookies or {}
-        self.headers = Headers(headers or {}, encoding=encoding)
-        self.dont_filter = dont_filter
-        self._meta = dict(meta) if meta else None
-</pre>
-
-<p>特别注意:参数:dont_filter<br>dont_filter(boolean) – indicates that this request should not be filtered by the scheduler. This is used when you want to perform an identical request multiple times, to ignore the duplicates filter. Use it with care, or you will get into crawling loops. Default to False.<br>解释:scrapy url去重  Request对象参数的dont_filter=False,默认就是false 如程序所示,默认就是要进行url去重<br>show code:</p>
-<p><pre><br>    def enqueue_request(self, request):<br>    //核心判断 注意  not 取否<br>        if not request.dont_filter and self.df.request_seen(request):<br>            self.df.log(request, self.spider)<br>            return False<br>        dqok = self._dqpush(request)<br>        if dqok:<br>            self.stats.inc_value(‘scheduler/enqueued/disk’, spider=self.spider)<br>        else:<br>            self._mqpush(request)<br>            self.stats.inc_value(‘scheduler/enqueued/memory’, spider=self.spider)<br>        self.stats.inc_value(‘scheduler/enqueued’, spider=self.spider)<br>        return True<br></pre><br>ps:  scrapy 中判断重复内容的方法(RFPDupeFilter)</p>
-<h2 id="源码地址"><a href="#源码地址" class="headerlink" title="源码地址"></a>源码地址</h2><p><a href="https://github.com/ronghuaxu?tab=stars" target="_blank" rel="external">github地址</a><br>该目录下的知乎爬虫项目,即可下载源码.</p>
-<h2 id="每日推荐"><a href="#每日推荐" class="headerlink" title="每日推荐"></a>每日推荐</h2><p>linux下命令窗口分配显示一遍查看使用说明,一般敲代码.        软件名:  tmux<br>效果图:<br><img src="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png" alt="效果图"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/27/Scrapy起步/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -672,9 +569,10 @@ class Request(object_ref):
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -696,18 +594,14 @@ class Request(object_ref):
 
       
         
-          
-            <p><img src="http://onnzi1irx.bkt.clouddn.com/s7031685.jpg" alt=""></p>
-<h2 id="剧情描述-临危受命"><a href="#剧情描述-临危受命" class="headerlink" title="剧情描述,临危受命"></a>剧情描述,临危受命</h2><p>当罗文接受了”给加西亚送信”的任务,他静静地接过信,不问任何的问题,更不会将信揉成团,然后扔到下水道去.他在前往古巴的途中,因为战争的原因,他经历的困难重重.当然,也碰到了一些罗文本人未知的但是事先安排好的一些队友,这些队友我认为在他的行程中发挥着至关重要的作用.这些给力的队友就好比克莱儿·麦克福尔的著名小说《摆渡人》中的一个个勇敢且善良的摆渡人.</p>
-<h2 id="故事概述-过三关斩六将"><a href="#故事概述-过三关斩六将" class="headerlink" title="故事概述,过三关斩六将"></a>故事概述,过三关斩六将</h2><h3 id="第一段历程"><a href="#第一段历程" class="headerlink" title="第一段历程"></a>第一段历程</h3><p>第一段历程: 从陆地赶到海湾,他遇到了第一个摆渡人,马夫,马夫是一个不善于言谈的人,他在旅途中没有和罗文交谈,即使罗文主动找他谈话,他也不理睬罗文.他不断的快马加鞭,当罗文被路途中的黑人免费送上香喷喷的炸鸡和啤酒诱惑时,罗文当时心里按捺不住,可是马夫对所见无动于衷,他视而不见,马夫却更狠地抽打着马,加速结束了这场不该有的意外,为信件的尽快送达省下了时间.马夫的行为在罗文的眼中即使是那么不可理解,不可交流,但是他仍然没有撕破脸皮,强忍住美食的诱惑.</p>
-<h3 id="第二段历程"><a href="#第二段历程" class="headerlink" title="第二段历程"></a>第二段历程</h3><p>第二段历程: 跨越大海,他遇到了第二个摆渡人吉尔瓦西奥(西班牙人),他们坐的是一艘货船,清晨,他们在海上碰到了敌军船(西班牙),罗文当时有点慌乱,觉得大难临头;而吉尔瓦西奥安排船上的所有人都躲进船舱,除了他自己.当敌船靠近时,吉尔瓦西奥淡定地回复了敌方将领的提问,顺利地把自己伪装成了一个牙买加地渔夫.如果被逮捕,不仅意味着个人的牺牲,任务也无法完成.第二个危难在靠近海岸还有50英里的时候,当罗文觉得隐蔽的海湾和朦胧的月色很适合上岸时,吉尔瓦西奥提出反对,在他的一些很具体的分析过后,欧文改变了自己原先的计划.罗文没有感到反感,而是愿意认真听完吉尔瓦西奥的分析,更难能可贵的是他及时改变策略,也减少了很多危险.</p>
-<h3 id="第三段历程"><a href="#第三段历程" class="headerlink" title="第三段历程"></a>第三段历程</h3><p>第三段历程:陆地骑行,第三个摆渡人格瓦西奥.上岸后,罗文和他的搭档遇到了突袭,失去了唯一的交通工具马匹,罗文在队友寻找马匹和马鞍的过程中,几乎失去了耐心,罗文提议徒步前进,但是格瓦西奥则冷静地否定了他的这个建议.因为战争的原因,他们的必须绕远路,步行是很愚蠢.</p>
-<h2 id="三段历程结合现实生活的结论"><a href="#三段历程结合现实生活的结论" class="headerlink" title="三段历程结合现实生活的结论:"></a>三段历程结合现实生活的结论:</h2><h3 id="如何抱大腿"><a href="#如何抱大腿" class="headerlink" title="如何抱大腿"></a>如何抱大腿</h3><p>现实工作生活中充满着无数诱惑,往往会带你走向弯路,但是有个优秀的人在前面领着你走,记得卸下自己的架子,欲望,跟大神一起前行,方能马到成功.</p>
-<h3 id="临危不惧"><a href="#临危不惧" class="headerlink" title="临危不惧"></a>临危不惧</h3><p>现实生活中也会遇到很多突发的困难和挑战,临危不惧方能转危为安.</p>
-<h3 id="虚心纳谏方可贞观盛世"><a href="#虚心纳谏方可贞观盛世" class="headerlink" title="虚心纳谏方可贞观盛世"></a>虚心纳谏方可贞观盛世</h3><p>现实生活中,当自己的想法和亲人,朋友,同学发生冲突时,切勿个人主义,虚心纳谏可能别人说的不一定全对,但是至少给关心你的人一个表达他对你建议的时间.听他讲完,再做决定也不迟.</p>
-<h3 id="学会变通"><a href="#学会变通" class="headerlink" title="学会变通"></a>学会变通</h3><p>现实生活中,对于提议者,可以学着用变通的方法让对方听进你的建议,格瓦西奥用冷静面对不耐烦的罗文,而不是用严肃或者命令式的口吻,或许换个方式表达你的建议,可以达到事半功倍的效果.</p>
-
-          
+          <p><img src="http://onnzi1irx.bkt.clouddn.com/s7031685.jpg" alt=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/23/致加西亚的一封信/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -834,9 +728,10 @@ class Request(object_ref):
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -858,18 +753,15 @@ class Request(object_ref):
 
       
         
-          
-            <h2 id="线程安全性"><a href="#线程安全性" class="headerlink" title="线程安全性"></a>线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
+          <h2 id="线程安全性"><a href="#线程安全性" class="headerlink" title="线程安全性"></a>线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
 <h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><p>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
-<h3 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h3><p>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
-<h3 id="活跃性和性能"><a href="#活跃性和性能" class="headerlink" title="活跃性和性能"></a>活跃性和性能</h3><p>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
-<h2 id="对象的共享"><a href="#对象的共享" class="headerlink" title="对象的共享"></a>对象的共享</h2><h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
-<h3 id="过期数据"><a href="#过期数据" class="headerlink" title="过期数据"></a>过期数据</h3><p>当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的<br>同步化setter是不够的,调用get的线程仍然看得到过期值</p>
-<h3 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h3><p>long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位.</p>
-<h3 id="锁和可见性"><a href="#锁和可见性" class="headerlink" title="锁和可见性"></a>锁和可见性</h3><p>同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证.</p>
-<h3 id="Volatile变量"><a href="#Volatile变量" class="headerlink" title="Volatile变量"></a>Volatile变量</h3><p>访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/23/java并发编程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -996,9 +888,10 @@ class Request(object_ref):
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -1020,14 +913,14 @@ class Request(object_ref):
 
       
         
-          
-            <h2 id="IMovie快速入门"><a href="#IMovie快速入门" class="headerlink" title="IMovie快速入门"></a>IMovie快速入门</h2><p><a href="http://help.apple.com/imovie/mac/10.1/" target="_blank" rel="external">苹果官网IMovie介绍</a><br><img src="https://ww3.sinaimg.cn/large/006tNc79gy1fe5zs5ece1j31kw0ymaki.jpg" alt=""></p>
-<h2 id="什么是-iMovie？"><a href="#什么是-iMovie？" class="headerlink" title="什么是 iMovie？"></a>什么是 iMovie？</h2><p>通过 iMovie，您可以在 Mac 上查看、编辑和共享影片。</p>
-<h3 id="浏览项目"><a href="#浏览项目" class="headerlink" title="浏览项目"></a>浏览项目</h3><p>“项目”视图可让您直接访问资源库中的所有影片项目。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0002_ProjectPane.png" alt=""></p>
-<h3 id="编辑影片"><a href="#编辑影片" class="headerlink" title="编辑影片"></a>编辑影片</h3><p>您可以从资源库查看和添加片段、编辑影片、以及添加音乐和效果。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0001_iMovieFullCallouts.png" alt=""></p>
-<h3 id="共享影片"><a href="#共享影片" class="headerlink" title="共享影片"></a>共享影片</h3><p>影片制作完成后，您可以在 iMovie Theater 中观看、将影片共享到 iTunes 或将影片共享到网上。<br><img src="http://help.apple.com/imovie/mac/10.1/zh_CN.lproj/Art/S0509_TheaterProjects.png" alt=""></p>
-
-          
+          <h2 id="IMovie快速入门"><a href="#IMovie快速入门" class="headerlink" title="IMovie快速入门"></a>IMovie快速入门</h2><p><a href="http://help.apple.com/imovie/mac/10.1/">苹果官网IMovie介绍</a><br><img src="https://ww3.sinaimg.cn/large/006tNc79gy1fe5zs5ece1j31kw0ymaki.jpg" alt=""></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/23/IMovie使用教程/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1154,9 +1047,10 @@ class Request(object_ref):
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -1178,448 +1072,17 @@ class Request(object_ref):
 
       
         
-          
-            <h2 id="WebMagic概览"><a href="#WebMagic概览" class="headerlink" title="WebMagic概览"></a>WebMagic概览</h2><p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
+          <h2 id="WebMagic概览"><a href="#WebMagic概览" class="headerlink" title="WebMagic概览"></a>WebMagic概览</h2><p>WebMagic项目代码分为核心和扩展两部分。核心部分(webmagic-core)是一个精简的、模块化的爬虫实现，而扩展部分则包括一些便利的、实用性的功能。WebMagic的架构设计参照了Scrapy，目标是尽量的模块化，并体现爬虫的功能特点。</p>
 <p>这部分提供非常简单、灵活的API，在基本不改变开发模式的情况下，编写一个爬虫。</p>
 <p>扩展部分(webmagic-extension)提供一些便捷的功能，例如注解模式编写爬虫等。同时内置了一些常用的组件，便于爬虫开发。</p>
 <p>另外WebMagic还包括一些外围扩展和一个正在开发的产品化项目webmagic-avalon。</p>
-<h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><h3 id="结构图"><a href="#结构图" class="headerlink" title="结构图"></a>结构图</h3><p><img src="http://code4craft.github.io/images/posts/webmagic.png" alt="webmagic"></p>
-<h3 id="四大组件"><a href="#四大组件" class="headerlink" title="四大组件"></a>四大组件</h3><ul>
-<li>1.Downloader:下载器</li>
-<li>2.PageProcessor:抽取器</li>
-<li>3.Scheduler:调度器</li>
-<li>4.Pipeline:结果处理器</li>
-</ul>
-<h2 id="源码分析-主类Spider"><a href="#源码分析-主类Spider" class="headerlink" title="源码分析(主类Spider)"></a>源码分析(主类Spider)</h2><h3 id="各组件初始化及可扩展"><a href="#各组件初始化及可扩展" class="headerlink" title="各组件初始化及可扩展"></a>各组件初始化及可扩展</h3><h4 id="初始化Scheduler"><a href="#初始化Scheduler" class="headerlink" title="初始化Scheduler"></a>初始化Scheduler</h4><p>初始化Scheduler:(默认QueueScheduler)<br><code>protected Scheduler scheduler = new QueueScheduler();</code></p>
-<p>采用新的Scheduler:</p>
-<pre>
-public Spider setScheduler(Scheduler scheduler) {
-        checkIfRunning();
-        Scheduler oldScheduler = this.scheduler;
-        this.scheduler = scheduler;
-        if (oldScheduler != null) {
-            Request request;
-            while ((request = oldScheduler.poll(this)) != null) {
-            //复制原来的url到新的scheduler
-                this.scheduler.push(request, this);
-            }
-        }
-        return this;
-    }
-</pre>
-
-<h4 id="初始化Downloader"><a href="#初始化Downloader" class="headerlink" title="初始化Downloader"></a>初始化Downloader</h4><p>初始化Downloader:(默认HttpClientDownloader)</p>
-<pre>
- protected void initComponent() {
-        if (downloader == null) {
-        //用户没有自定义Downloader,默认为HttpClientDownloader()
-            this.downloader = new HttpClientDownloader();
-        }
-        if (pipelines.isEmpty()) {
-        //用户没有自定义Pipeline,默认为ConsolePipeline()
-            pipelines.add(new ConsolePipeline());
-        }
-        downloader.setThread(threadNum);
-        if (threadPool == null || threadPool.isShutdown()) {
-               //自定义线程池
-            if (executorService != null && !executorService.isShutdown()) {
-                threadPool = new CountableThreadPool(threadNum, executorService);
-            } else {
-                threadPool = new CountableThreadPool(threadNum);
-            }
-        }
-        if (startRequests != null) {
-            for (Request request : startRequests) {
-                scheduler.push(request, this);
-            }
-            startRequests.clear();
-        }
-        startTime = new Date();
-    }  </pre>
-
-<h4 id="初始化Pipeline"><a href="#初始化Pipeline" class="headerlink" title="初始化Pipeline"></a>初始化Pipeline</h4><p>初始化Pipeline:(默认ConsolePipeline)  </p>
-<h4 id="初始化PageProcessor"><a href="#初始化PageProcessor" class="headerlink" title="初始化PageProcessor"></a>初始化PageProcessor</h4><p>初始化PageProcessor:(用户自定义完成,按需求抽取html)</p>
-<h3 id="如何实现多线程"><a href="#如何实现多线程" class="headerlink" title="如何实现多线程"></a>如何实现多线程</h3><h4 id="初始化线程池"><a href="#初始化线程池" class="headerlink" title="初始化线程池"></a>初始化线程池</h4><p>(默认Executors.newFixedThreadPool(threadNum))<br>Executors.newFixedThreadPool作用:创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待.</p>
-<pre>
- public CountableThreadPool(int threadNum) {
-        this.threadNum = threadNum;
-        this.executorService = Executors.newFixedThreadPool(threadNum);
-    }
-</pre>
-
-<h4 id="多线程并发控制"><a href="#多线程并发控制" class="headerlink" title="多线程并发控制"></a>多线程并发控制</h4><pre>
-public void execute(final Runnable runnable) {
-        if (threadAlive.get() >= threadNum) {
-            try {
-                reentrantLock.lock();//同步锁  下面为保护代码块
-                while (threadAlive.get() >= threadNum) {
-                    try {
-                        condition.await();
-                    } catch (InterruptedException e) {
-                    }
-                }
-            } finally {
-                reentrantLock.unlock();
-            }
-        }
-        threadAlive.incrementAndGet();
-        executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    runnable.run();
-                } finally {
-                    try {
-                        reentrantLock.lock();
-                        threadAlive.decrementAndGet();
-                        //线程数量减少一个时，通过signal()方法通知前面condition.await()的线程
-                        condition.signal();
-                    } finally {
-                        reentrantLock.unlock();
-                    }
-                }
-            }
-        });
-    }
-</pre>
-
-<h4 id="Java中的ReentrantLock和synchronized两种锁定机制的对比"><a href="#Java中的ReentrantLock和synchronized两种锁定机制的对比" class="headerlink" title="Java中的ReentrantLock和synchronized两种锁定机制的对比"></a>Java中的ReentrantLock和synchronized两种锁定机制的对比</h4><blockquote>
-<p>ReentrantLock默认情况下为不公平锁</p>
-<p><pre>private ReentrantLock lock = new ReentrantLock(); //参数默认false，不公平锁<br>private ReentrantLock lock = new ReentrantLock(true); //公平锁<br>        try {<br>            lock.lock(); //如果被其它资源锁定，会在此等待锁释放，达到暂停的效果<br>            //操作<br>        } finally {<br>            lock.unlock();<br>        }</pre><br>        不公平锁与公平锁的区别：<br>公平情况下，操作会排一个队按顺序执行，来保证执行顺序。（会消耗更多的时间来排队）<br>不公平情况下，是无序状态允许插队，jvm会自动计算如何处理更快速来调度插队。（如果不关心顺序，这个速度会更快）  </p>
-</blockquote>
-<h4 id="AtomicInteger-amp-amp-CAS"><a href="#AtomicInteger-amp-amp-CAS" class="headerlink" title="AtomicInteger &amp;&amp; CAS"></a>AtomicInteger &amp;&amp; CAS</h4><blockquote>
-<p>AtomicInteger，一个提供原子操作的Integer的类。在Java语言中，++i和i++操作并不是线程安全的，在使用的时候，不可避免的会用到synchronized关键字。而AtomicInteger则通过一种线程安全的加减操作接口。<br>首先要说一下，AtomicInteger类compareAndSet通过原子操作实现了CAS操作，最底层基于汇编语言实现<br>CAS是Compare And Set的一个简称，如下理解：<br>1，已知当前内存里面的值current和预期要修改成的值new传入<br>2，内存中AtomicInteger对象地址对应的真实值(因为有可能别修改)real与current对比，相等表示real未被修改过，是“安全”的，将new赋给real结束然后返回；不相等说明real已经被修改，结束并重新执行1直到修改成功  </p>
-</blockquote>
-<h4 id="程序如何终止"><a href="#程序如何终止" class="headerlink" title="程序如何终止"></a>程序如何终止</h4><pre>
-//while循环结束,则程序完成任务并终止
- while (!Thread.currentThread().isInterrupted() && stat.get() == STAT_RUNNING) {
-            Request request = scheduler.poll(this);
-            //当scheduler内目标URL为空时
-            if (request == null) {
-                //线程池中已经没有线程在运行了, exitWhenComplete默认为true
-                if (threadPool.getThreadAlive() == 0 && exitWhenComplete) {
-                    break;
-                }
-                // wait until new url added
-                waitNewUrl();
-            }
-</pre>
-
-<h3 id="HttpClient使用http连接池发送http请求"><a href="#HttpClient使用http连接池发送http请求" class="headerlink" title="HttpClient使用http连接池发送http请求"></a>HttpClient使用http连接池发送http请求</h3><p>将用户设置的线程数设置为httpclient最大连接池数</p>
-<pre>
-public void setThread(int thread) {
-        httpClientGenerator.setPoolSize(thread);
-    }
-</pre>
-
-<pre>
- public HttpClientGenerator setPoolSize(int poolSize) {
-        // 将最大连接数增加为poolSize
-        connectionManager.setMaxTotal(poolSize);
-        return this;
-    }
-</pre>  
-
-<h3 id="URL在Scheduler中去重"><a href="#URL在Scheduler中去重" class="headerlink" title="URL在Scheduler中去重"></a>URL在Scheduler中去重</h3><p>将下载结果页面中的链接抽取出来并放入scheduler中</p>
-<pre>
- public void push(Request request, Task task) {
-        logger.trace("get a candidate url {}", request.getUrl());
-        if (!duplicatedRemover.isDuplicate(request, task) || shouldReserved(request)) {
-            logger.debug("push to queue {}", request.getUrl());
-            pushWhenNoDuplicate(request, task);
-        }
-    }
-</pre>      
-
-<h4 id="redischedulerURL去重复"><a href="#redischedulerURL去重复" class="headerlink" title="redischedulerURL去重复"></a>redischedulerURL去重复</h4><pre>boolean isDuplicate = jedis.sismember(getSetKey(task), request.getUrl());</pre>  
-
-<pre>
-//获得key值
-protected String getSetKey(Task task) {
-        return SET_PREFIX + task.getUUID();
-    }
-//生成唯一的UUID
-public String getUUID() {
-        if (uuid != null) {
-            return uuid;
-        }
-        if (site != null) {
-            return site.getDomain();
-        }
-        uuid = UUID.randomUUID().toString();
-        return uuid;
-    }
-
-
-</pre>
-<pre>
-//RedisScheduler初始化方式,传入Redis的ip地址即可
-public RedisScheduler(String host) {
-//JedisPool使用JedisPoolConfig中默认的参数进行初始化
-        this(new JedisPool(new JedisPoolConfig(), host));
-    }
-
-    public RedisScheduler(JedisPool pool) {
-        this.pool = pool;
-        setDuplicateRemover(this);
-    }
-</pre>
-
-
-<p>RedisScheduler 中判断url是否重复的方法,因为一个Spider就是对应只有一个UUID,故上述的判断则是:判断当前的url是否是uuid集合的元素  </p>
-<blockquote>
-<p>System.out.println(jedis.sismember(“sname”, “minxr”));// 判断 minxr是否是sname集合的元素   </p>
-</blockquote>
-<h4 id="bloomFilter-URL去重复"><a href="#bloomFilter-URL去重复" class="headerlink" title="bloomFilter URL去重复"></a>bloomFilter URL去重复</h4><pre>boolean isDuplicate = bloomFilter.mightContain(getUrl(request));</pre>
-
-
-<blockquote>
-<p>Bloom-Filter，即布隆过滤器，1970年由Bloom中提出。它可以用于检索一个元素是否在一个集合中。<br>Bloom Filter（BF）是一种空间效率很高的随机数据结构，它利用位数组很简洁地表示一个集合，并能判断一个元素是否属于这个集合。它是一个判断元素是否存在集合的快速的概率算法。Bloom Filter有可能会出现错误判断，但不会漏掉判断。也就是Bloom Filter判断元素不再集合，那肯定不在。如果判断元素存在集合中，有一定的概率判断错误。因此，Bloom Filter不适合那些“零错误”的应用场合。而在能容忍低错误率的应用场合下，Bloom Filter比其他常见的算法（如hash，折半查找）极大节省了空间。<br>优点：<br>1)节约缓存空间（空值的映射），不再需要空值映射。<br>2)减少数据库或缓存的请求次数。<br>3)提升业务的处理效率以及业务隔离性。<br>缺点：<br>1)存在误判的概率。<br>2)传统的Bloom Filter不能作删除操作。   </p>
-</blockquote>
-<h4 id="hashset-URL去重复"><a href="#hashset-URL去重复" class="headerlink" title="hashset  URL去重复"></a>hashset  URL去重复</h4><pre>
-//初始化set
-private Set<string> urls = Sets.newSetFromMap(new ConcurrentHashMap<string, boolean="">());
-//判断url是否在set中
-public boolean isDuplicate(Request request, Task task) {
-    return !urls.add(getUrl(request));
-}</string,></string></pre>
-
-
-
-
-<h3 id="抽取部分API"><a href="#抽取部分API" class="headerlink" title="抽取部分API"></a>抽取部分API</h3><table>
-<thead>
-<tr>
-<th>方法</th>
-<th style="text-align:center">说明</th>
-<th style="text-align:right">示例</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>xpath(String xpath)</td>
-<td style="text-align:center">使用XPath选择</td>
-<td style="text-align:right">html.xpath(“//div[@class=’title’]”)</td>
-</tr>
-<tr>
-<td>$(String selector)</td>
-<td style="text-align:center">使用Css选择器选择</td>
-<td style="text-align:right">html.$(“div.title”)</td>
-</tr>
-<tr>
-<td>css(String selector)</td>
-<td style="text-align:center">功能同$()，使用Css选择器选择</td>
-<td style="text-align:right">html.css(“div.title”)</td>
-</tr>
-<tr>
-<td>regex(String regex)</td>
-<td style="text-align:center">使用正则表达式抽取</td>
-<td style="text-align:right">html.regex(“(.*?)\”)</td>
-</tr>
-<tr>
-<td>replace(String regex, String replacement)</td>
-<td style="text-align:center">替换内容</td>
-<td style="text-align:right">html.replace(“\”,””)</td>
-</tr>
-</tbody>
-</table>
-<p>这部分抽取API返回的都是一个Selectable接口，意思是说，抽取是支持链式调用的。</p>
-<h3 id="代理池"><a href="#代理池" class="headerlink" title="代理池"></a>代理池</h3><h4 id="代理池初始化"><a href="#代理池初始化" class="headerlink" title="代理池初始化:"></a>代理池初始化:</h4><pre> 
-//从以往保存的本地文件中读取代理信息作为新的代理池
-public SimpleProxyPool() {
-        this(null, true);
-    }
-//以往保存的本地文件中读取代理+用户输入的httpProxyList合并为新的代理池
-public SimpleProxyPool(List<string[]> httpProxyList) {
-        this(httpProxyList, true);
-    }
-//以往保存的本地文件中读取代理+用户输入的httpProxyList合并为新的代理池(后者可认为操控)
-public SimpleProxyPool(List<string[]> httpProxyList, boolean isUseLastProxy) {
-        if (httpProxyList != null) {
-            addProxy(httpProxyList.toArray(new String[httpProxyList.size()][]));
-        }
-        if (isUseLastProxy) {
-            if (!new File(proxyFilePath).exists()) {
-                setFilePath();
-            }
-            readProxyList();
-            timer.schedule(saveProxyTask, 0, saveProxyInterval);
-        }
-    }
-</string[]></string[]></pre>
-
-
-<h4 id="通过httpProxyList为代理池赋值"><a href="#通过httpProxyList为代理池赋值" class="headerlink" title="通过httpProxyList为代理池赋值"></a>通过httpProxyList为代理池赋值</h4><pre>
-String[] source = { "::0.0.0.1:0", "::0.0.0.2:0", "::0.0.0.3:0", "::0.0.0.4:0" };
-        for (String line : source) {
-            httpProxyList.add(new String[] {line.split(":")[0], line.split(":")[1], line.split(":")[2], line.split(":")[3] });
-        }
-</pre>
-
-
-<h4 id="本地文件Proxy获存储与获取-定时任务"><a href="#本地文件Proxy获存储与获取-定时任务" class="headerlink" title="本地文件Proxy获存储与获取:定时任务"></a>本地文件Proxy获存储与获取:定时任务</h4><pre>
-//定时任务
-private TimerTask saveProxyTask = new TimerTask() {
-
-        @Override
-        public void run() {
-            saveProxyList();
-            logger.info(allProxyStatus());
-        }
-    };
-//如果需要重复使用本地代理
-if (isUseLastProxy) {
-            if (!new File(proxyFilePath).exists()) {
-                setFilePath();
-            }
-            readProxyList();
-            timer.schedule(saveProxyTask, 0, saveProxyInterval);
-        }
-</pre>
-
-
-<p>saveProxyTask()函数负责把最新的代理池ip写入到本地指定文件  </p>
-<h4 id="使用JDK自带PriorityQueue管理Proxy"><a href="#使用JDK自带PriorityQueue管理Proxy" class="headerlink" title="使用JDK自带PriorityQueue管理Proxy"></a>使用JDK自带PriorityQueue管理Proxy</h4><p>目的:可以根据compareTo方法制定的优先取出代理池中使用间隔较短的代理(一开始默认都为1.5s)优先取出并执行.  </p>
-<pre>
-public int compareTo(Delayed o) {
-        Proxy that = (Proxy) o;
-        return canReuseTime > that.canReuseTime ? 1 : (canReuseTime < that.canReuseTime ? -1 : 0);
-    }
-</pre>
-<pre>
- private void siftUpComparable(int k, E x) {
-        Comparable<? super E> key = (Comparable<? super E>) x;
-        while (k > 0) {
-            int parent = (k - 1) >>> 1;
-            Object e = queue[parent];
-            if (key.compareTo((E) e) >= 0)
-                break;
-            queue[k] = e;
-            k = parent;
-        }
-        queue[k] = key;
-    }
-</pre>
-webmagic代理池的策略是：
-
-* 1. 在添加时连接相应端口做校验  
-* 2. 每个代理有1.5S的使用间隔  
-* 3. 每次失败后，下次取出代理的时间改为1.5S*失败次数  
-* 4. 如果代理失败次数超过20次，则直接丢弃  
-
-<pre>
- public void returnProxy(HttpHost host, int statusCode) {
-        Proxy p = allProxy.get(host.getAddress().getHostAddress());
-        if (p == null) {
-            return;
-        }
-        switch (statusCode) {
-              //成功
-            case Proxy.SUCCESS:
-                p.setReuseTimeInterval(reuseInterval);
-                p.setFailedNum(0);
-                p.setFailedErrorType(new ArrayList<integer>());
-                p.recordResponse();
-                p.successNumIncrement(1);
-                break;
-            //失败
-            case Proxy.ERROR_403:
-                // banned,try longer interval
-                p.fail(Proxy.ERROR_403);
-                p.setReuseTimeInterval(reuseInterval * p.getFailedNum());
-                logger.info(host + " >>>> reuseTimeInterval is >>>> " + p.getReuseTimeInterval() / 1000.0);
-                break;
-            //代理被禁
-            case Proxy.ERROR_BANNED:
-                p.fail(Proxy.ERROR_BANNED);
-                p.setReuseTimeInterval(10 * 60 * 1000 * p.getFailedNum());
-                logger.warn("this proxy is banned >>>> " + p.getHttpHost());
-                logger.info(host + " >>>> reuseTimeInterval is >>>> " + p.getReuseTimeInterval() / 1000.0);
-                break;
-            //404
-            case Proxy.ERROR_404:
-                // p.fail(Proxy.ERROR_404);
-                // p.setReuseTimeInterval(reuseInterval * p.getFailedNum());
-                break;
-            default:
-                p.fail(statusCode);
-                break;
-        }
-        //当前代理失败次数超过20:reviveTime = 2 * 60 * 60 * 1000;
-        if (p.getFailedNum() > 20) {
-            p.setReuseTimeInterval(reviveTime);
-            logger.error("remove proxy >>>> " + host + ">>>>" + p.getFailedType() + " >>>> remain proxy >>>> " + proxyQueue.size());
-            return;
-        }
-        //检验代理ip符合下列要求的:当失败次数为5的倍数的时的校验
-        if (p.getFailedNum() > 0 && p.getFailedNum() % 5 == 0) {
-            if (!ProxyUtils.validateProxy(host)) {
-                p.setReuseTimeInterval(reviveTime);
-                logger.error("remove proxy >>>> " + host + ">>>>" + p.getFailedType() + " >>>> remain proxy >>>> " + proxyQueue.size());
-                return;
-            }
-        }
-        try {
-            proxyQueue.put(p);
-        } catch (InterruptedException e) {
-            logger.warn("proxyQueue return proxy error", e);
-        }
-    }
-</integer></pre>
-使用Socket来校验代理是否有效,客户端为本地.创建与代理的连接
-<pre>
-public static boolean validateProxy(HttpHost p) {
-        if (localAddr == null) {
-            logger.error("cannot get local IP");
-            return false;
-        }
-        boolean isReachable = false;
-        Socket socket = null;
-        try {
-            socket = new Socket();
-            socket.bind(new InetSocketAddress(localAddr, 0));
-            InetSocketAddress endpointSocketAddr = new InetSocketAddress(p.getAddress().getHostAddress(), p.getPort());
-            socket.connect(endpointSocketAddr, 3000);
-            logger.debug("SUCCESS - connection established! Local: " + localAddr.getHostAddress() + " remote: " + p);
-            isReachable = true;
-        } catch (IOException e) {
-            logger.warn("FAILRE - CAN not connect! Local: " + localAddr.getHostAddress() + " remote: " + p);
-        } finally {
-            if (socket != null) {
-                try {
-                    socket.close();
-                } catch (IOException e) {
-                    logger.warn("Error occurred while closing socket of validating proxy", e);
-                }
-            }
-        }
-        return isReachable;
-    }
-</pre>  
-
-<h3 id="OOSpider-使用注解配置化"><a href="#OOSpider-使用注解配置化" class="headerlink" title="OOSpider 使用注解配置化"></a>OOSpider 使用注解配置化</h3><h4 id="注解的使用"><a href="#注解的使用" class="headerlink" title="注解的使用"></a>注解的使用</h4><pre>
-//使用特有的抽取器
-class ModelPageProcessor implements PageProcessor 
-    @Override
-    public void process(Page page) {
-        for (PageModelExtractor pageModelExtractor : pageModelExtractorList) {
-            extractLinks(page, pageModelExtractor.getHelpUrlRegionSelector(), pageModelExtractor.getHelpUrlPatterns());
-            extractLinks(page, pageModelExtractor.getTargetUrlRegionSelector(), pageModelExtractor.getTargetUrlPatterns());
-            Object process = pageModelExtractor.process(page);
-            if (process == null || (process instanceof List && ((List) process).size() == 0)) {
-                continue;
-            }
-            postProcessPageModel(pageModelExtractor.getClazz(), process);
-            page.putField(pageModelExtractor.getClazz().getCanonicalName(), process);
-        }
-        if (page.getResultItems().getAll().size() == 0) {
-            page.getResultItems().setSkip(true);
-        }
-    }
-
-</pre>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016/09/07/webmagic/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1818,7 +1281,7 @@ class ModelPageProcessor implements PageProcessor
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -1909,6 +1372,13 @@ class ModelPageProcessor implements PageProcessor
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
 

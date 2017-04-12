@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -88,21 +88,18 @@
 
 
 <meta name="description" content="线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
-原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
-竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A">
+原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="java并发编程读书笔记">
 <meta property="og:url" content="https://ronghuaxu.github.io/index.html/2016/09/23/java并发编程/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
 <meta property="og:description" content="线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
-原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
-竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A">
-<meta property="og:updated_time" content="2017-03-23T01:45:59.000Z">
+原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性">
+<meta property="og:updated_time" content="2017-04-12T02:28:48.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java并发编程读书笔记">
 <meta name="twitter:description" content="线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  
-原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性
-竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A">
+原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性">
 
 
 
@@ -110,7 +107,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -401,9 +398,10 @@
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -431,6 +429,7 @@
       
         <h2 id="线程安全性"><a href="#线程安全性" class="headerlink" title="线程安全性"></a>线程安全性</h2><p>内置锁: synchronized<br>重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2  </p>
 <h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><p>servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性</p>
+<a id="more"></a> 
 <h3 id="竞态条件"><a href="#竞态条件" class="headerlink" title="竞态条件"></a>竞态条件</h3><p>诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.<br>两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A</p>
 <h3 id="活跃性和性能"><a href="#活跃性和性能" class="headerlink" title="活跃性和性能"></a>活跃性和性能</h3><p>servlet中命中计数器使用同步块代码来实现计数原子性<br>解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态.</p>
 <h2 id="对象的共享"><a href="#对象的共享" class="headerlink" title="对象的共享"></a>对象的共享</h2><h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p><a href="http://aswang.iteye.com/blog/1744230" target="_blank" rel="external">代码请点此处</a>  </p>
@@ -697,7 +696,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -788,6 +787,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>

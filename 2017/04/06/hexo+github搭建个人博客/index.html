@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -87,22 +87,19 @@
 
 
 
-<meta name="description" content="前言工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo+github搭建个人博客">
 <meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/06/hexo+github搭建个人博客/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="前言工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy09p3fxj310c0h2ack.jpg">
 <meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecycfvehmj31kw0jfwk5.jpg">
 <meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecyfqxsc3j312s0fo78b.jpg">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecy7a7nedj30t80isac3.jpg">
 <meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecynsa3fij30oa0jqq6v.jpg">
-<meta property="og:updated_time" content="2017-04-06T06:57:33.000Z">
+<meta property="og:updated_time" content="2017-04-12T02:30:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo+github搭建个人博客">
-<meta name="twitter:description" content="前言工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十">
 <meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg">
 
 
@@ -111,7 +108,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -402,9 +399,10 @@
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -431,6 +429,7 @@
 
       
         <p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecxnxj6u5j31kw0u4tcz.jpg" alt=""></p>
+<a id="more"></a> 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>工作以后学的东西多了，接触的东西多了，发现做笔记是一件很重要的事情，做笔记可以将自己的想法、思路写下来，方便以后查阅，俗话说好记性不如键盘党，做笔记、写博客也可以让自己学会总结、学会分享,读书笔记什么的都可以放一起,有属于自己站点的blog可以按照自己喜欢的方式展示自己喜欢的内容.之前一直很困扰,想自己购买一台 vps,然后自己写代码,写一个web,然后部署.感觉整个这样的流程下来十分过程十分繁琐.还好有大牛已经考虑到我们的感受,<a href="https://hexo.io/zh-cn/" target="_blank" rel="external">hexo</a>,<a href="http://jekyll.com.cn/" target="_blank" rel="external">jekyll</a>配合github就可以搭建博客，github作为服务器这样还省去了租用服务器的费用.下面简单介绍下个人博客的整个制作过程.</p>
 <h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><p>部署服务器需要使用github，所以git成了必要工具。</p>
 <pre><code>sudo apt-get install git
@@ -752,7 +751,7 @@ hexo deploy(可以缩写成d)
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -843,6 +842,13 @@ hexo deploy(可以缩写成d)
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>

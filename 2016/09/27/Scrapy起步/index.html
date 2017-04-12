@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -108,7 +108,7 @@ tutorial/
        items.py  
        pipel">
 <meta property="og:image" content="http://blog.chinaunix.net/attachment/201206/26/26285146_1340683779Di02.png">
-<meta property="og:updated_time" content="2017-03-23T01:47:04.000Z">
+<meta property="og:updated_time" content="2017-04-12T02:29:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Scrapy爬取知乎用户信息以及人际拓扑关系">
 <meta name="twitter:description" content="生成项目scrapy提供一个工具来生成项目，生成的项目中预置了一些文件，用户需要在这些文件中添加自己的代码。 打开命令行，执行：scrapy startproject tutorial，生成的项目类似下面的结构  
@@ -127,7 +127,7 @@ tutorial/
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -418,9 +418,10 @@ tutorial/
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -459,6 +460,7 @@ tutorial/
            __init__.py   
  </pre>
 
+<a id="more"></a> 
 <h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><h3 id="文件成员介绍"><a href="#文件成员介绍" class="headerlink" title="文件成员介绍"></a>文件成员介绍</h3><h4 id="items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备"><a href="#items-py-类需要继承-scrapy-Item-爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。-Scrapy提供Item类来满足这样的需求。-该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item-为爬取后的数据转化为结构性数据-同时-也为后面的持久化做准备" class="headerlink" title="items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备."></a>items.py  :类需要继承 scrapy.Item,爬取的主要目标就是从非结构性的数据源提取结构性数据，例如网页。 Scrapy提供Item类来满足这样的需求。 该项目中定义了在爬取元素构造的知乎用户属性和知乎用户关系两大块Item,为爬取后的数据转化为结构性数据,同时,也为后面的持久化做准备.</h4><h4 id="pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。"><a href="#pipelines-py-当Item在Spider中被收集之后，它将会被传递到Item-Pipeline，一些组件会按照一定的顺序执行对Item的处理。" class="headerlink" title="pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。"></a>pipelines.py  :当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理。</h4><p>每个item pipeline组件(有时称之为“Item Pipeline”)是实现了简单方法的Python类。他们接收到Item并通过它执行一些行为，同时也决定此Item是否继续通过pipeline，或是被丢弃而不再进行处理。</p>
 <p>以下是item pipeline的一些典型应用：</p>
 <ul>
@@ -825,7 +827,7 @@ class Request(object_ref):
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -916,6 +918,13 @@ class Request(object_ref):
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>

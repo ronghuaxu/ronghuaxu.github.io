@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -87,16 +87,12 @@
 
 
 
-<meta name="description" content="HTTP的缺点通信使用明文,可能会被窃听所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意窥视行为.
-不验证通信方的身份就可能遭遇伪装HTTP协议中的请求和响应不会对通信方进行确认.
-无法证明报文的完整性,可能已遭到篡改所谓完整性是指信息的准确度,意味着http无法判断信息">
+<meta name="description" content="HTTP的缺点通信使用明文,可能会被窃听所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意窥视行为.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="安全http(https)">
 <meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/06/HTTPS/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="HTTP的缺点通信使用明文,可能会被窃听所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意窥视行为.
-不验证通信方的身份就可能遭遇伪装HTTP协议中的请求和响应不会对通信方进行确认.
-无法证明报文的完整性,可能已遭到篡改所谓完整性是指信息的准确度,意味着http无法判断信息">
+<meta property="og:description" content="HTTP的缺点通信使用明文,可能会被窃听所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意窥视行为.">
 <meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecqjz5ntcj30iz09k3zd.jpg">
 <meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecqkdqhb6j30dm09gwew.jpg">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecqllv3grj30eo0aq3z9.jpg">
@@ -115,12 +111,10 @@
 <meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fecqzhgz9rj30hq0ee408.jpg">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fecr09pkjrj30e2064jro.jpg">
 <meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fecr0ecitbj30e206mdga.jpg">
-<meta property="og:updated_time" content="2017-04-06T02:27:10.000Z">
+<meta property="og:updated_time" content="2017-04-12T02:30:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安全http(https)">
-<meta name="twitter:description" content="HTTP的缺点通信使用明文,可能会被窃听所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意窥视行为.
-不验证通信方的身份就可能遭遇伪装HTTP协议中的请求和响应不会对通信方进行确认.
-无法证明报文的完整性,可能已遭到篡改所谓完整性是指信息的准确度,意味着http无法判断信息">
+<meta name="twitter:description" content="HTTP的缺点通信使用明文,可能会被窃听所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意窥视行为.">
 <meta name="twitter:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fecqjz5ntcj30iz09k3zd.jpg">
 
 
@@ -129,7 +123,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -420,9 +414,10 @@
                  <i class="fa fa-eye"></i>
                </span>
                
-                 <span class="post-meta-item-text">阅读次数 </span>
+                 <span class="post-meta-item-text">热度 </span>
                
                  <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
              </span>
           
 
@@ -449,6 +444,7 @@
 
       
         <h2 id="HTTP的缺点"><a href="#HTTP的缺点" class="headerlink" title="HTTP的缺点"></a>HTTP的缺点</h2><h3 id="通信使用明文-可能会被窃听"><a href="#通信使用明文-可能会被窃听" class="headerlink" title="通信使用明文,可能会被窃听"></a>通信使用明文,可能会被窃听</h3><p>所谓互联网,是由能连通到全世界的网络组成的.无论世界哪个角落的服务器在和客户端通信时,<br>在此通信线路上的某些网络设备,光缆,计算机等都不可能是个人的私有物,不排除某个环节遭到恶意<br>窥视行为.<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fecqjz5ntcj30iz09k3zd.jpg" alt=""></p>
+<a id="more"></a> 
 <h3 id="不验证通信方的身份就可能遭遇伪装"><a href="#不验证通信方的身份就可能遭遇伪装" class="headerlink" title="不验证通信方的身份就可能遭遇伪装"></a>不验证通信方的身份就可能遭遇伪装</h3><p>HTTP协议中的请求和响应不会对通信方进行确认.<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fecqkdqhb6j30dm09gwew.jpg" alt=""></p>
 <h3 id="无法证明报文的完整性-可能已遭到篡改"><a href="#无法证明报文的完整性-可能已遭到篡改" class="headerlink" title="无法证明报文的完整性,可能已遭到篡改"></a>无法证明报文的完整性,可能已遭到篡改</h3><p>所谓完整性是指信息的准确度,意味着http无法判断信息是否准确<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fecqllv3grj30eo0aq3z9.jpg" alt=""></p>
 <blockquote>
@@ -740,7 +736,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -831,6 +827,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
