@@ -314,6 +314,197 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/13/从宽带检测程序来理解TCP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/13/从宽带检测程序来理解TCP/" itemprop="url">
+                  从宽带检测程序来理解TCP
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-13T18:35:04+08:00">
+                2017-04-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/13/从宽带检测程序来理解TCP/" class="leancloud_visitors" data-flag-title="从宽带检测程序来理解TCP">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>今天一直在研究网络协议中的TCP协议,一说到TCP,首先大家会想到的是:安全,可靠,三次握手,TCP慢启动,ACK等巴拉巴拉一大堆.我想抛开这些传统的概念,从现实生活中接触比较多的宽带来理解下我眼中的TCP.</p>
+<h2 id="带宽"><a href="#带宽" class="headerlink" title="带宽"></a>带宽</h2><p>记得大三的时候,移动推出了100M的宽带包年只要120元/年.当时跟电信的50元/月且只有10M的网,移动明显优势很明显.所以,办理好宽带回到寝室,第一件事情就打开了360软件,我就怕移动忽悠我.所以结果如下图:</p>
+<p><center><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fel619i3y3j30lo0a0dh2.jpg" alt=""></center><br>那百度到底是怎么实现测速的呢,大家用过应该知道,测试的结果还是挺接近实际的您办理的宽带带宽的.</p>
+<h2 id="如何实现测速的呢"><a href="#如何实现测速的呢" class="headerlink" title="如何实现测速的呢"></a>如何实现测速的呢</h2><p><center><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fel67gwu5sj30qi0k641e.jpg" alt=""><br></center><br>软件是这样解释的==360宽带测速器通过HTTP+P2P的方式测试宽带接入网速,<strong>模拟浏览器</strong>访问常用网站测试看网页,上微博,知乎的速度.==<br>结果:<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fel6ddu6mbj30r40n4juz.jpg" alt=""></p>
+<h2 id="更直观的测试宽带的渠道"><a href="#更直观的测试宽带的渠道" class="headerlink" title="更直观的测试宽带的渠道"></a>更直观的测试宽带的渠道</h2><p><a href="http://www.speedtest.cn/" target="_blank" rel="external">测速网-您的专属网速测试专家</a><br>测试结果分析:<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fel6i4y30gj31kw0mydoc.jpg" alt=""></p>
+<h3 id="更多测试点"><a href="#更多测试点" class="headerlink" title="更多测试点"></a>更多测试点</h3><p>测速网给用户提供了不同的测试地区可以自己选择.测试点不同,测试出的结果也会有所差异.<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fel6iux4nfj30s00pq76w.jpg" alt=""></p>
+<h3 id="下载速度和上传速度"><a href="#下载速度和上传速度" class="headerlink" title="下载速度和上传速度"></a>下载速度和上传速度</h3><blockquote>
+<p>运营商在上层接入网设备中做了策略；原则上，普通宽带上下行不对等，专线宽带上下行对等。对应的，设备的接入利用率也是不一样的，专线宽带占用更多的光口资源：假设一个一个OLT下一个PON口最大容量为1GB，能开通满足下行100M的宽带10条（实际不会开满10条）；那么对应上行PON口，同样是1GB容量，专线宽带最多也只能开10条，而普通快带就不一样了，在用户没需求（其实即使你有需求，运营商也不会鸟你，谁叫你是普通宽带呢，要对称，请移步VIP业务受理厅）的情况下，可以使用默认上行速率，一般给个10:1就不错了。  </p>
+<p>中国的宽带分家庭宽带和企业宽带的；<br>家庭宽带下载快上传慢，价钱便宜；<br>企业宽带下载稍慢一点，上传很快，价钱比家庭宽带贵很多  </p>
+</blockquote>
+<p>我的截图属于公司网络,上传比较快.当然价格也当然贵很多.</p>
+<h2 id="演示三次握手和慢启动对简单HTTP传输的影响"><a href="#演示三次握手和慢启动对简单HTTP传输的影响" class="headerlink" title="演示三次握手和慢启动对简单HTTP传输的影响"></a>演示三次握手和慢启动对简单HTTP传输的影响</h2><p>我们假设纽约的客户端需要通过TCP连接向伦敦的服务器请求一个20 KB 的文件（图2-5），下面列出了连接的参数。</p>
+<ul>
+<li>往返时间：<strong>56 ms</strong>。  </li>
+<li>客户端到服务器的带宽：5 Mbit/s。</li>
+<li>客户端和服务器接收窗口：65535 字节。</li>
+<li>初始的拥塞窗口：4个TCP段<br>ps:   <strong>1个TCP段占多少KB ==&gt;（1×1460 字节 ≈ 1.4 KB）。20KB,总共有15个TCP段</strong></li>
+<li>服务器生成响应的处理时间：40ms。<strong>花费在处理请求的时间</strong></li>
+<li>没有分组丢失、每个分组都要确认、GET 请求只占 1 段。<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fel6zk8aeyj30wg0u4dkc.jpg" alt="">  </li>
+<li>0 ms：客户端发送 SYN 分组开始TCP握手。</li>
+<li>28 ms：服务器响应 SYN-ACK 并指定其 rwnd 大小。</li>
+<li>56 ms：客户端确认 SYN-ACK，指定其 rwnd 大小，并立即发送 HTTP GET 请求。</li>
+<li>84 ms：服务器收到 HTTP 请求.</li>
+<li>124 ms：服务器生成 20 KB 的响应，并发送 4 个TCP段（初始 cwnd 大小为 4），然后等待ACK.</li>
+<li>152 ms：客户端收到 4 个TCP段，并分别发送ACK确认。</li>
+<li>180 ms：服务器针对每个 ACK 递增 cwnd，然后发送<strong>8个TCP</strong>(指数增长,<a href="http://baike.baidu.com/link?url=Ilrf4bYGKzaj_XoQhG7Zpo6h_o2bl6EVhPrcXlw5QkY6U68QjROl_tk8mT_2ScAPt2Kn0nwhIerlEuhpStii7h71F6hKy368d34JazpCIKelQ2KTRhlXyL47jFb8bgm9" target="_blank" rel="external">TCP慢启动规则</a>)段。</li>
+<li>208 ms：客户端接收8个段，并分别发送ACK确认。</li>
+<li>236 ms：服务器针对每个ACK递增cwnd，然后发送剩余的 TCP 段。</li>
+<li>264 ms：客户端收到剩余的TCP段，并分别发送ACK确认。</li>
+</ul>
+<h2 id="两个实例来实现宽带测速"><a href="#两个实例来实现宽带测速" class="headerlink" title="两个实例来实现宽带测速"></a>两个实例来实现宽带测速</h2><p><strong>1.</strong> 假设TCP一次传输的数据最大为16KB(这个根据网络协议是定死的,[RFC 1323],TCP 接收窗口最大只有64 KB。),你的电脑访问一个网站,假设往返时间为100ms;则这次TCP连接的传输速率不会超过多少?<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fel7jkt4i6j30kc062t96.jpg" alt=""><br>不管发送端和接收端的实际带宽多大，这个TCP 连接的数据传输速率不会超过1.31<br>Mbit/s!想提高吞吐量，要么增大最小窗口值,要么减少往返时间。<br>如果你访问淘宝,页面返回很慢,你需要改变两个值:  </p>
+<ul>
+<li>增大最小窗口值(协议规定,无法改)</li>
+<li>减少往返时间(<a href="http://baike.baidu.com/link?url=1vR8CnakzggtE8tQLgqbA_p2FN8J-l7KvxulF3cfTjCoASpL1xM1ifeLZR8qmlf3MQUX4w3zr0L3VlsxLRKW0a" target="_blank" rel="external">CDN服务</a>)</li>
+</ul>
+<p><strong>2.</strong> 同样,知道往返时间和两端的实际带宽也可以计算最优窗口大小。这一次我们假设往返时间不变（还是100 ms），发送端的可用带宽为10 Mbit/s，接收端则为100 Mbit/s+。还假设两端之间没有网络拥塞，我们的目标就是充分利用客户端的10Mbit/s 带宽：<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fel7q59if0j30hu05awey.jpg" alt=""><br>窗口至少需要122.1 KB 才能充分利用10 Mbit/s 带宽！还记得吗，如果没有“窗口缩放（RFC 1323）”，TCP 接收窗口最大只有64 KB。是不是该好好查查自己的客户端和服务器设置啦？<br>好在窗口大小的协商与调节由网络栈自动控制，应该会自动调整。但尽管如此，窗<br>口大小有时候仍然是TCP 性能的限制因素。如果你怎么也想不通在高速连接的客户<br>端与服务器之间，实际传输速度只有可用带宽的几分之一，那窗口大小很可能就是<br>罪魁祸首。要么因为某一饱和端通告的接收窗口很小，要么因为网络拥堵和丢包导<br>致拥塞窗口重置，更可能因为流量增长过快导致对连接吞吐量施加了限制。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.douban.com/subject/25856314/" target="_blank" rel="external">Web性能权威指南</a><br><a href="https://book.douban.com/subject/10746113/" target="_blank" rel="external">HTTP权威指南</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/12/效率控都用这些快捷键/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1762,167 +1953,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/03/29/提利昂·兰尼斯特-权利的游戏/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="华子">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="我就是我,是不一样的烟火">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/03/29/提利昂·兰尼斯特-权利的游戏/" itemprop="url">
-                  提利昂·兰尼斯特：我的一切努力，不过是为了获得父亲的肯定
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-29T15:52:50+08:00">
-                2017-03-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/权利的游戏/" itemprop="url" rel="index">
-                    <span itemprop="name">权利的游戏</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/03/29/提利昂·兰尼斯特-权利的游戏/" class="leancloud_visitors" data-flag-title="提利昂·兰尼斯特：我的一切努力，不过是为了获得父亲的肯定">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">热度 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-			<span>℃</span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>当一个人，终其一生都在寻求自己父亲的肯定，却始终得不到承认时，会发生什么？</p>
-<p>HBO美剧《权力的游戏》是一部“杀人如麻”的剧集。剧中那些一开始看起来非常有主角光环的人，分分钟就都被原著作者、也是剧集监制的乔治·马丁写死了。因此，第6季开播后，大家最关心的就是：这一季里又死了哪些人？</p>
-<p>但有一个很特别的角色（也是我最喜欢的角色），却一直凭借自己的智慧和努力活在这个世界里。他是提利昂·兰尼斯特。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/03/29/提利昂·兰尼斯特-权利的游戏/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1972,7 +2002,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1994,7 +2024,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
