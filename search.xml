@@ -3,8 +3,15 @@
   
     
     <entry>
-      <title><![CDATA[FastDFS]]></title>
-      <url>%2F2017%2F04%2F15%2FFastDFS%E7%AE%80%E4%BB%8B%2F</url>
+      <title><![CDATA[Markdown——入门指南]]></title>
+      <url>%2F2017%2F04%2F16%2FMarkdown%E2%80%94%E2%80%94%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97%2F</url>
+      <content type="text"><![CDATA[认识 Markdown：第一次使用Markdown是同事推荐给我的。当时看到同事本人做的一个流程图：注意：这个流程图都是用代码实现的，不需要涉及到绘图。 易读易写!Markdown 是一个 Web 上使用的文本到HTML的转换工具，可以通过简单、易读易写的文本格式生成结构化的HTML文档。目前 github、Stackoverflow 等网站均支持这种格式。 Mac和Windows下的编辑软件推荐Mac 平台 ：MacDown is open source Markdown editor for macOSWindows 平台 ： MarkdownPad is a full-featured Markdown editor for Windows. Macdown快捷键推荐（MarkdownPad后面再补充） 最常用的快捷键 hexo模版对Markdown的支持这个目录是根据Markdown中的一级标题，二级标题自动生成的，用户不需要在添加数字1，2，3等，hexo默认会给你很友好的添加上，而且左侧的导航栏给文章阅读者一个很清晰，直观的了解你文章的大纲，只能说nodejs大法好。具体使用hexo搭建博客可以参考站点内的博客hexo+github搭建个人博客]]></content>
+    </entry>
+
+    
+    <entry>
+      <title><![CDATA[FastDFS项目实战]]></title>
+      <url>%2F2017%2F04%2F15%2FFastDFS%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%2F</url>
       <content type="text"><![CDATA[项目背景公司要求做爬虫，最开始的时候，爬虫爬取下来的文件是存储在服务器的共享盘(Linux NFS服务器的安装与配置)。因为最开始是爬虫也没有达到分布式，只是部署在一台服务器上。但是后面想要最高效的爬取网站，选用了netty做消息框架，涉及到监控，分解，任务队列，爬虫四个模块，此时，之前爬虫的存储方式就出现了一定的瓶颈： 爬虫存储在一个共享盘，需要这个共享盘足够大，磁盘io压力全部堆积到一台机器上。 文件没有进行备份，共享盘出现故障，爬取的所有文件都失效了 针对出现的种种问题，团队内也对现今流行的分布式文件系统进行了一个对比，最终决定采用FastDFS来实现。 FastDFS简介github源码地址FastDFS是一个开源高性能分布式文件系统。它的主要功能包括:文件存储、文件同步、文件访问(文件上传、文件下载),它可以解决高容量和负载平衡问题。FastDFS应该满足的要求的网站服务基于文件照片分享网站和视频共享网站等。FastDFS有两个角色:跟踪和存储。跟踪负责调度和负载平衡的文件访问。存储存储文件和函数是文件管理,包括:文件存储、文件同步、文件访问提供接口。它也管理的元数据文件的属性代表作为键值对。例如:宽度= 1024,关键是“宽度”,值为“1024”。 技术选型几种常见分布式存储对比： 指标 FastDFS TFS MFS HDFS 适合类型 建议4KB~500MB 大小文件 小于64KB 性能不高 大文件 文件分布 小文件合并存储，不分片处理 小文件合并，以Block 组织分片 文件分片 大文件分块分片存储 系统性能 1.很高(未使用数据库)，文 件访问点对点，不经tracker 中转 2.无法动态调整磁盘空间负 载 3.客户端需记录存储信息 1. 主从NameServer(由HA agent 实现高可用) 2.DataServer、支持异地灾 备 3. 客户端需记录存储信息 Master 相对占内存 AvatarNod e/BackupN ode 两种HA 方案 复杂度 简单(tracker 和storage两个角色) 部署较复杂 包含master 、 metalogger 、 chunkserver 三个 角色 NameNode 和DataNode 角色 是否支持FUSE 不支持 不支持 支持 支持 是否支持POSIX 不支持 不支持 支持 支持 备份机制 分组组内冗余 Block 存储多份，主辅集群灾备 多点备份，动态冗余 多副本 通讯协议接口 原生API、HTTP 原生API、HTTP 使用fuse 挂载 原生API、使 用httpfs 提 供HTTP接口、 Thrift 活跃度 国内使用较多 较少 较多 较多 Linux安装FastDFS网上教程很多，但也鱼龙混杂，个人推荐一篇觉得还是挺靠谱的文章：安装 5.08 fastdfs我把最关键的几步给大家解释下：FastDFS配置：照教程安装成功后，在/etc/fdfs/下，就会生成三个文件依次是： tracker配置注意tracker如果使用root用户命令启动会报错，所以需要新建一个用户，且在tracker.conf的配置文件中就会有run_by_group，run_by_user的配置，此时就需要修改配置文件中这两个参数成你设定的新用户的分组和用户名。base_path这个配置文件也需要修改成已知的一个目录，教程中自己新创了一个文件夹，此时需要注意，如果你也新建了一个文件夹，一定要确认这个目录对于你新建的这个用户的权限是否开启可读可写等模式base_path这个配置是用来 ${base_path} data ： storage_groups.dat：存储分组信息 storage_servers.dat：存储服务器列表 logs ： rackerd.log：tracker server日志文件 storage配置注意如果storage不是部署在straker机器上，那就需要新机器上也安装上FastDFS。 group_name=group1 # 同组之间互相备份，若组不相同，不同组中的文件不会重复run_by_group= # 可以不配置 直接用root用户运行run_by_user= # 可以不配置 直接用root用户运行base_path=/data/fdfs/info/ # 当前storage server 初始化信息，当前storage server 统计信息tracker_server=192.168.1.50:22122 # tracker部署机器的ip和端口store_path0=/data/fdfs # 在这个目录下会生成一级目录和二级目录分别为256文件夹的data文件夹 安装nginx直接通过浏览器可以访问存储文件首先storage节点上安装nginx，使用nginx-1.4.7.tar.gz源代码包以及FastDFS的nginx插件fastdfs-nginx-module_v1.15.tar.gz github地址 [root@storage1opt]# cp nginx-1.4.7.tar.gz /usr/local/src[root@storage1opt]# cp fastdfs-nginx-module_v1.15.tar.gz /usr/local/src[root@storage1opt]# cp pcre-8.34.tar.gz /usr/local/src[root@storage1opt]# cp zlib-1.2.8.tar.gz /usr/local/src[root@storage1opt]# cd /usr/local/src/[root@storage1src]# tar zxf nginx-1.4.7.tar.gz[root@storage1src]# tar zxf fastdfs-nginx-module_v1.15.tar.gz[root@storage1src]# tar zxf pcre-8.34.tar.gz[root@storage1src]# tar zxf zlib-1.2.8.tar.gz[root@storage1src]# cd nginx-1.4.7[root@storage1 nginx-1.4.7]#makeoot@storage1 nginx-1.4.7]#cp /usr/local/src/fastdfs-nginx-module/src/mod_fastdfs.conf /etc/fdfs/更详细可以参考 FastDFS安装配置手册 java客户端调用源码地址这是FastDFS自己封装的API。但是这个在maven中央仓库是没有的，而且并发访问也会出现上传失败的错误。当时一股脑儿就想用作者的，所以我的解决方法是： 将源码编译成jar包，放到maven私服仓库中，这样就可以供团队所有人使用 并发上传，解决方法是：给fastDfsClient客户端对象加锁 有支持线程池上传下载的FastDFS的客户端的代码开源了，后面有机会再去研究其原理。 FastDFS分布式架构方案]]></content>
     </entry>
 
@@ -108,16 +115,16 @@
 
     
     <entry>
-      <title><![CDATA[IMovie使用教程]]></title>
-      <url>%2F2016%2F09%2F23%2FIMovie%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B%2F</url>
-      <content type="text"><![CDATA[IMovie快速入门苹果官网IMovie介绍 什么是 iMovie？通过 iMovie，您可以在 Mac 上查看、编辑和共享影片。 浏览项目“项目”视图可让您直接访问资源库中的所有影片项目。 编辑影片您可以从资源库查看和添加片段、编辑影片、以及添加音乐和效果。 共享影片影片制作完成后，您可以在 iMovie Theater 中观看、将影片共享到 iTunes 或将影片共享到网上。]]></content>
+      <title><![CDATA[java并发编程读书笔记]]></title>
+      <url>%2F2016%2F09%2F23%2Fjava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%2F</url>
+      <content type="text"><![CDATA[线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2 原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性 竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A 活跃性和性能servlet中命中计数器使用同步块代码来实现计数原子性解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态. 对象的共享可见性代码请点此处 过期数据当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的同步化setter是不够的,调用get的线程仍然看得到过期值 非原子的64位操作long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位. 锁和可见性同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证. Volatile变量访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.]]></content>
     </entry>
 
     
     <entry>
-      <title><![CDATA[java并发编程读书笔记]]></title>
-      <url>%2F2016%2F09%2F23%2Fjava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%2F</url>
-      <content type="text"><![CDATA[线程安全性内置锁: synchronized重入 :子类加锁函数调用父类同样函数可以调用,说明发生了重入,判断含有锁==1,可以往上叠加变为2 原子性servlet中增加一个long类型都域,命中计数器都值会出现偏差,缺乏原子性 竞态条件诠释:由于不恰当的执行时序而出现的不正确都结果是一种非常重要的情况.两家星巴克 朋友之间互相寻找对方,当A朋友从1店起身找B时,B刚好从2店出来进入1店找A 活跃性和性能servlet中命中计数器使用同步块代码来实现计数原子性解决:应该尽量将不影响共享状态且执行时间较长都操作从代码同步块中分离出去,从而在这些操作的执行过程中,其他线程可以访问共享状态. 对象的共享可见性代码请点此处 过期数据当线程读取某个变量时,这个变量可能是一个过期的值,除非每一次访问的变量都是同步的同步化setter是不够的,调用get的线程仍然看得到过期值 非原子的64位操作long double数据 64伟,jvm允许将64的读或写划分为32位的操作.你可能会得到一个值的高32位和另一个值的低32位. 锁和可见性同一个代码块中加锁,可以保证线程间对代码块中的数据改动是可见的,如果没有同步,就没有这样的保证. Volatile变量访问volatile的操作不会加锁,也就不会发生引起执行线程的阻塞,故,volatile只是轻量级的同步机制.]]></content>
+      <title><![CDATA[IMovie使用教程]]></title>
+      <url>%2F2016%2F09%2F23%2FIMovie%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B%2F</url>
+      <content type="text"><![CDATA[IMovie快速入门苹果官网IMovie介绍 什么是 iMovie？通过 iMovie，您可以在 Mac 上查看、编辑和共享影片。 浏览项目“项目”视图可让您直接访问资源库中的所有影片项目。 编辑影片您可以从资源库查看和添加片段、编辑影片、以及添加音乐和效果。 共享影片影片制作完成后，您可以在 iMovie Theater 中观看、将影片共享到 iTunes 或将影片共享到网上。]]></content>
     </entry>
 
     
