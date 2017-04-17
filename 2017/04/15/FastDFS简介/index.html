@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="code talk" />
+  <meta name="keywords" content="FastDFS,分布式文件系统," />
 
 
 
@@ -87,15 +87,25 @@
 
 
 
-<meta name="description" content="展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="我就是我,是不一样的烟火">
-<meta property="og:url" content="https://ronghuaxu.github.io/index.html/tags/方法/index.html">
+<meta name="description" content="项目背景公司要求做爬虫，最开始的时候，爬虫爬取下来的文件是存储在服务器的共享盘(Linux NFS服务器的安装与配置)。因为最开始是爬虫也没有达到分布式，只是部署在一台服务器上。但是后面想要最高效的爬取网站，选用了netty做消息框架，涉及到监控，分解，任务队列，爬虫四个模块，此时，之前爬虫的存储方式就出现了一定的瓶颈：  
+
+爬虫存储在一个共享盘，需要这个共享盘足够大，磁盘io压力全部堆积到一台">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FastDFS">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/15/FastDFS简介/index.html">
 <meta property="og:site_name" content="我就是我,是不一样的烟火">
-<meta property="og:description" content="展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.">
+<meta property="og:description" content="项目背景公司要求做爬虫，最开始的时候，爬虫爬取下来的文件是存储在服务器的共享盘(Linux NFS服务器的安装与配置)。因为最开始是爬虫也没有达到分布式，只是部署在一台服务器上。但是后面想要最高效的爬取网站，选用了netty做消息框架，涉及到监控，分解，任务队列，爬虫四个模块，此时，之前爬虫的存储方式就出现了一定的瓶颈：  
+
+爬虫存储在一个共享盘，需要这个共享盘足够大，磁盘io压力全部堆积到一台">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fepscwu7jgj30wk032mxw.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fepttyccuhj317e0ywaew.jpg">
+<meta property="og:updated_time" content="2017-04-17T09:57:10.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="我就是我,是不一样的烟火">
-<meta name="twitter:description" content="展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.">
+<meta name="twitter:title" content="FastDFS">
+<meta name="twitter:description" content="项目背景公司要求做爬虫，最开始的时候，爬虫爬取下来的文件是存储在服务器的共享盘(Linux NFS服务器的安装与配置)。因为最开始是爬虫也没有达到分布式，只是部署在一台服务器上。但是后面想要最高效的爬取网站，选用了netty做消息框架，涉及到监控，分解，任务队列，爬虫四个模块，此时，之前爬虫的存储方式就出现了一定的瓶颈：  
+
+爬虫存储在一个共享盘，需要这个共享盘足够大，磁盘io压力全部堆积到一台">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fepscwu7jgj30wk032mxw.jpg">
 
 
 
@@ -123,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/tags/方法/"/>
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/15/FastDFS简介/"/>
 
 
 
 
 
-  <title> 标签: 方法 | 我就是我,是不一样的烟火 </title>
+  <title> FastDFS | 我就是我,是不一样的烟火 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -154,7 +164,7 @@
     
   
 
-  <div class="container sidebar-position-left  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -302,46 +312,294 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        方法
-        <small>标签</small>
-      </h2>
-    </div>
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/15/FastDFS简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                FastDFS
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T21:26:04+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index">
+                    <span itemprop="name">分布式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/15/FastDFS简介/" class="leancloud_visitors" data-flag-title="FastDFS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
       
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>公司要求做爬虫，最开始的时候，爬虫爬取下来的文件是存储在服务器的共享盘(<a href="http://www.cnblogs.com/mchina/archive/2013/01/03/2840040.html" target="_blank" rel="external">Linux NFS服务器的安装与配置</a>)。因为最开始是爬虫也没有达到分布式，只是部署在一台服务器上。但是后面想要最高效的爬取网站，选用了netty做消息框架，涉及到监控，分解，任务队列，爬虫四个模块，此时，之前爬虫的存储方式就出现了一定的瓶颈：  </p>
+<ul>
+<li>爬虫存储在一个共享盘，需要这个共享盘足够大，磁盘io压力全部堆积到一台机器上。</li>
+<li>文件没有进行备份，共享盘出现故障，爬取的所有文件都失效了  </li>
+</ul>
+<p>针对出现的种种问题，团队内也对现今流行的分布式文件系统进行了一个对比，最终决定采用FastDFS来实现。<br><a id="more"></a></p>
+<h2 id="FastDFS简介"><a href="#FastDFS简介" class="headerlink" title="FastDFS简介"></a>FastDFS简介</h2><p><a href="https://github.com/happyfish100/fastdfs" target="_blank" rel="external">github源码地址</a><br>FastDFS是一个开源高性能分布式文件系统。它的主要功能包括:文件存储、文件同步、文件访问(文件上传、文件下载),它可以解决高容量和负载平衡问题。FastDFS应该满足的要求的网站服务基于文件照片分享网站和视频共享网站等。<br>FastDFS有两个角色:跟踪和存储。跟踪负责调度和负载平衡的文件访问。存储存储文件和函数是文件管理,包括:文件存储、文件同步、文件访问提供接口。它也管理的元数据文件的属性代表作为键值对。例如:宽度= 1024,关键是“宽度”,值为“1024”。  </p>
+<h2 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h2><p>几种常见分布式存储对比：  </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指标</th>
+<th>FastDFS</th>
+<th>TFS</th>
+<th>MFS</th>
+<th>HDFS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">适合类型</td>
+<td>建议4KB~500MB</td>
+<td>大小文件</td>
+<td>小于64KB 性能不高</td>
+<td>大文件</td>
+</tr>
+<tr>
+<td style="text-align:center">文件分布</td>
+<td>小文件合并存储，不分片处理</td>
+<td>小文件合并，以Block 组织分片</td>
+<td>文件分片</td>
+<td>大文件分块分片存储</td>
+</tr>
+<tr>
+<td style="text-align:center">系统性能</td>
+<td>1.很高(未使用数据库)，文 件访问点对点，不经tracker 中转 2.无法动态调整磁盘空间负 载 3.客户端需记录存储信息</td>
+<td>1. 主从NameServer(由HA agent 实现高可用) 2.DataServer、支持异地灾 备 3. 客户端需记录存储信息</td>
+<td>Master 相对占内存</td>
+<td>AvatarNod e/BackupN ode 两种HA 方案</td>
+</tr>
+<tr>
+<td style="text-align:center">复杂度</td>
+<td>简单(tracker 和storage两个角色)</td>
+<td>部署较复杂</td>
+<td>包含master 、 metalogger 、 chunkserver 三个 角色</td>
+<td>NameNode 和DataNode 角色</td>
+</tr>
+<tr>
+<td style="text-align:center">是否支持FUSE</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td style="text-align:center">是否支持POSIX</td>
+<td>不支持</td>
+<td>不支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td style="text-align:center">备份机制</td>
+<td>分组组内冗余</td>
+<td>Block 存储多份，主辅集群灾备</td>
+<td>多点备份，动态冗余</td>
+<td>多副本</td>
+</tr>
+<tr>
+<td style="text-align:center">通讯协议接口</td>
+<td>原生API、HTTP</td>
+<td>原生API、HTTP</td>
+<td>使用fuse 挂载</td>
+<td>原生API、使 用httpfs 提 供HTTP接口、 Thrift</td>
+</tr>
+<tr>
+<td style="text-align:center">活跃度</td>
+<td>国内使用较多</td>
+<td>较少</td>
+<td>较多</td>
+<td>较多</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Linux安装FastDFS"><a href="#Linux安装FastDFS" class="headerlink" title="Linux安装FastDFS"></a>Linux安装FastDFS</h2><p>网上教程很多，但也鱼龙混杂，个人推荐一篇觉得还是挺靠谱的文章：<a href="http://www.cnblogs.com/Yin-BloodMage/p/5480608.html" target="_blank" rel="external">安装 5.08 fastdfs</a>我把最关键的几步给大家解释下：<br>FastDFS配置：照教程安装成功后，在/etc/fdfs/下，就会生成三个文件依次是：<img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fepscwu7jgj30wk032mxw.jpg" alt=""></p>
+<h3 id="tracker配置注意"><a href="#tracker配置注意" class="headerlink" title="tracker配置注意"></a>tracker配置注意</h3><p>tracker如果使用root用户命令启动会报错，所以需要新建一个用户，且在tracker.conf的配置文件中就会有run_by_group，run_by_user的配置，此时就需要修改配置文件中这两个参数成你设定的新用户的分组和用户名。base_path这个配置文件也需要修改成已知的一个目录，教程中自己新创了一个文件夹，<strong>此时需要注意，如果你也新建了一个文件夹，一定要确认这个目录对于你新建的这个用户的权限是否开启可读可写等模式</strong><br>base_path这个配置是用来</p>
+<p><pre> ${base_path}<br>  data  ：<br>              storage_groups.dat：存储分组信息<br>              storage_servers.dat：存储服务器列表<br>  logs  ：<br>            rackerd.log：tracker server日志文件  </pre>  </p>
+<h3 id="storage配置注意"><a href="#storage配置注意" class="headerlink" title="storage配置注意"></a>storage配置注意</h3><p>如果storage不是部署在straker机器上，那就需要新机器上也安装上FastDFS。</p>
+<p><pre><br>group_name=group1 # 同组之间互相备份，若组不相同，不同组中的文件不会重复<br>run_by_group= # 可以不配置 直接用root用户运行<br>run_by_user= # 可以不配置 直接用root用户运行<br>base_path=/data/fdfs/info/ # 当前storage server 初始化信息，当前storage server 统计信息<br>tracker_server=192.168.1.50:22122 # tracker部署机器的ip和端口<br>store_path0=/data/fdfs # 在这个目录下会生成一级目录和二级目录分别为256文件夹的data文件夹<br></pre>     </p>
+<h3 id="安装nginx直接通过浏览器可以访问存储文件"><a href="#安装nginx直接通过浏览器可以访问存储文件" class="headerlink" title="安装nginx直接通过浏览器可以访问存储文件"></a>安装nginx直接通过浏览器可以访问存储文件</h3><p>首先storage节点上安装nginx，使用nginx-1.4.7.tar.gz源代码包以及FastDFS的nginx插件fastdfs-nginx-module_v1.15.tar.gz  <a href="https://github.com/happyfish100/fastdfs-nginx-module" target="_blank" rel="external">github地址</a></p>
+<p><pre><br>[root@storage1opt]# cp nginx-1.4.7.tar.gz /usr/local/src<br>[root@storage1opt]# cp fastdfs-nginx-module_v1.15.tar.gz /usr/local/src<br>[root@storage1opt]# cp pcre-8.34.tar.gz /usr/local/src<br>[root@storage1opt]# cp zlib-1.2.8.tar.gz /usr/local/src<br>[root@storage1opt]# cd /usr/local/src/<br>[root@storage1src]# tar zxf nginx-1.4.7.tar.gz<br>[root@storage1src]# tar zxf fastdfs-nginx-module_v1.15.tar.gz<br>[root@storage1src]# tar zxf pcre-8.34.tar.gz<br>[root@storage1src]# tar zxf zlib-1.2.8.tar.gz<br>[root@storage1src]# cd nginx-1.4.7<br>[root@storage1 nginx-1.4.7]#make<br>oot@storage1 nginx-1.4.7]#cp /usr/local/src/fastdfs-nginx-module/src/mod_fastdfs.conf /etc/fdfs/<br></pre><br>更详细可以参考 <a href="http://blog.csdn.net/lynnlovemin/article/details/39398043" target="_blank" rel="external">FastDFS安装配置手册</a></p>
+<h3 id="java客户端调用"><a href="#java客户端调用" class="headerlink" title="java客户端调用"></a>java客户端调用</h3><p><a href="https://github.com/happyfish100/fastdfs-client-java" target="_blank" rel="external">源码地址</a><br>这是FastDFS自己封装的API。但是这个在maven中央仓库是没有的，而且并发访问也会出现上传失败的错误。当时一股脑儿就想用作者的，所以我的解决方法是：</p>
+<ul>
+<li>将源码编译成jar包，放到maven私服仓库中，这样就可以供团队所有人使用</li>
+<li>并发上传，解决方法是：给fastDfsClient客户端对象加锁</li>
+</ul>
+<p>有支持线程池上传下载的FastDFS的客户端的代码开源了，后面有机会再去研究其原理。</p>
+<h2 id="FastDFS分布式架构方案"><a href="#FastDFS分布式架构方案" class="headerlink" title="FastDFS分布式架构方案"></a>FastDFS分布式架构方案</h2><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fepttyccuhj317e0ywaew.jpg" alt=""></p>
 
-      <h1 class="post-title">
+      
+    </div>
+
+    <div>
+      
         
-            <a class="post-title-link" href="/2017/04/11/学好英语并没有那么难/" itemprop="url">
-              
-                <span itemprop="name">学好英语并没有那么难</span>
-              
-            </a>
+
+      
+    </div>
+
+    <div>
+      
         
-      </h1>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-11T14:02:38+08:00"
-              content="2017-04-11" >
-          04-11
-        </time>
-      </div>
+      
+    </div>
 
-    </header>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FastDFS/" rel="tag"># FastDFS</a>
+          
+            <a href="/tags/分布式文件系统/" rel="tag"># 分布式文件系统</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/14/读书有什么用/" rel="next" title="读书有什么用">
+                <i class="fa fa-chevron-left"></i> 读书有什么用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
-  </div>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -349,6 +607,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -368,8 +630,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -469,6 +740,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#项目背景"><span class="nav-number">1.</span> <span class="nav-text">项目背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastDFS简介"><span class="nav-number">2.</span> <span class="nav-text">FastDFS简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#技术选型"><span class="nav-number">3.</span> <span class="nav-text">技术选型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Linux安装FastDFS"><span class="nav-number">4.</span> <span class="nav-text">Linux安装FastDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#tracker配置注意"><span class="nav-number">4.1.</span> <span class="nav-text">tracker配置注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#storage配置注意"><span class="nav-number">4.2.</span> <span class="nav-text">storage配置注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装nginx直接通过浏览器可以访问存储文件"><span class="nav-number">4.3.</span> <span class="nav-text">安装nginx直接通过浏览器可以访问存储文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java客户端调用"><span class="nav-number">4.4.</span> <span class="nav-text">java客户端调用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastDFS分布式架构方案"><span class="nav-number">5.</span> <span class="nav-text">FastDFS分布式架构方案</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -601,6 +888,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 
