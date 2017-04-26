@@ -1,0 +1,1124 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ARP协议,地址解析协议," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介在IP协议能够把一个分组从源主机交付到目的主机之前，它首先要知道的是如何将这个分组交付给下一跳。如第6章 IP分组的交付和转发 所述，一个1P分组可以通过咨询路由表找出下一跳的IP地址。但是，既然IP使用的是数据链路层的服务，它就需要知道下一跳的物理地址。通过一个称为地址解析协议(ARP)的协议就可以做到这一点，这也正是我们要讨论的内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="地址解析协议（ARP)">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/24/地址解析协议（ARP）/index.html">
+<meta property="og:site_name" content="我就是我,是不一样的烟火">
+<meta property="og:description" content="简介在IP协议能够把一个分组从源主机交付到目的主机之前，它首先要知道的是如何将这个分组交付给下一跳。如第6章 IP分组的交付和转发 所述，一个1P分组可以通过咨询路由表找出下一跳的IP地址。但是，既然IP使用的是数据链路层的服务，它就需要知道下一跳的物理地址。通过一个称为地址解析协议(ARP)的协议就可以做到这一点，这也正是我们要讨论的内容。">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1ff03ozfdnij30ww0no45x.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff03vt0k15j30vs0vmn66.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff03w4z6e2j30yg0yo476.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff03w4z6e2j30yg0yo476.jpg">
+<meta property="og:updated_time" content="2017-04-26T07:37:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="地址解析协议（ARP)">
+<meta name="twitter:description" content="简介在IP协议能够把一个分组从源主机交付到目的主机之前，它首先要知道的是如何将这个分组交付给下一跳。如第6章 IP分组的交付和转发 所述，一个1P分组可以通过咨询路由表找出下一跳的IP地址。但是，既然IP使用的是数据链路层的服务，它就需要知道下一跳的物理地址。通过一个称为地址解析协议(ARP)的协议就可以做到这一点，这也正是我们要讨论的内容。">
+<meta name="twitter:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1ff03ozfdnij30ww0no45x.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/24/地址解析协议（ARP）/"/>
+
+
+
+
+
+  <title> 地址解析协议（ARP) | 我就是我,是不一样的烟火 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我就是我,是不一样的烟火</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/24/地址解析协议（ARP）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                地址解析协议（ARP)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T15:46:04+08:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/24/地址解析协议（ARP）/" class="leancloud_visitors" data-flag-title="地址解析协议（ARP)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在IP协议能够把一个分组从源主机交付到目的主机之前，<br>它首先要知道的是如何将这个分组交付给下一跳。<br>如第6章 IP分组的交付和转发 所述，一个1P分组可以通过咨询路由表找出下一跳的IP地址。<br>但是，既然IP使用的是数据链路层的服务，<br>它就需要知道下一跳的物理地址。通过一个称为地址解析协议(ARP)的协议就可以做到这一点，这也正是我们要讨论的内容。</p>
+<a id="more"></a>
+<h2 id="地址映射"><a href="#地址映射" class="headerlink" title="地址映射"></a>地址映射</h2><p><strong>为什么把一个分组交付到主机或路由器需要用到两级地址：逻辑地址和物理地址？</strong><br>逻辑地址也称为IP地址，它的长度是32位：<br>在网络这一级，主机和路由器是通过它们的逻辑地址来识别的。逻辑地址就是互联网 地址。它的管辖范围是全局的。<br>逻辑地址在全局上是唯一的。之所以称为逻辑地址是因为 它通常在软件中实现。每一个与互联网打交道的协议都需要用到逻辑地址。<br>物理地址的一个例子是以太网协议中48位的MAC ：<br>分组必须通过物理网络才能到达主机和路由器。在物理这一级，主机和路由器 是用它们的物理地址来识别的。物理地址是一个本地地址。它的管辖范围是本地网络的。 物理地址在本地范围内必须唯一，但在全局上没有此要求。之所以称为物理地址是因为物 理地址通常（并非总是）在硬件上实现。 </p>
+<h2 id="ARP协议"><a href="#ARP协议" class="headerlink" title="ARP协议"></a>ARP协议</h2><p>在任何时候，只要一台主机或路由器有IP数据报要发送给另一台主机或路由器，它就要知道接收方的逻辑(IP)地址。<br><strong>但是IP数据报必须封装成帧才能通过物理网络。这就意味若发送方还需要有接收方的物理地址，因而需要从逻辑<br>地址到物理地址的映射。</strong>图8.1所示为ARP在TCP/IP协议族中的位置，ARP接受来自IP协议的逻辑地址，将其映<br>射为相应的物理地址，然后再把这个物理地址递交给数据链路层。<br>网络上的每一台主机或路由器都会接收并处理这个ARP查询分组，但只有期待的接收方才能认出是自己的IP地址<br>，并返回一个ARP响应分组。这个响应分组包含有接收方的IP地址和物理地址。这个分组利用收到的查询分组中<br>的物理地址以单播方式直接发送给查询者。</p>
+<h2 id="ARP的操作图解"><a href="#ARP的操作图解" class="headerlink" title="ARP的操作图解"></a>ARP的操作图解</h2><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1ff03ozfdnij30ww0no45x.jpg" alt=""></p>
+<p>在上图（a）中，左边的系统（A）有一个分组需要交付给IP地址为141.23.56.23的另一个系统(B)。系统A需要将分组传递给它的数据链路层进行实际的交付，但它却不知道接收方的物理地址。系统A使用ARP服务，请求ARP协议广播发送ARP请求分组，以查询IP地址为141.23.56.23的系统的物理地址。<br>在这个物理网络上的每一个系统都会收到这个分组，但只有系统B才会回答，如上图(b)所示。系统B发送一个包含了它的物理地址的ARP回答分组。现在系统A就可以用收到的物理地址来发送所有给系统B的分组。  </p>
+<h2 id="ARP软件包"><a href="#ARP软件包" class="headerlink" title="ARP软件包"></a>ARP软件包</h2><ul>
+<li>高速缓存表</li>
+<li>队列</li>
+<li>输出模块</li>
+<li>输入模块</li>
+<li>高速缓存控制模块</li>
+</ul>
+<h3 id="高速缓存表"><a href="#高速缓存表" class="headerlink" title="高速缓存表"></a>高速缓存表</h3><p>发送方往往有一个以上的IP数据报要发送到同一个终点。如果对发送到同一个主机或 路由器的每一个数据报都<br>使用一次ARP协议，显然效率很低· 解决方法就是高速缓存表。 当主机或路由器收到一个IP数据报相应的物理地<br>址时，就可以把这个物理地址存储在高速缓存表中。在之后的几分钟内，发往相同目的地的数据报都可以使用这<br>个地址。但是，由于高速缓存表的空间非常有限，表中的映射关系不能无时间限制地保存。 </p>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>我们的ARP软件包维持着一组队列，每个队列对应于一个终点，用来在ARP尝试解<br> 析硬件地址时保留IP分组，输出模块把未解析的分组发送到相应的队列(queue),<br>输入模块从队列中取出分组，并连同解析出的物理地址一起发送给数据链路层传输。</p>
+<h3 id="输出模块"><a href="#输出模块" class="headerlink" title="输出模块"></a>输出模块</h3><p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff03vt0k15j30vs0vmn66.jpg" alt=""></p>
+<h3 id="输入模块"><a href="#输入模块" class="headerlink" title="输入模块"></a>输入模块</h3><p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff03w4z6e2j30yg0yo476.jpg" alt=""></p>
+<h3 id="高速缓存控制模块"><a href="#高速缓存控制模块" class="headerlink" title="高速缓存控制模块"></a>高速缓存控制模块</h3><p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff03w4z6e2j30yg0yo476.jpg" alt=""></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://book.douban.com/subject/5386194/" target="_blank" rel="external">TCP/IP协议族</a> 第8章 地址解析协议（ARP）</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ARP协议/" rel="tag"># ARP协议</a>
+          
+            <a href="/tags/地址解析协议/" rel="tag"># 地址解析协议</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/23/世界读书日有感/" rel="next" title="世界图书日有感">
+                <i class="fa fa-chevron-left"></i> 世界图书日有感
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/25/网际控制报文协议（ICMP）/" rel="prev" title="网际控制报文协议（ICMP）">
+                网际控制报文协议（ICMP） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地址映射"><span class="nav-number">2.</span> <span class="nav-text">地址映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP协议"><span class="nav-number">3.</span> <span class="nav-text">ARP协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP的操作图解"><span class="nav-number">4.</span> <span class="nav-text">ARP的操作图解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP软件包"><span class="nav-number">5.</span> <span class="nav-text">ARP软件包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#高速缓存表"><span class="nav-number">5.1.</span> <span class="nav-text">高速缓存表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列"><span class="nav-number">5.2.</span> <span class="nav-text">队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出模块"><span class="nav-number">5.3.</span> <span class="nav-text">输出模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入模块"><span class="nav-number">5.4.</span> <span class="nav-text">输入模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高速缓存控制模块"><span class="nav-number">5.5.</span> <span class="nav-text">高速缓存控制模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

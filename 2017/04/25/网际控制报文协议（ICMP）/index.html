@@ -1,0 +1,1152 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ICMP协议,网际控制报文协议," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介如第7章 网际协议版本4（IPv4） 所讨论的，IPv4提供了不可靠的和无连接的数据报交付。当初这样设计是为了有效地利用网络资源。IP协议是尽最大努力的服务，它把数据报从最初的源点交付到最后的终点。但是，它有两个缺点：
+
+缺少差错控制
+缺少辅助机制
+
+网际控制报文协议（ICMPv4）就是为了补偿这两个缺点而设计的。
+报文
+报文格式在差错报文中，数据部分携带的是用于找出引起差错的原始分组的信息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网际控制报文协议（ICMP）">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/04/25/网际控制报文协议（ICMP）/index.html">
+<meta property="og:site_name" content="我就是我,是不一样的烟火">
+<meta property="og:description" content="简介如第7章 网际协议版本4（IPv4） 所讨论的，IPv4提供了不可靠的和无连接的数据报交付。当初这样设计是为了有效地利用网络资源。IP协议是尽最大努力的服务，它把数据报从最初的源点交付到最后的终点。但是，它有两个缺点：
+
+缺少差错控制
+缺少辅助机制
+
+网际控制报文协议（ICMPv4）就是为了补偿这两个缺点而设计的。
+报文
+报文格式在差错报文中，数据部分携带的是用于找出引起差错的原始分组的信息。">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1ff040qe70ij31f40sgb2a.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff044a2pmtj30qg07sdie.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff044yxodcj30rm06276m.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1ff046n87pij30re05qmzn.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1ff047k4yeoj30r605sq5q.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff04883k3zj30qk05oacg.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1ff048wdirqj30y8078q67.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff04972objj30rq05owhg.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1ff04cu8ocij313k0pc0ys.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ff04dfvrj7j313o0ve0zo.jpg">
+<meta property="og:updated_time" content="2017-04-26T07:37:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网际控制报文协议（ICMP）">
+<meta name="twitter:description" content="简介如第7章 网际协议版本4（IPv4） 所讨论的，IPv4提供了不可靠的和无连接的数据报交付。当初这样设计是为了有效地利用网络资源。IP协议是尽最大努力的服务，它把数据报从最初的源点交付到最后的终点。但是，它有两个缺点：
+
+缺少差错控制
+缺少辅助机制
+
+网际控制报文协议（ICMPv4）就是为了补偿这两个缺点而设计的。
+报文
+报文格式在差错报文中，数据部分携带的是用于找出引起差错的原始分组的信息。">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1ff040qe70ij31f40sgb2a.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/04/25/网际控制报文协议（ICMP）/"/>
+
+
+
+
+
+  <title> 网际控制报文协议（ICMP） | 我就是我,是不一样的烟火 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我就是我,是不一样的烟火</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/04/25/网际控制报文协议（ICMP）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                网际控制报文协议（ICMP）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-25T16:46:04+08:00">
+                2017-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/25/网际控制报文协议（ICMP）/" class="leancloud_visitors" data-flag-title="网际控制报文协议（ICMP）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>如第7章 网际协议版本4（IPv4） 所讨论的，IPv4提供了不可靠的和无连接的数据报交付。当初这样设计是为了有效地利用网络资源。IP协议是尽最大努力的服务，它把数据报从最初的源点交付到最后的终点。但是，它有两个缺点：</p>
+<ul>
+<li>缺少差错控制</li>
+<li>缺少辅助机制</li>
+</ul>
+<p>网际控制报文协议（ICMPv4）就是为了补偿这两个缺点而设计的。</p>
+<h2 id="报文"><a href="#报文" class="headerlink" title="报文"></a>报文</h2><p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1ff040qe70ij31f40sgb2a.jpg" alt=""></p>
+<h3 id="报文格式"><a href="#报文格式" class="headerlink" title="报文格式"></a>报文格式</h3><p>在差错报文中，数据部分携带的是用于找出引起差错的原始分组的信息。<br>在查询报文中，数据部分携带的是基于查询类型的额外信息。<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff044a2pmtj30qg07sdie.jpg" alt=""></p>
+<h3 id="差错报告报文"><a href="#差错报告报文" class="headerlink" title="差错报告报文"></a>差错报告报文</h3><h4 id="终点不可达"><a href="#终点不可达" class="headerlink" title="终点不可达"></a>终点不可达</h4><p>当路由器无法为一个数据报找到路由，或者主机无法交付一个数据报时，该数据报被 丢弃，然后<br>由路由器或主机向发出这个数据报的源主机返回一个终点不可达报文 （destination-unreachable message）。下图给出了终点不可达报文的格式。这种类型的代码 字段指明了丢弃该数据报的原因：<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff044yxodcj30rm06276m.jpg" alt=""><br>其中代码0～15分别代表了终点不可达的原因，请注意，终点不可达报文可<br>以由路由器或目的主机产生。代码2或3的报文只能由目的主机产生，其余<br>的几个报文只能由路由器产生。  </p>
+<h4 id="源点抑制"><a href="#源点抑制" class="headerlink" title="源点抑制"></a>源点抑制</h4><p>IP协议是无连接协议。在产生数据报的源主机和转发数据报的路由器以及处理数据报的目的主机<br>之间没有任何通信联系。这种缺乏通信所引起的一个问题就是缺乏流量控制和拥塞控制，<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1ff046n87pij30re05qmzn.jpg" alt=""><br>对每一个因为拥塞而被丢弃的数据报文，都应当发送一个源点抑制报文。</p>
+<h4 id="超时"><a href="#超时" class="headerlink" title="超时"></a>超时</h4><p>首先，如我们在第6草中所看到的，路由器使用路由表找出必须接收这个分组的下一跳口（下一个路<br>由器）。如果在一个或多个路由表中出现了错误，那么一个分组就很可能进入回环或循环状态，无休止<br>地从一个路由器到下一个路由器，或无休止地通过一系列的路由器。正如在第7章中所见到的，每个数据<br>报都有一个称为生存时间的字段来控制这种情况。当数据报通过路由器时，这个字段的值就减1。<br>当路由器发现这个字段的值在减1之后变为0,就丢弃这个数据报。但是，在丢弃这样的数据报时，<br>路由器需要向源点发送一个超时报文。  </p>
+<p>第二，当组成一个报文的所有分片未能在某一时间内全部到达目的主机，也要产生超时报文。当第一个<br>分片到达时，目的主机就启动一个计时器。如果计时器到时，却没有收齐所有的分片，目的主机就将已<br>收到的分片全部丢弃，并向源点发送一个超时报文。<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1ff047k4yeoj30r605sq5q.jpg" alt=""><br>当数据报的生存时间字段值为零而被路由器丢弃时，就使用代码0。因为在<br>规定的时限内一个数据报的某些分片未能到达而导致已到达的分片被丢弃时<br>，就使用代码1。</p>
+<h4 id="参数问题"><a href="#参数问题" class="headerlink" title="参数问题"></a>参数问题</h4><p>当数据报经过因特网传输时，其首部中出现的任何二义性都可能会产生严重的问题。<br>如果路由器或目的主机发现了这种二义性，或者在数据报的某个字段中缺少某个值，就会丢弃这个<br>数据报，并向源点返回一个参数问题报文。<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff04883k3zj30qk05oacg.jpg" alt=""><br>代码0 首部的某个字段中有差错或二义性。在这种情况下，指针字段值指向有问题的<br>字节。例如，若这个值为零，那么第一个字节是无效字段。  </p>
+<p>代码1 表示缺少所需的选项部分。在这种情况下不使用指针。</p>
+<h4 id="改变路由"><a href="#改变路由" class="headerlink" title="改变路由"></a>改变路由</h4><p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1ff048wdirqj30y8078q67.jpg" alt=""></p>
+<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff04972objj30rq05owhg.jpg" alt=""></p>
+<p>虽然改变路由报文被认为是一种差错报告报文，但它与其他差错报文不同。<br>在这种悄况下路由器不会丢弃数据报，而是将数据报发送给合适的路由器。</p>
+<h3 id="查询报文"><a href="#查询报文" class="headerlink" title="查询报文"></a>查询报文</h3><h4 id="回送请求或回答"><a href="#回送请求或回答" class="headerlink" title="回送请求或回答"></a>回送请求或回答</h4><p>回送请求和回送回答报文还可被主机用来检查另一个主机是否可达。在用户级，<br>调用报文协议(ICMP)分组因特网搜寻器(ping)命令可以做到这点。今天，大多数<br>的系统都提供ping命令的某个版本，它可以产生一连串（而不是仅仅一个）回送<br>请求或回送回答报文，以提供统计信息。</p>
+<h4 id="时间戳请求或回答"><a href="#时间戳请求或回答" class="headerlink" title="时间戳请求或回答"></a>时间戳请求或回答</h4><p>两个机器（主机或路由器）可以使用时间戳请求(timestamp-request)和时间戳回答<br>(timestamp-reply)报文来确定IP数据报在这两个机器之间来回所需的往返时间。<br>它也可用于同步两个机器的时钟。</p>
+<h3 id="检验和"><a href="#检验和" class="headerlink" title="检验和"></a>检验和</h3><p><strong>检验和的计算</strong>:<br>发送方按以下步骤使用反码算术运算：<br>1.把检验和字段置为零。<br>2.计算所有16位字（首部和数据）之和。<br>3.把得到的和求反码，得到检验和。<br>4.把检验和存储在检验和字段中。</p>
+<p><strong>检验和的检测</strong>:<br>1.计算所有16位字（首部和数据）之和<br>2 .把得到的和求反码。<br>3..若步骤2得到的结果是16个0. 则接受这个报文，否则就拒绝这个报文。  </p>
+<h2 id="ICMP软件包"><a href="#ICMP软件包" class="headerlink" title="ICMP软件包"></a>ICMP软件包</h2><h3 id="输入模块"><a href="#输入模块" class="headerlink" title="输入模块"></a>输入模块</h3><p>输入模块处理所有收到的ICMP报文。当一个来自IP层来的ICMP分组要交付给它时，<br>它就被激活了。如果收到的分组是请求报文，输入模块就产生一个回答报文并把它<br>发送出去。如果收到的分组是改变路由报文，输入模块就使用其中的信息更新路由<br>表口如果收到的分组是差错报文，输入模块就通知相关协议有关差错的情况。<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1ff04cu8ocij313k0pc0ys.jpg" alt=""></p>
+<h3 id="输出模块"><a href="#输出模块" class="headerlink" title="输出模块"></a>输出模块</h3><p>输出模块负责根据高层协议或IP协议的要求创建请求报文、询问报文或差错报文。输<br>出模块接收来自IP、UDP或TCP的请求发送一个ICMP差错报文。若是来自IP,则输出<br>模块必须首先检查这个请求是否允许。应当记住，有四种情况是不允许创建ICMP报文的：<br>携带ICMP差错报文的IP分组、被分片的IP分组、多播IP分组，以及IP地址为0.0.0.0<br>或127.X.Y.Z的IP分组。输出模块还可从应用程序处收到发送ICMP某个请求报文的要求。<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ff04dfvrj7j313o0ve0zo.jpg" alt=""></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://book.douban.com/subject/5386194/" target="_blank" rel="external">TCP/IP协议族</a> 第9章 网际控制报文协议（ICMP）</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ICMP协议/" rel="tag"># ICMP协议</a>
+          
+            <a href="/tags/网际控制报文协议/" rel="tag"># 网际控制报文协议</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/24/地址解析协议（ARP）/" rel="next" title="地址解析协议（ARP)">
+                <i class="fa fa-chevron-left"></i> 地址解析协议（ARP)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">57</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#报文"><span class="nav-number">2.</span> <span class="nav-text">报文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#报文格式"><span class="nav-number">2.1.</span> <span class="nav-text">报文格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#差错报告报文"><span class="nav-number">2.2.</span> <span class="nav-text">差错报告报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#终点不可达"><span class="nav-number">2.2.1.</span> <span class="nav-text">终点不可达</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#源点抑制"><span class="nav-number">2.2.2.</span> <span class="nav-text">源点抑制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#超时"><span class="nav-number">2.2.3.</span> <span class="nav-text">超时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#参数问题"><span class="nav-number">2.2.4.</span> <span class="nav-text">参数问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改变路由"><span class="nav-number">2.2.5.</span> <span class="nav-text">改变路由</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询报文"><span class="nav-number">2.3.</span> <span class="nav-text">查询报文</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#回送请求或回答"><span class="nav-number">2.3.1.</span> <span class="nav-text">回送请求或回答</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间戳请求或回答"><span class="nav-number">2.3.2.</span> <span class="nav-text">时间戳请求或回答</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#检验和"><span class="nav-number">2.4.</span> <span class="nav-text">检验和</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ICMP软件包"><span class="nav-number">3.</span> <span class="nav-text">ICMP软件包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入模块"><span class="nav-number">3.1.</span> <span class="nav-text">输入模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出模块"><span class="nav-number">3.2.</span> <span class="nav-text">输出模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
