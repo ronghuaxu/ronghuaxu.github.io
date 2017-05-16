@@ -1,0 +1,961 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="单播路由选择,最短路径算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="代价和度量通过每一个网络指派一个代价。我们称这个代价为度量。
+路由选择协议由于需要动态的路由表，因此就产生了路由选择协议。路由选择协议是一些规则和过程的集合，使得在互联网中的各个路由器能够彼此互相通知变化信息，路由选择协议使路由器能够共享它们所知道的有关互联网或邻站的情况。这种信息的共享使得在旧金山的路由器能够知道得克萨斯的网络故障情况。路由选择协议还包括一些过程，用来合并从其他路由器收到的信息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单播路由选择协议(RIP、OSPF和BGP)">
+<meta property="og:url" content="https://ronghuaxu.github.io/index.html/2017/05/12/单播路由选择协议/index.html">
+<meta property="og:site_name" content="我就是我,是不一样的烟火">
+<meta property="og:description" content="代价和度量通过每一个网络指派一个代价。我们称这个代价为度量。
+路由选择协议由于需要动态的路由表，因此就产生了路由选择协议。路由选择协议是一些规则和过程的集合，使得在互联网中的各个路由器能够彼此互相通知变化信息，路由选择协议使路由器能够共享它们所知道的有关互联网或邻站的情况。这种信息的共享使得在旧金山的路由器能够知道得克萨斯的网络故障情况。路由选择协议还包括一些过程，用来合并从其他路由器收到的信息。">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1ffn9yremy5j30ri08aq3o.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ffn7x6hdjcj30wm0j8n17.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1ffn80inkltj30uo0hidip.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1ffnautymzgj30ti0migoe.jpg">
+<meta property="og:updated_time" content="2017-05-16T09:09:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="单播路由选择协议(RIP、OSPF和BGP)">
+<meta name="twitter:description" content="代价和度量通过每一个网络指派一个代价。我们称这个代价为度量。
+路由选择协议由于需要动态的路由表，因此就产生了路由选择协议。路由选择协议是一些规则和过程的集合，使得在互联网中的各个路由器能够彼此互相通知变化信息，路由选择协议使路由器能够共享它们所知道的有关互联网或邻站的情况。这种信息的共享使得在旧金山的路由器能够知道得克萨斯的网络故障情况。路由选择协议还包括一些过程，用来合并从其他路由器收到的信息。">
+<meta name="twitter:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1ffn9yremy5j30ri08aq3o.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ronghuaxu.github.io/index.html/2017/05/12/单播路由选择协议/"/>
+
+
+
+
+
+  <title> 单播路由选择协议(RIP、OSPF和BGP) | 我就是我,是不一样的烟火 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我就是我,是不一样的烟火</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ronghuaxu.github.io/index.html/2017/05/12/单播路由选择协议/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                单播路由选择协议(RIP、OSPF和BGP)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T17:46:04+08:00">
+                2017-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/12/单播路由选择协议/" class="leancloud_visitors" data-flag-title="单播路由选择协议(RIP、OSPF和BGP)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="代价和度量"><a href="#代价和度量" class="headerlink" title="代价和度量"></a>代价和度量</h2><p>通过每一个网络指派一个代价。我们称这个代价为度量。</p>
+<h2 id="路由选择协议"><a href="#路由选择协议" class="headerlink" title="路由选择协议"></a>路由选择协议</h2><p>由于需要动态的路由表，因此就产生了路由选择协议。路由选择协议是一些规则和过程的集合，使得在互联网中的各个路由器能够彼此互相通知变化信息，路由选择协议使路由器能够共享它们所知道的有关互联网或邻站的情况。这种信息的共享使得在旧金山的路由器能够知道得克萨斯的网络故障情况。路由选择协议还包括一些过程，用来合并从其他路由器收到的信息。</p>
+<a id="more"></a>
+<h2 id="域内和域问路由选择"><a href="#域内和域问路由选择" class="headerlink" title="域内和域问路由选择"></a>域内和域问路由选择</h2><p>今天的互联网可以是非常庞大的，以至于仅使用一种路由选择协议还无法处理更新所有路由器的路由表的任务。为此，互联网斋要戈1J分为多个自治系统。<strong>一个自治系统Cautonomoussystem,AS)就是在一个管理机构管辖下的一组网络和路由器</strong>。在自治系统内部的路由选择称为域内路由选择。在自治系统之间的路由选择称为域间路由选择。每一个自治系统可以选择一个或多个域内路由选择协议来处理本自治系统内部的路由选择。但是，处理自治系统之间的路由选择只能使用一种域间路由选择协议。<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1ffn9yremy5j30ri08aq3o.jpg" alt=""></p>
+<h2 id="距离向量路由选择——-bellman-ford算法"><a href="#距离向量路由选择——-bellman-ford算法" class="headerlink" title="距离向量路由选择—— bellman-ford算法"></a>距离向量路由选择—— bellman-ford算法</h2><p>算法介绍：<br>虽然Bellman-Ford算法的原理非常简单且容易理解，但是算法本身看起来却是循环的，那些邻站又是怎样计算出它们与终点之间的最短路径的呢？为了解决这个问题，要使用循环语句。</p>
+<p>从第4行到第10行是开始时的初始化过程。路由器创建一个初始的路由表，它只能用于将分组转发到与它的接口直接相连的网络。对于路由表中的每一个表项，它都要向每一个邻站发送一个记录，这个记录中只有两个字段：目的地址和代价。<br>每当路由表收到来自邻站的一个记录，就要更新自己的路由表。在更新之后，路由器又要将路由表中的每一个表项发送给它的每一个邻站，以便这些邻站各自完成更新。</p>
+<p>图解：<br>下图所示为一个AS的初始路由表。请注意，这幅图并不是说所有的路由表都是在同一时间创建的，每个路由器会在启动时各建各的路由表，<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ffn7x6hdjcj30wm0j8n17.jpg" alt=""><br>现在假设路由器A发送了四个记录到它的邻站：路由器B、D和C。下图所示为路由器B在接收到这些记录后它的路由表的变化情况。我们把其他两个邻站的路由表的变化情况留作练习。<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1ffn80inkltj30uo0hidip.jpg" alt=""></p>
+<h2 id="路由信息协议-RIP"><a href="#路由信息协议-RIP" class="headerlink" title="路由信息协议 RIP"></a>路由信息协议 RIP</h2><p>RIP协议是一种内部网关协议（IGP），是一种动态路由选择协议，用于自治系统（AS）内的路由信息的传递。RIP协议基于距离矢量算法（DistanceVectorAlgorithms），使用“跳数”(即metric)来衡量到达目标地址的路由距离。这种协议的路由器只关心自己周围的世界，只与自己相邻的路由器交换信息，范围限制在15跳(15度)之内，再远，它就不关心了。RIP应用于OSI网络七层模型的网络层。各厂家定义的管理距离（AD，即优先级）如下：华为定义的优先级是100，思科定义的优先级是120。<br>RIP协议采用距离向量算法，在实际使用中已经较少适用。在默认情况下，RIP使用一种非常简单的度量制度：距离就是通往目的站点所需经过的链路数，取值为1~15，数值16表示无穷大。RIP进程使用UDP的520端口来发送和接收RIP分组。RIP分组每隔30s以广播的形式发送一次，为了防止出现“广播风暴”，其后续的的分组将做随机延时后发送。在RIP中，如果一个路由在180s内未被刷，则相应的距离就被设定成无穷大，并从路由表中删除该表项。RIP分组分为两种：请求分组和响应分组。</p>
+<h2 id="开放最短路径优先-OSPF"><a href="#开放最短路径优先-OSPF" class="headerlink" title="开放最短路径优先 OSPF"></a>开放最短路径优先 OSPF</h2><h3 id="链路状态路由选择"><a href="#链路状态路由选择" class="headerlink" title="链路状态路由选择"></a>链路状态路由选择</h3><p>链路状态路由选择的原理与距离向量路由选择的原理不同。使用链路状态路由选择时，如果某个域的每一个结点都有这个域的完整拓扑，也就是说具有这个域的结点和链路的列表并知道它们是怎样连接起来的，包括类型、代价（度翟）和链路的状态（正常工作或故障），那么这个结点就能够使用<strong>Dijkstra</strong>算法构造一个路由表。<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1ffnautymzgj30ti0migoe.jpg" alt=""></p>
+<h3 id="OSPF协议简介"><a href="#OSPF协议简介" class="headerlink" title="OSPF协议简介"></a>OSPF协议简介</h3><p>OSPF(Open Shortest Path First开放式最短路径优先）是一个内部网关协议(Interior Gateway Protocol，简称IGP），用于在单一自治系统（autonomous system,AS）内决策路由。是对链路状态路由协议的一种实现，隶属内部网关协议（IGP），故运作于自治系统内部。著名的迪克斯加算法(Dijkstra)被用来计算最短路径树。OSPF分为OSPFv2和OSPFv3两个版本,其中OSPFv2用在IPv4网络，OSPFv3用在IPv6网络。OSPFv2是由RFC 2328定义的，OSPFv3是由RFC 5340定义的。<strong>与RIP相比，OSPF是链路状态协议，而RIP是距离矢量协议。</strong></p>
+<h2 id="RIP协议和OSPF协议对比"><a href="#RIP协议和OSPF协议对比" class="headerlink" title="RIP协议和OSPF协议对比"></a>RIP协议和OSPF协议对比</h2><p>RIP协议使用的是Bellman-Ford算法，和Dijkstra算法（OSPF协议）一样，都是用来求最短路径树的，如果仅仅在算法层面比较的话，RIP和OSPF只是一棵最短路径树的不同实现，但是它们的区别不止这些，<strong>RIP中，路由通告的过程就是Bellman-Ford算法执行的过程</strong>，算法是分布式执行的，所有的路由器参与了算法的执行，最终的结果也是所有机器一起参与计算的结果，而OSPF中，通告的仅仅是链路状态，算法执行是在每一台机器上完成的，并不是分布式的。不论哪种算法，算法的执行过程都被认为是无干扰的，Bellman-Ford算法和Dijkstra算法在这一点上是一样的，最短路径树生成的过程中，节点不能增加，减少，权值不能变更…在路由计算的过程中虽然同样也要求这些但是却无法保证这些，因此OSPF的方式带来了很大的稳定性，因为它采用类似触发更新的机制第一时间报告任何变化，然后各个路由器在得到链路变更通知并且更新了自己的LSDB之后，用CPU的速度快速计算出一棵新的最短路径树，而RIP却完全不是这样，链路的变更平摊在周期性的路由信息通知之中，因此算法全部执行完的周期特别长，甚至根本就没有执行完的那一天，如此长的周期内网络任意一个位置链路变化的可能性都很大，因为算法的不稳定性增加，虽然单独为链路崩溃等严重问题设计了毒性逆转，触发更新以及水平分割等机制，但是对于一般的链路变更还是需要等到路由信息通告周期的到来，但是，如果网络理想化，RIP最终也会在每台路由器中生成一棵最短路径树。</p>
+<h2 id="边界网关协议-BGP"><a href="#边界网关协议-BGP" class="headerlink" title="边界网关协议 BGP"></a>边界网关协议 BGP</h2><p>边界网关协议(Border Gateway Protocol, BGP)是一个使用路径向量路由选择的<strong>域间路由选择协议</strong>。它于1989年首次出现，目前已经有四个版本.连接不同的AS自治系统。</p>
+<p>边界网关协议（BGP）是运行于 TCP 上的一种自治系统的路由协议。 BGP 是唯一一个用来处理像因特网大小的网络的协议，也是唯一能够妥善处理好不相关<strong>路由域间</strong>的多路连接的协议。 BGP 构建在 EGP 的经验之上。 BGP 系统的主要功能是和其他的 BGP 系统交换网络可达信息。网络可达信息包括列出的自治系统（AS）的信息。这些信息有效地构造了 AS 互联的拓朴图并由此清除了路由环路，同时在 AS 级别上可实施策略决策。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>度量是对分组途经的网络通路指派的一个代价，路由器通过咨询其路由表来为分组决定一条最佳路径。 </p>
+<p>自治系统(AS)是在一个管理机构管辖之下的一组网络和路由器。RIP和OSPF都是流行的域内路由选择协议（也称为内部路由选择协议），用来在自治系统内部更新路由表.RIP基于距离向量路由选择，即每一个路由器定期与它的邻站共享关于整个自治系统的知识。OSPF则把AS划分为一些区域，区域的定义是一些网络、主机和路由器的集合。OSPF基于链路状态路由选择，即每一个路由器向区域内的其他所有路由器发送其邻站的状态。  </p>
+<p>BGP是用来更新路由表的域间路由选择协议（也称为外部路由选择协议）。BGP所基于的路由选择方法称为路径向量路由选择。在这个协议中，分组必须经过的一些自治系统应当显式列出。路径向璧路由选择没有距离向量路由选择的不稳定性，也 没有环路问题。共有匹种类型的BGP报文：打开、更新、保活以及通知。 </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.douban.com/subject/5386194/" target="_blank" rel="external">《TCP/IP协议族》第十一章：单播路由选择协议(RIP、OSPF和BGP)</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/单播路由选择/" rel="tag"># 单播路由选择</a>
+          
+            <a href="/tags/最短路径算法/" rel="tag"># 最短路径算法</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/11/每天一本书计划，2011年完成每天一本书习惯/" rel="next" title="每天一本书计划，2011年完成每天一本书习惯">
+                <i class="fa fa-chevron-left"></i> 每天一本书计划，2011年完成每天一本书习惯
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">79</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#代价和度量"><span class="nav-number">1.</span> <span class="nav-text">代价和度量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路由选择协议"><span class="nav-number">2.</span> <span class="nav-text">路由选择协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#域内和域问路由选择"><span class="nav-number">3.</span> <span class="nav-text">域内和域问路由选择</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#距离向量路由选择——-bellman-ford算法"><span class="nav-number">4.</span> <span class="nav-text">距离向量路由选择—— bellman-ford算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#路由信息协议-RIP"><span class="nav-number">5.</span> <span class="nav-text">路由信息协议 RIP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开放最短路径优先-OSPF"><span class="nav-number">6.</span> <span class="nav-text">开放最短路径优先 OSPF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#链路状态路由选择"><span class="nav-number">6.1.</span> <span class="nav-text">链路状态路由选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSPF协议简介"><span class="nav-number">6.2.</span> <span class="nav-text">OSPF协议简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RIP协议和OSPF协议对比"><span class="nav-number">7.</span> <span class="nav-text">RIP协议和OSPF协议对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#边界网关协议-BGP"><span class="nav-number">8.</span> <span class="nav-text">边界网关协议 BGP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">10.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
