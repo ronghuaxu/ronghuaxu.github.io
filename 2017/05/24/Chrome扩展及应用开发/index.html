@@ -1,0 +1,1036 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="chrome插件开发,编程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="第1章初步接触Chrome扩展应用开发认识Chrome扩展及应用Chrome扩展更像是一个运行于本地的网站，只是它可以利用Chrome平台提供的丰富的接口，获得更加全面的信息，进行更加复杂的操作。而它的界面则使用HTML和CSS进行描述，这样的好处是可以用很短的时间构建出赏心悦目的UI。界面的渲染完全不需要开发者操心，而是交给Chrome去做。同时由于JavaScript是一门解释语言，无需对其配">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Chrome扩展及应用开发">
+<meta property="og:url" content="http://morningsun.net.cn/2017/05/24/Chrome扩展及应用开发/index.html">
+<meta property="og:site_name" content="我就是我,是不一样的烟火">
+<meta property="og:description" content="第1章初步接触Chrome扩展应用开发认识Chrome扩展及应用Chrome扩展更像是一个运行于本地的网站，只是它可以利用Chrome平台提供的丰富的接口，获得更加全面的信息，进行更加复杂的操作。而它的界面则使用HTML和CSS进行描述，这样的好处是可以用很短的时间构建出赏心悦目的UI。界面的渲染完全不需要开发者操心，而是交给Chrome去做。同时由于JavaScript是一门解释语言，无需对其配">
+<meta property="og:updated_time" content="2017-05-24T08:46:59.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chrome扩展及应用开发">
+<meta name="twitter:description" content="第1章初步接触Chrome扩展应用开发认识Chrome扩展及应用Chrome扩展更像是一个运行于本地的网站，只是它可以利用Chrome平台提供的丰富的接口，获得更加全面的信息，进行更加复杂的操作。而它的界面则使用HTML和CSS进行描述，这样的好处是可以用很短的时间构建出赏心悦目的UI。界面的渲染完全不需要开发者操心，而是交给Chrome去做。同时由于JavaScript是一门解释语言，无需对其配">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/05/24/Chrome扩展及应用开发/"/>
+
+
+
+
+
+  <title> Chrome扩展及应用开发 | 我就是我,是不一样的烟火 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我就是我,是不一样的烟火</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/05/24/Chrome扩展及应用开发/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我就是我,是不一样的烟火">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Chrome扩展及应用开发
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-24T00:00:00+08:00">
+                2017-05-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程大法好/" itemprop="url" rel="index">
+                    <span itemprop="name">编程大法好</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/24/Chrome扩展及应用开发/" class="leancloud_visitors" data-flag-title="Chrome扩展及应用开发">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="第1章初步接触Chrome扩展应用开发"><a href="#第1章初步接触Chrome扩展应用开发" class="headerlink" title="第1章初步接触Chrome扩展应用开发"></a>第1章初步接触Chrome扩展应用开发</h2><h3 id="认识Chrome扩展及应用"><a href="#认识Chrome扩展及应用" class="headerlink" title="认识Chrome扩展及应用"></a>认识Chrome扩展及应用</h3><p>Chrome扩展更像是一个<strong>运行于本地的网站</strong>，只是它可以利用Chrome平台提供的丰富的接口，获得更加全面的信息，进行更加复杂的操作。而它的界面则使用HTML和CSS进行描述，这样的好处是可以用很短的时间构建出赏心悦目的UI。界面的渲染完全不需要开发者操心，而是交给Chrome去做。同时由于JavaScript是一门解释语言，无需对其配置编译器，调试代码时你只要刷新一下浏览器就可以看到修改后的结果，这使得开发周期大大缩短。</p>
+<a id="more"></a>
+<p>同时Chrome浏览器相比于Java虚拟机、Python解释器（Linux和OSX中默认安装了Python，而Windows中默认没有安装）等其他语言环境更加普及——我甚至可以在我们学校的图书馆计算机中找到Chrome浏览器——所以你所开发的Chrome扩展就可以在更多的计算机中运行。当你眼前遇到一个问题需要利用计算机去处理，而这台计算机恰好安装了Chrome浏览器，那么你就可以欢快地打开记事本开始编写程序了，之后加载到Chrome浏览器中就可以查看运行结果，这是一件多么酷的事啊！</p>
+<h3 id="我的第一个Chrome扩展3"><a href="#我的第一个Chrome扩展3" class="headerlink" title="我的第一个Chrome扩展3"></a>我的第一个Chrome扩展3</h3><p><a href="https://wenku.baidu.com/view/8f81e3cebd64783e08122b0e.html" target="_blank" rel="external">my_clock github地址</a></p>
+<h3 id="Manifest文件格式"><a href="#Manifest文件格式" class="headerlink" title="Manifest文件格式"></a>Manifest文件格式</h3><p><a href="https://developer.chrome.com/apps/manifest" target="_blank" rel="external">google 官方manifest</a></p>
+<p>由于Google更新得非常频繁，上述页面内容可能会经常变动，但那些比较基本的属性变动的几率不会很大。</p>
+<h3 id="DOM简述"><a href="#DOM简述" class="headerlink" title="DOM简述"></a>DOM简述</h3><h2 id="第2章Chrome扩展基础"><a href="#第2章Chrome扩展基础" class="headerlink" title="第2章Chrome扩展基础"></a>第2章Chrome扩展基础</h2><h3 id="操作用户正在浏览的页面"><a href="#操作用户正在浏览的页面" class="headerlink" title="操作用户正在浏览的页面"></a>操作用户正在浏览的页面</h3><p> <a href="https://github.com/sneezry/chrome_extensions_and_apps_programming/tree/master/cannot_touch" target="_blank" rel="external">cannot_touch_google</a></p>
+<p>这个demo 使得用户无法点击google的搜索按钮<br>2.2跨域请求</p>
+<pre><code>functioncount(n){
+    varsum=0;
+    for(vari=1;i&lt;=n;i++){
+        sum+=i;}
+       return sum;
+    }
+    varc=count(5)+1;
+    console.log(c);
+</code></pre><p>上面这个例子会在控制台显示16，因为count(5)=1+2+3+4+5=15，c=15+1=16。我们再看下面的例子：</p>
+<pre><code>functionhttpRequest(url){
+    var xhr=newXMLHttpRequest();xhr.open(&quot;GET&quot;,url,true);
+    xhr.onreadystatechange=function(){
+    if(xhr.readyState==4){
+    return xhr.responseText;
+    }
+}
+xhr.send();
+}
+        varhtml=httpRequest(&apos;test.txt&apos;);console.log(html);
+</code></pre><p>上例运行结果<br>通过上图可以发现，虽然请求的资源内容为HelloWorld!，但却并没有正确地显示出来。对于第一个例子，count函数是一个阻塞函数，在它没有运行完之前它会阻塞下面的代码运行，所以直到count计算结束后才将结果返回后再加1赋给变量c，最后将变量c的值打印出来。而第二个例子中的httpRequest函数不是一个阻塞函数，在它没运行完之前后面的代码就已经开始运行，这样html变量在httpRequest函数没返回值之前就被赋值，所以最终的结果必然就是undefined了。</p>
+<h3 id="常驻后台"><a href="#常驻后台" class="headerlink" title="常驻后台"></a>常驻后台</h3><p>Chrome允许扩展应用在后台常驻一个页面以实现这样的功能。在一些典型的扩展中，UI页面，如popup页面或者options页面，在需要更新一些状态时，会向后台页面请求数据，而当后台页面检测到状态发生改变时，也会通知UI界面刷新。</p>
+<p>在Manifest中指定background域可以使扩展常驻后台。background可以包含三种属性，分别是scripts、page和persistent。通常使用scripts。</p>
+<h3 id="带选项页面的扩展"><a href="#带选项页面的扩展" class="headerlink" title="带选项页面的扩展"></a>带选项页面的扩展</h3><p><a href="https://github.com/sneezry/chrome_extensions_and_apps_programming/tree/master/weather" target="_blank" rel="external"></a><br>1.输入城市名（默认北京）</p>
+<pre><code>var city = localStorage.city;
+city = city?city:&apos;beijing&apos;;
+document.getElementById(&apos;city&apos;).value = city;
+document.getElementById(&apos;save&apos;).onclick = function(){
+    localStorage.city = document.getElementById(&apos;city&apos;).value;
+    alert(&apos;保存成功。&apos;);
+}
+</code></pre><p>2.跨域名异步访问天气网站</p>
+<pre><code>function httpRequest(url, callback){
+    var xhr = new XMLHttpRequest();
+    xhr.open(&quot;GET&quot;, url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            callback(xhr.responseText);
+        }
+    }
+    xhr.send();
+}
+
+function showWeather(result){
+    result = JSON.parse(result);
+    var list = result.list;
+    var table = &apos;&lt;table&gt;&lt;tr&gt;&lt;th&gt;日期&lt;/th&gt;&lt;th&gt;天气&lt;/th&gt;&lt;th&gt;最低温度&lt;/th&gt;&lt;th&gt;最高温度&lt;/th&gt;&lt;/tr&gt;&apos;;
+    for(var i in list){
+        var d = new Date(list[i].dt*1000);
+        table += &apos;&lt;tr&gt;&apos;;
+        table += &apos;&lt;td&gt;&apos;+d.getFullYear()+&apos;-&apos;+(d.getMonth()+1)+&apos;-&apos;+d.getDate()+&apos;&lt;/td&gt;&apos;;
+        table += &apos;&lt;td&gt;&apos;+list[i].weather[0].description+&apos;&lt;/td&gt;&apos;;
+        table += &apos;&lt;td&gt;&apos;+Math.round(list[i].temp.min-273.15)+&apos; °C&lt;/td&gt;&apos;;
+        table += &apos;&lt;td&gt;&apos;+Math.round(list[i].temp.max-273.15)+&apos; °C&lt;/td&gt;&apos;;
+        table += &apos;&lt;/tr&gt;&apos;;
+    }
+    table += &apos;&lt;/table&gt;&apos;;
+    document.getElementById(&apos;weather&apos;).innerHTML = table;
+}
+
+var city = localStorage.city;
+city = city?city:&apos;beijing&apos;;
+var url = &apos;http://api.openweathermap.org/data/2.5/forecast/daily?q=&apos;+city+&apos;,china&amp;lang=zh_cn&apos;;
+httpRequest(url, showWeather);
+</code></pre><h3 id="扩展页面间的通信"><a href="#扩展页面间的通信" class="headerlink" title="扩展页面间的通信"></a>扩展页面间的通信</h3><p>有时需要让扩展中的多个页面之间，或者不同扩展的多个页面之间相互传输数据，以获得彼此的状态。比如音乐播放器扩展，当用户鼠标点击popup页面中的音乐列表时，popup页面应该将用户这个指令告知后台页面，之后后台页面开始播放相应的音乐。<br>Chrome提供了4个有关扩展页面间相互通信的接口，分别是runtime.sendMessage、runtime.onMessage、runtime.connect和runtime.onConnect。做为一部入门级教程，此节将只讲解runtime.sendMessage和runtime.onMessage接口，runtime.connect和runtime.onConnect做为更高级的接口请读者依据自己的兴趣自行学习，你可以在<a href="http://developer.chrome.com/extensions/extension得到有关这两个接口的完整官方文档。" target="_blank" rel="external">http://developer.chrome.com/extensions/extension得到有关这两个接口的完整官方文档。</a></p>
+<h3 id="储存数据"><a href="#储存数据" class="headerlink" title="储存数据"></a>储存数据</h3><p>一个程序免不了要储存数据，对于Chrome扩展也是这样。通常Chrome扩展使用以下三种方法中的一种来储存数据：第一种是使用HTML5的localStorage，这种方法在上一节的内容中已经涉及（<strong>天气预报demo，暂存用户输入的城市</strong>）；第二种是使用Chrome提供的存储API；第三种是使用WebSQLDatabase。</p>
+<h2 id="第3章Chrome扩展的UI界面"><a href="#第3章Chrome扩展的UI界面" class="headerlink" title="第3章Chrome扩展的UI界面"></a>第3章Chrome扩展的UI界面</h2><p>前两章我们所设计的扩展，使用的UI设计都非常简单。对于一个面向用户的产品，这样显然是不合适的。用户对一个程序的第一印象就是UI的设计，拙劣的UI设计完全可能将90%的用户挡在门外——即使功能设计得非常完美。</p>
+<p>本章将专门讲解Chrome扩展的UI界面，通过Chrome提供丰富的界面API，我们可以设计出交互出色的扩展。</p>
+<h3 id="CSS简述"><a href="#CSS简述" class="headerlink" title="CSS简述"></a>CSS简述</h3><h3 id="BrowserActions"><a href="#BrowserActions" class="headerlink" title="BrowserActions"></a>BrowserActions</h3><p>在manifest中配置。<br>BrowserActions将扩展图标置于Chrome浏览器工具栏中，地址栏的右侧。如果声明了popup页面，当用户点击图标时，在图标的下侧会打开这个页面1。同时图标上面还可以附带badge——一个带有显示有限字符空间的区域——用以显示一些有用的信息，如未读邮件数、当前音乐播放时间等。</p>
+<h3 id="右键菜单"><a href="#右键菜单" class="headerlink" title="右键菜单"></a>右键菜单</h3><p>当用户在网页中点击鼠标右键后，会唤出一个菜单，在上面有复制、粘贴和翻译等选项，为用户提供快捷便利的功能。Chrome也将这里开放给了开发者，也就是说我们可以把自己所编写的扩展功能放到右键菜单中。</p>
+<p>要将扩展加入到右键菜单中，首先要在Manifest的permissions域中声明<strong>contextMenus</strong>权限。</p>
+<h3 id="桌面提醒"><a href="#桌面提醒" class="headerlink" title="桌面提醒"></a>桌面提醒</h3><p>之前的章节提到过利用标题和badge向用户提供有限的信息，那么如果需要向用户提供更加丰富的信息怎么办呢？Chrome提供了桌面提醒功能，这个功能可以为用户提供更加丰富的信息。<br>桌面提醒，图片来自<a href="http://developer.chrome.com" target="_blank" rel="external">http://developer.chrome.com</a><br>要使用桌面提醒功能，需要在Manifest中声明<strong>notifications</strong>权限。</p>
+<h3 id="Omnibox"><a href="#Omnibox" class="headerlink" title="Omnibox"></a>Omnibox</h3><p>Chrome和其他浏览器相比一个最大的区别就是地址栏——其实不仅仅是地址栏，而是一个多功能的输入框，Google将其称为omnibox（中文为“多功能框”）。我们熟悉的一个功能就是用户可以直接在omnibox搜索关键字，Chrome也将omnibox开放给开发者，这使得omnibox更加强大。</p>
+<p>要使用omnibox需要在Manifest的omnibox域指定    </p>
+<pre><code>keyword：&quot;omnibox&quot;:{&quot;keyword&quot;:&quot;hamster&quot;
+</code></pre><h3 id="PageActions"><a href="#PageActions" class="headerlink" title="PageActions"></a>PageActions</h3><p>PageActions与BrowserActions非常类似，除了PageActions没有badge外，其他BrowserActions所有的方法PageActions都有。另外的区别就是，PageActions并不像BrowserActions那样一直显示图标，而是可以在特定标签特定情况下显示或隐藏，所以它还具有独有的show<br>和hide方法。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.ituring.com.cn/book/1421" target="_blank" rel="external">《Chrome扩展及应用开发》</a></p>
+<p><a href="https://wenku.baidu.com/view/8f81e3cebd64783e08122b0e.html" target="_blank" rel="external">免费在线pdf地址</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/chrome插件开发/" rel="tag"># chrome插件开发</a>
+          
+            <a href="/tags/编程/" rel="tag"># 编程</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/21/高效程序员的45个习惯/" rel="next" title="《高效程序员的45个习惯》">
+                <i class="fa fa-chevron-left"></i> 《高效程序员的45个习惯》
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">53</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第1章初步接触Chrome扩展应用开发"><span class="nav-number">1.</span> <span class="nav-text">第1章初步接触Chrome扩展应用开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#认识Chrome扩展及应用"><span class="nav-number">1.1.</span> <span class="nav-text">认识Chrome扩展及应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我的第一个Chrome扩展3"><span class="nav-number">1.2.</span> <span class="nav-text">我的第一个Chrome扩展3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Manifest文件格式"><span class="nav-number">1.3.</span> <span class="nav-text">Manifest文件格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM简述"><span class="nav-number">1.4.</span> <span class="nav-text">DOM简述</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第2章Chrome扩展基础"><span class="nav-number">2.</span> <span class="nav-text">第2章Chrome扩展基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作用户正在浏览的页面"><span class="nav-number">2.1.</span> <span class="nav-text">操作用户正在浏览的页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常驻后台"><span class="nav-number">2.2.</span> <span class="nav-text">常驻后台</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#带选项页面的扩展"><span class="nav-number">2.3.</span> <span class="nav-text">带选项页面的扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展页面间的通信"><span class="nav-number">2.4.</span> <span class="nav-text">扩展页面间的通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#储存数据"><span class="nav-number">2.5.</span> <span class="nav-text">储存数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第3章Chrome扩展的UI界面"><span class="nav-number">3.</span> <span class="nav-text">第3章Chrome扩展的UI界面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS简述"><span class="nav-number">3.1.</span> <span class="nav-text">CSS简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BrowserActions"><span class="nav-number">3.2.</span> <span class="nav-text">BrowserActions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#右键菜单"><span class="nav-number">3.3.</span> <span class="nav-text">右键菜单</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#桌面提醒"><span class="nav-number">3.4.</span> <span class="nav-text">桌面提醒</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Omnibox"><span class="nav-number">3.5.</span> <span class="nav-text">Omnibox</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PageActions"><span class="nav-number">3.6.</span> <span class="nav-text">PageActions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
