@@ -1,0 +1,1011 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="maven,java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介工作之后，用的最多的就是maven，可是也没深入的去研究maven的内部实现原理，今天看了《Maven实战2》
+同类产品比较：创世之初，世上只有Make一种构建工具，后来，其发展为GNU Make。但是，由于需求的不断涌现，码农的世界里逐渐演化出了千奇百怪的构建工具。当前，JVM生态圈由三大构建工具所统治：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="maven学习心得">
+<meta property="og:url" content="http://morningsun.net.cn/2017/05/27/maven学习心得/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="简介工作之后，用的最多的就是maven，可是也没深入的去研究maven的内部实现原理，今天看了《Maven实战2》
+同类产品比较：创世之初，世上只有Make一种构建工具，后来，其发展为GNU Make。但是，由于需求的不断涌现，码农的世界里逐渐演化出了千奇百怪的构建工具。当前，JVM生态圈由三大构建工具所统治：">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fg4n1kpaihj31e20c240v.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4nfoiketj30vi0tyafm.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fg4ne7ph5rj31080ccn1l.jpg">
+<meta property="og:updated_time" content="2017-05-31T09:01:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="maven学习心得">
+<meta name="twitter:description" content="简介工作之后，用的最多的就是maven，可是也没深入的去研究maven的内部实现原理，今天看了《Maven实战2》
+同类产品比较：创世之初，世上只有Make一种构建工具，后来，其发展为GNU Make。但是，由于需求的不断涌现，码农的世界里逐渐演化出了千奇百怪的构建工具。当前，JVM生态圈由三大构建工具所统治：">
+<meta name="twitter:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fg4n1kpaihj31e20c240v.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/05/27/maven学习心得/"/>
+
+
+
+
+
+  <title> maven学习心得 | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/05/27/maven学习心得/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                maven学习心得
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-27T17:46:04+08:00">
+                2017-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/27/maven学习心得/" class="leancloud_visitors" data-flag-title="maven学习心得">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>工作之后，用的最多的就是maven，可是也没深入的去研究maven的内部实现原理，今天看了《Maven实战2》</p>
+<p>同类产品比较：<br>创世之初，世上只有Make一种构建工具，后来，其发展为GNU Make。但是，由于需求的不断涌现，码农的世界里逐渐演化出了千奇百怪的构建工具。<br>当前，JVM生态圈由三大构建工具所统治：</p>
+<a id="more"></a>
+<ul>
+<li>Apache Ant带着Ivy</li>
+<li>Maven</li>
+<li>Gradel</li>
+</ul>
+<p>Ant的主要优点在于对构建过程的控制上。</p>
+<p>Gradle的成就可以概括为：约定好，灵活性也高。</p>
+<p>Maven的主要优点是生命周期。只要项目基于一定之规，它的整个生命周期都能够轻松搞定，代价是牺牲了灵活性。</p>
+<h2 id="maven坐标和依赖"><a href="#maven坐标和依赖" class="headerlink" title="maven坐标和依赖"></a>maven坐标和依赖</h2><h3 id="坐标详解"><a href="#坐标详解" class="headerlink" title="坐标详解"></a>坐标详解</h3><ul>
+<li><p>groupId ：定义当前Maven项目隶属的实际项目。首先，Maven项目和实际项目不一定是一对一的关系。比如SpringFrameWork这一实际项目，其对应的Maven项目会有很多，如spring-core,spring-context等。这是由于Maven中模块的概念，因此，一个实际项目往往会被划分成很多模块。其次，groupId不应该对应项目隶属的组织或公司。原因很简单，一个组织下会有很多实际项目，如果groupId只定义到组织级别，而后面我们会看到，artifactId只能定义Maven项目（模块），那么实际项目这个层次将难以定义。最后，groupId的表示方式与Java包名的表达方式类似，通常与域名反向一一对应。</p>
+</li>
+<li><p>artifactId : 该元素定义当前实际项目中的一个Maven项目（模块），推荐的做法是使用实际项目名称作为artifactId的前缀。比如上例中的my-app。</p>
+</li>
+<li><p>version : 该元素定义Maven项目当前的版本</p>
+</li>
+<li><p>packaging ：定义Maven项目打包的方式，首先，打包方式通常与所生成构件的文件扩展名对应，如上例中的packaging为jar,最终的文件名为my-app-0.0.1-SNAPSHOT.jar。也可以打包成war, ear等。当不定义packaging的时候，Maven 会使用默认值jar</p>
+</li>
+<li><p>classifier: 该元素用来帮助定义构建输出的一些附件。附属构件与主构件对应，如上例中的主构件为my-app-0.0.1-SNAPSHOT.jar,该项目可能还会通过一些插件生成如my-app-0.0.1-SNAPSHOT-javadoc.jar,my-app-0.0.1-SNAPSHOT-sources.jar, 这样附属构件也就拥有了自己唯一的坐标</p>
+</li>
+</ul>
+<h3 id="依赖范围"><a href="#依赖范围" class="headerlink" title="依赖范围"></a>依赖范围</h3><p>Maven有以下几种依赖范围：</p>
+<ul>
+<li>compile：编译依赖范围。如果没有指定，就会默认使用该依赖范围。使用此依赖范围的Maven依赖，对于编译、测试、运行三种classpath都有效。典型的例子是spring-core，在编译，测试和运行的时候都需要使用该依赖。</li>
+<li>provided：已提供依赖范围。使用此依赖范围的Maven依赖，对于编译和测试classpath有效，但在运行时无效。典型的例子是servlet-api，编译和测试项目的时候需要该依赖，但在运行项目的时候，由于容器已经提供，就不需要Maven重复地引入一遍。</li>
+<li>test：测试依赖范围。使用此依赖范围的Maven依赖，只对于测试classpath有效，在编译主代码或者运行项目的使用时将无法使用此类依赖。典型的例子就是JUnit，它只有在编译测试代码及运行测试的时候才需要。</li>
+<li>runtime：运行时依赖范围。使用此依赖范围的Maven依赖，对于测试和运行classpath有效，但在编译主代码时无效。典型的例子是JDBC驱动实现，项目主代码的编译只需要JDK提供的JDBC接口，只有在执行测试或者运行项目的时候才需要实现上述接口的具体JDBC驱动。</li>
+<li>system：系统依赖范围。该依赖范围与provided所表示的依赖范围一致，对于编译和测试classpath有效，但在运行时无效。只是使用system范围依赖时必须通过systemPath元素显式地指定依赖文件的路径。由于此类依赖不是通过Maven仓库解析的，而且往往与本机系统绑定，可能造成构建的不可移植，因此应该谨慎使用，systemPath元素可以引用环境变量</li>
+</ul>
+<p>上述除import以外的各种依赖范围与三种classpath的关系如下：<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fg4n1kpaihj31e20c240v.jpg" alt=""></p>
+<h2 id="maven之快照版本"><a href="#maven之快照版本" class="headerlink" title="maven之快照版本"></a>maven之快照版本</h2><p>maven 快照（2.1-Snapshots）形式的存在理由：方便未完整的功能代码发布，A开发，B能及时获取得到最新的代码。</p>
+<p>Maven的快照版本机制就是为了解决上述问题。在该例中，小张只需要将模块A的版本设定为2.1-SNAPSHOT，然后发布到私服中，在发布的过程中，Maven会自动为构件打上时间戳。比如:2.1-20091214.221414-13就表示2009年12月14日 22点14分14秒的第13次快照。有了该时间戳，Maven就能随时找到仓库中该构件2.1-SNAPSHOT版本最新的文件。这时，季MM配置对于模块A的2.1-SNAPSHOT版本的依赖，当她构件模块B的时候，Maven会自动从仓库中检查模块A的2.1-SNAPSHOT的最新构件，当发现有更新时便进行下载。默认情况下，Maven每天检查一次更新(由仓库配置的updatePolicy控制)，用户也可以使用命令行-U参数强制让Maven检查更新，如：mvn clean install-U。</p>
+<p>基于快照版本机制，小张在构建成功之后才能将构件部署至仓库，而季MM可以完全不用考虑模块A的构建，并且她能确保随时得到模块A的最新可用的快照构件，而这一切都不需要额外的手工操作。</p>
+<h2 id="生命周期和插件"><a href="#生命周期和插件" class="headerlink" title="生命周期和插件"></a>生命周期和插件</h2><p>项目的清理，初始化，编译，测试，打包，集成测试，验证 部署，和站点生成。</p>
+<p><strong>在这个阶段中，比较重要和常用的阶段有：</strong></p>
+<p>validate<br>generate-sources<br>process-sources<br>generate-resources<br>process-resources：复制并处理资源文件至目标目录，准备打包<br>compile：编译项目源代码<br>process-clases<br>generate-test-sources<br>procss-test-sources<br>generate-test-resources<br>process-test-resources：复制并处理资源文件至目标测试目录<br>test-compile：编译测试源代码<br>process-test-classes<br>test：使用合适的单元测试框架测试运行，这些测试代码将不会被打包或部署<br>prepare-package<br>package：接受编译好的代码，打包成可发布的格式，如jar<br>pre-integration-test<br>integration-test<br>post-integration-test<br>verify<br>install：将包安装至本地仓库，以便让其它项目依赖<br>deploy：将最终的包复制到远程仓库，以便让其它开发人员与项目共享</p>
+<p><strong>基本上，只要根据名称我们就可以猜测出每个阶段的用途。要记住的是，任何一个阶段的时候，它前面的所有阶段都会被运行，这也就是为什么我们运行mvn clean install的时候，代码会被编译、测试、打包。</strong></p>
+<p>mvn clean 中的clean就是上面的clean，在一个生命周期中，运行某个阶段的时候，它之前的所有阶段都会被运行，也就是说，mvn clean 等同于 mvn pre-clean clean ，如果我们运行 mvn post-clean ，那么 pre-clean，clean 都会被运行。这是Maven很重要的一个规则，可以大大简化命令行的输入。  </p>
+<h2 id="聚合与继承"><a href="#聚合与继承" class="headerlink" title="聚合与继承"></a>聚合与继承</h2><p>聚合：就是用一个总的maven项目包含其他子maven项目，这样，就不需要一个个打包运行mvn命令了，也可以方便继承的体现，优化pom.xml的重复项。</p>
+<p>继承：最好的方式是使用dependencyManagement 可以免去一些配置.<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4nfoiketj30vi0tyafm.jpg" alt=""></p>
+<p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fg4ne7ph5rj31080ccn1l.jpg" alt=""></p>
+<p><strong>同理，插件管理 也有pluginManagement</strong>，具体使用细则省略。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.douban.com/subject/5345682/" target="_blank" rel="external">《Maven实战》</a></p>
+<p><a href="http://blog.csdn.net/bailyzheng/article/details/48395949" target="_blank" rel="external">Java构建工具：Ant vs Maven vs Gradle</a></p>
+<p><a href="http://blog.csdn.net/sunnyyoona/article/details/50609297" target="_blank" rel="external"> [Maven实战]（8）依赖配置与依赖范围</a></p>
+<p><a href="http://www.cnblogs.com/tian830937/p/5145603.html" target="_blank" rel="external">maven3实战之仓库(快照版本)</a></p>
+<p><a href="Maven实战：Maven生命周期">http://www.cnblogs.com/xrq730/p/5527254.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/maven/" rel="tag"># maven</a>
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/25/junit4学习心得/" rel="next" title="junit4学习心得">
+                <i class="fa fa-chevron-left"></i> junit4学习心得
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/31/java对象的共享/" rel="prev" title="java对象的共享">
+                java对象的共享 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maven坐标和依赖"><span class="nav-number">2.</span> <span class="nav-text">maven坐标和依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坐标详解"><span class="nav-number">2.1.</span> <span class="nav-text">坐标详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#依赖范围"><span class="nav-number">2.2.</span> <span class="nav-text">依赖范围</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maven之快照版本"><span class="nav-number">3.</span> <span class="nav-text">maven之快照版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期和插件"><span class="nav-number">4.</span> <span class="nav-text">生命周期和插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合与继承"><span class="nav-number">5.</span> <span class="nav-text">聚合与继承</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

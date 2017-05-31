@@ -1,3 +1,5 @@
+http://morningsun.net.cn/2017/05/31/java对象的共享/
+http://morningsun.net.cn/2017/05/27/maven学习心得/
 http://morningsun.net.cn/2017/05/25/junit4学习心得/
 http://morningsun.net.cn/2017/05/24/Chrome扩展及应用开发/
 http://morningsun.net.cn/2017/05/21/高效程序员的45个习惯/

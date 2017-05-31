@@ -1,0 +1,1091 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java多线程,并发编程实战," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="内容简介我们已经知道了同步代码块和同步方法可以确保以原子的方式执行操作，但一种常见的误解是，认为关键字synchronized只能用于实现原子性或者确定“临界区(CriticalSection)”。同步还有另一个重要的方面：内存可见性(MemoryVisibility)。我们不仅希望防止某个线程正在使用对象状态而另一个线程在同时修改该状态，而且希望确保当一个线程修改了对象状态后，其他线程能够看到发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java对象的共享">
+<meta property="og:url" content="http://morningsun.net.cn/2017/05/31/java对象的共享/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="内容简介我们已经知道了同步代码块和同步方法可以确保以原子的方式执行操作，但一种常见的误解是，认为关键字synchronized只能用于实现原子性或者确定“临界区(CriticalSection)”。同步还有另一个重要的方面：内存可见性(MemoryVisibility)。我们不仅希望防止某个线程正在使用对象状态而另一个线程在同时修改该状态，而且希望确保当一个线程修改了对象状态后，其他线程能够看到发">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4j288d21j30b808i3yl.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4j387c5kj30mw086wex.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fg4jmyu7z7j311q0hk40n.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4jsnb2joj30tc0m8abb.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fg4jrh8sojj30tg0mm0uk.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4jyoyugdj30gv0dd3zt.jpg">
+<meta property="og:updated_time" content="2017-05-31T08:23:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java对象的共享">
+<meta name="twitter:description" content="内容简介我们已经知道了同步代码块和同步方法可以确保以原子的方式执行操作，但一种常见的误解是，认为关键字synchronized只能用于实现原子性或者确定“临界区(CriticalSection)”。同步还有另一个重要的方面：内存可见性(MemoryVisibility)。我们不仅希望防止某个线程正在使用对象状态而另一个线程在同时修改该状态，而且希望确保当一个线程修改了对象状态后，其他线程能够看到发">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4j288d21j30b808i3yl.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/05/31/java对象的共享/"/>
+
+
+
+
+
+  <title> java对象的共享 | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/05/31/java对象的共享/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java对象的共享
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-31T17:46:04+08:00">
+                2017-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/05/31/java对象的共享/" class="leancloud_visitors" data-flag-title="java对象的共享">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="内容简介"><a href="#内容简介" class="headerlink" title="内容简介"></a>内容简介</h1><p>我们已经知道了同步代码块和同步方法可以确保以原子的方式执行操作，但一种常见的误解是，认为关键字synchronized只能用于实现原子性或者确定“临界区(CriticalSection)”。同步还有另一个重要的方面：内存可见性(MemoryVisibility)。我们不仅希望防止某个线程正在使用对象状态而另一个线程在同时修改该状态，而且希望确保当一个线程修改了对象状态后，其他线程能够看到发生的状态变化。如果没有同步，那么这种情况就无法实现。你可以通过显式的同步或者类库中内置的同步来保证对象被安全地发布。</p>
+<a id="more"></a>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>读操作的线程并非可以一直获取到写线程写入的最新值，例如：</p>
+<pre><code> private static boolean ready;
+private static int number;
+
+private static class ReaderThread extends Thread {
+    public void run() {
+        while (!ready)
+            Thread.yield();
+        System.out.println(number);
+    }
+}
+
+public static void main(String[] args) {
+    new ReaderThread().start();
+    number = 42; //操作A
+    ready = true; //操作B
+}
+</code></pre><p>以上实例代码可能存在如下问题：</p>
+<ul>
+<li>一直循环下去，因为读线程可能看不到写线程写入了ready。</li>
+<li>在读线程中输出0，因为主线程可能对number和ready的赋值顺序进行了改变。这种现象也叫做重排序。</li>
+</ul>
+<p><strong>重排序：</strong><br>as-if-serial语义的意思指：不管怎么重排序（编译器和处理器为了提高并行度），（单线程）程序的执行结果不能被改变。<br>为了具体说明，请看下面计算圆面积的代码示例：</p>
+<pre><code>double pi  = 3.14;    //A
+double r   = 1.0;     //B
+double area = pi * r * r; //C
+</code></pre><p>上面三个操作的数据依赖关系如下图所示：<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4j288d21j30b808i3yl.jpg" alt=""><br>如上图所示，A和C之间存在数据依赖关系，同时B和C之间也存在数据依赖关系。因此在最终执行的指令序列中，C不能被重排序到A和B的前面（C排到A和B的前面，程序的结果将会被改变）。但A和B之间没有数据依赖关系，编译器和处理器可以重排序A和B之间的执行顺序。下图是该程序的两种执行顺序：<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4j387c5kj30mw086wex.jpg" alt="">  </p>
+<h3 id="失效数据"><a href="#失效数据" class="headerlink" title="失效数据"></a>失效数据</h3><p>以上述例子来说，当读线程读取ready变量的时候，很可能该变量已经失效。失效的数据通常包括两类数据：</p>
+<ul>
+<li>值数据</li>
+<li>引用数据</li>
+</ul>
+<p>值数据的失效例如一个计数器应用，如果不对count变量进行同步处理的话可能会导致计数不准的问题。如果对象的引用失效可能会导致一些莫名其妙的问题，比如意料之外的异常，被破坏的数据结果，不精确的计算及无限循环等。</p>
+<h3 id="非原子的64位操作"><a href="#非原子的64位操作" class="headerlink" title="非原子的64位操作"></a>非原子的64位操作</h3><p>根据Java内存模型的要求，变量的读写操作必须是原子操作。对于非volatile类型的long和double变量，JVM允许将64位读写操作分解为两个32为的操作，这样在多线程环境中共享可变的long和double变量也是不安全的。</p>
+<h3 id="加锁和可见性"><a href="#加锁和可见性" class="headerlink" title="加锁和可见性"></a>加锁和可见性</h3><h4 id="Java内存模型"><a href="#Java内存模型" class="headerlink" title="Java内存模型"></a>Java内存模型</h4><p>CPU在运行的时候，不可能把所有的东西都放在寄存器里面，所有需要使用内存。这个内存就是我们知道的那个内存。</p>
+<p>但是实际情况是，内存的读写速度于CPU的指令操作差了几个数量级。所以为了跟高效的使用CPU，就有<strong>高速缓存</strong>这么一个东西。</p>
+<p><strong>高速缓冲存储器概述：（摘抄自计算机组成原理）</strong>  </p>
+<blockquote>
+<p>在多体并行存储系统中，由千i/o设备向主存请求的级别高于CPU访存，这就出现了CPU等待I/o设备访存的现象，致使CPU空等一段时间，甚至可能等待几个主存周期，从而降低了CPU的工作效率。为了避免CPU与i/o设备争抢访存，可在CPU与主存之间加一级缓存,这样，主存可将CPU要取的信息提前送至缓存，一且主存在与I/o设备交换时，CPU可直接从缓存中读取所需信息，不必空等而影响效率。</p>
+<p>从另一角度来看，主存速度的提高始终跟不上CPU的发展。据统计，CPU的速度平均每年改进60%,而组成主存的动态RAM速度平均每年只改进7%。结果是CPU和动态RAM之间的速度间隙平均每年增大50%。例如，100MHz的Pentium处理器平均每10ns就执行一条指令，而动态RAM的典型访问时间为60-120ns。这也希望由高速缓存Cache来解决主存与CPU速度的不匹配问题。</p>
+</blockquote>
+<p>java的内存模型与物理结构非常相似，有一个主内存，对应我们计算机的内存，还有每个线程都有一个工作内存，对应于高速缓存。<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fg4jmyu7z7j311q0hk40n.jpg" alt="">  </p>
+<p>可以看到，每个java线程都有自己独立的内存。<br>这也就解释了，为什么不同线程，如果不同步的话，变量就会有并发的问题。<br>这里关于工作内存和主内存的拷贝问题，是由JVM实现的，并不是正真意义上的内存复制。  </p>
+<h4 id="内置锁和外置锁如何实现可见性"><a href="#内置锁和外置锁如何实现可见性" class="headerlink" title="内置锁和外置锁如何实现可见性"></a>内置锁和外置锁如何实现可见性</h4><p>内置锁和显式锁的区别，可以参考博客<a href="http://coolxing.iteye.com/blog/1483071" target="_blank" rel="external">内置锁和显式锁的区别–JCIP C13读书笔记</a><br>下面是锁释放-获取的示例代码（以内置锁为例）：</p>
+<pre><code>class MonitorExample {
+int a = 0;
+
+public synchronized void writer() {  //1
+    a++;                             //2
+}                                    //3 
+
+public synchronized void reader() {  //4 
+    int i = a;                       //5     
+
+  }                                  //6
+}    
+</code></pre><p><strong>锁释放和获取的内存语义</strong><br>当线程释放锁时，JMM会把该线程对应的本地内存中的共享变量刷新到主内存中。以上面的MonitorExample程序为例，A线程释放锁后，共享数据的状态示意图如下：<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4jsnb2joj30tc0m8abb.jpg" alt=""></p>
+<p>当线程获取锁时，JMM会把该线程对应的本地内存置为无效。从而使得被监视器保护的临界区代码必须要从主内存中去读取共享变量。下面是锁获取的状态示意图：<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fg4jrh8sojj30tg0mm0uk.jpg" alt=""></p>
+<p>下面对锁释放和锁获取的内存语义做个总结：</p>
+<ol>
+<li>线程A释放一个锁，实质上是线程A向接下来将要获取这个锁的某个线程发出了（线程A对共享变量所做修改的）消息。</li>
+<li>线程B获取一个锁，实质上是线程B接收了之前某个线程发出的（在释放这个锁之前对共享变量所做修改的）消息。</li>
+<li>线程A释放锁，随后线程B获取这个锁，这个过程实质上是线程A通过主内存向线程B发送消息。</li>
+</ol>
+<h4 id="volatile关键字如何实现可见性"><a href="#volatile关键字如何实现可见性" class="headerlink" title="volatile关键字如何实现可见性"></a>volatile关键字如何实现可见性</h4><p>Java内存间操作包括8种操作：<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4jyoyugdj30gv0dd3zt.jpg" alt=""> </p>
+<p>变量的修改对所有线程可见原理：<br>　　线程中每次use变量时，都需要连续执行read-&gt;load-&gt;use几项操作，即所谓的每次使用都要从主内存更新变量值，这样其它线程的修改对该线程就是可见的。<br>　　线程每次assign变量时，都需要连续执行assign-&gt;store-&gt;write几项操作，即所谓每次更新完后都会回写到主内存，这样使得其它线程读到的都是最新数据。<br>　　<br><strong>缺点： 加锁机制可以确保可见性又可以确保原子性，而volatile变量只能确保可见性</strong></p>
+<h2 id="发布和逸出"><a href="#发布和逸出" class="headerlink" title="发布和逸出"></a>发布和逸出</h2><p>所谓发布对象是指使一个对象能够被当前范围之外的代码所使用。所谓<strong>逸出是指一种错误的发布情况</strong>，当一个对象还没有构造完成时，就使它被其他线程所见，这种情况就称为对象逸出。</p>
+<p>下面列举几个逸出的示例。<br><strong>第一，通过静态变量引用逸出：</strong>  </p>
+<pre><code>public static Set&lt;Secret&gt; knownSecrets;
+public void initialize() {
+    knowsSecrets = new HashSet&lt;Secret&gt;();
+}
+</code></pre><p>上边代码示例中，调用initialize方法，发布了knowSecrets对象。当你向knowSecrets中添加一个Secret时，会同时将Secret对象发布出去，原因是可以通过遍历knowSecrets获取到Secret对象的引用，然后进行修改。</p>
+<p><strong>第二，通过非静态（私有）方法：</strong>  </p>
+<pre><code>class UnsafeStates {
+    private String[] states = new String[]{&quot;AK&quot;, &quot;AL&quot;};
+    public String[] getStates() {
+        return states;
+    }
+}
+</code></pre><p>以这种方式发布的states会出问题，任何一个调用者都能修改它的内容。数组states已经逸出了它所属的范围，这个本应该私有的数据，事实上已经变成共有的了。</p>
+<p><strong>第三，this逸出：</strong>  </p>
+<pre><code>public class ThisEscape {
+　　public ThisEscape(EventSource source) {
+    　　　　source.registerListener(new EventListener() {
+        　　　　　　public void onEvent(Event e) {
+            　　　　　　　　doSomething(e);
+        　　　　　　}
+    　　　　});
+　　}
+}
+</code></pre><p>在上边代码中，当我们实例化ThisEscape对象时，会调用source的registerListener方法时，便启动了一个线程，而且这个线程持有了<strong>ThisEscape对象（调用了对象的doSomething方法），但此时ThisEscape对象却没有实例化完成（还没有返回一个引用）</strong>，所以我们说，此时造成了一个this引用逸出，即还没有完成的实例化ThisEscape对象的动作，却已经暴露了对象的引用，使其他线程可以访问还没有构造好的对象，可能会造成意料不到的问题。</p>
+<p>一个博客上看到对逸出的概念理解：</p>
+<blockquote>
+<p>一个对象，超出了它原本的作用域，而可以被其它对象进行修改，而这种修改及修改的结果是无法预测的。换句话说：一个对象发布后，它的状态应该是稳定的，修改是可被检测到的。如果在其它线程修改（或做其它操作）一个对象后导致对象的状态未知，就可以说这个对象逸出了。</p>
+</blockquote>
+<h2 id="线程封闭"><a href="#线程封闭" class="headerlink" title="线程封闭"></a>线程封闭</h2><p>实现好的并发是一件困难的事情，所以很多时候我们都想躲避并发。避免并发最简单的方法就是线程封闭。</p>
+<p>什么是线程封闭呢？  </p>
+<p>就是把对象封装到一个线程里，只有这一个线程能看到此对象。那么这个对象就算不是线程安全的也不会出现任何安全问题。</p>
+<p>实现线程封闭有哪些方法呢？</p>
+<p>1：<strong>ad-hoc线程封闭</strong><br>这是完全靠实现者控制的线程封闭，他的线程封闭完全靠实现者实现。也是最糟糕的一种线程封闭。所以我们直接把他忽略掉吧。</p>
+<p>2：<strong>栈封闭</strong><br>栈封闭是我们编程当中遇到的最多的线程封闭。什么是栈封闭呢？简单的说就是局部变量。多个线程访问一个方法，此方法中的<br>局部变量都会被拷贝一分儿到线程栈中。所以局部变量是不被多个线程所共享的，也就不会出现并发问题。所以能用局部变量就别用全局的变量，全局变量容易引起并发问题。  </p>
+<p>3：<strong>ThreadLocal封闭</strong><br>使用ThreadLocal是实现线程封闭的最好方法，有兴趣的朋友可以研究一下ThreadLocal的源码，其实ThreadLocal内部维护了一个Map，Map的key是每个线程的名称，而Map的值就是我们要封闭的对象。每个线程中的对象都对应着Map中一个值，也就是ThreadLocal利用Map实现了对象的线程封闭。</p>
+<h2 id="不变性"><a href="#不变性" class="headerlink" title="不变性"></a>不变性</h2><p>保证并发安全性的策略之一 —— 不变性</p>
+<p>当满足以下条件时，对象才是不可变的：</p>
+<ul>
+<li>对象创建以后其状态就不可修改</li>
+<li>对象的所有域都是 final 类型</li>
+<li>对象是正确创建的（在对象的构造期间，this 引用没有逸出）</li>
+</ul>
+<p>从技术上来看，不可变对象并不需要将其所有的域都声明为 final 类型，例如 String 就是这种情况，这就要对类的良性数据竞争情况做精确的分析，因此需要深入理解 Java 的内存模型。</p>
+<p><strong>Java中字符串的不变性</strong><br>一旦一个String对象在内存(堆)中被创建出来，他就无法被修改。特别要注意的是，String类的所有方法都没有改变字符串本身的值，都是返回了一个新的对象。</p>
+<h2 id="安全发布"><a href="#安全发布" class="headerlink" title="安全发布"></a>安全发布</h2><p>到目前为止，我们重点讨论的是如何确保对象不被发布，假如让对象封闭在线程（线程封闭）或者另一个对象的内部（不变性）。</p>
+<p>但是在某些情况下我们希望在多个线程间共享对象，此时必须确保安全地进行共享，要安全地发布一个对象，对象的引用以及对象的状态必须同时对其他线程可见。  </p>
+<h3 id="安全发布的常用模式"><a href="#安全发布的常用模式" class="headerlink" title="安全发布的常用模式"></a>安全发布的常用模式</h3><ul>
+<li>最简单最安全的方式：在静态初始化函数中初始化一个对象引用。静态初始化器由JVM在类的初始化阶段执行。由于在JVM内部存在着同步机制，因此通过这种方式初始化的对象都可以被安全地发布。</li>
+<li>将对象引用保存到volatile类型的域或者AtomicReference对象中</li>
+<li>将对象引用保存到某个正确构造对象的final类型域中</li>
+<li>将对象引用保存到一个由锁保护的域中——通过将对象放入到某个线程安全库的容器类(thread-safe library collections)，可以安全地将他发布给任何从这些容器中访问它的线程</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://book.douban.com/subject/10484692/" target="_blank" rel="external">《Java并发编程实战》</a></p>
+<p><a href="https://book.douban.com/subject/2994636/" target="_blank" rel="external">《计算机组成原理》</a></p>
+<p><a href="https://book.douban.com/subject/24722612/" target="_blank" rel="external">《深入理解Java虚拟机》（第2版）</a></p>
+<p><a href="http://blog.csdn.net/dabing69221/article/details/17426953" target="_blank" rel="external">Java Thread.yield详解</a></p>
+<p><a href="http://blog.csdn.net/setail/article/details/52570887" target="_blank" rel="external">Java并发编程学习——对象的共享</a></p>
+<p><a href="http://www.cnblogs.com/deman/p/5531321.html" target="_blank" rel="external">深入理解java虚拟机（6）—内存模型与线程 &amp; Volatile</a></p>
+<p><a href="http://coolxing.iteye.com/blog/1483071" target="_blank" rel="external">内置锁和显式锁的区别–JCIP C13读书笔记</a></p>
+<p><a href="http://www.cnblogs.com/bigdatafly/p/5002604.html" target="_blank" rel="external">Java锁（一）之内存模型</a></p>
+<p><a href="http://www.cnblogs.com/wrencai/p/5704331.html" target="_blank" rel="external">Java线程工作内存与主内存变量交换过程及volatile关键字理解</a></p>
+<p><a href="http://blog.csdn.net/tz_gx/article/details/42426439" target="_blank" rel="external">深入理解java内存模型（五）锁_1</a></p>
+<p><a href="http://www.importnew.com/18440.html" target="_blank" rel="external">三张图彻底了解Java中字符串的不变性</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java多线程/" rel="tag"># java多线程</a>
+          
+            <a href="/tags/并发编程实战/" rel="tag"># 并发编程实战</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/27/maven学习心得/" rel="next" title="maven学习心得">
+                <i class="fa fa-chevron-left"></i> maven学习心得
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内容简介"><span class="nav-number">1.</span> <span class="nav-text">内容简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">1.1.</span> <span class="nav-text">可见性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#失效数据"><span class="nav-number">1.1.1.</span> <span class="nav-text">失效数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非原子的64位操作"><span class="nav-number">1.1.2.</span> <span class="nav-text">非原子的64位操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加锁和可见性"><span class="nav-number">1.1.3.</span> <span class="nav-text">加锁和可见性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java内存模型"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Java内存模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置锁和外置锁如何实现可见性"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">内置锁和外置锁如何实现可见性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#volatile关键字如何实现可见性"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">volatile关键字如何实现可见性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布和逸出"><span class="nav-number">1.2.</span> <span class="nav-text">发布和逸出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程封闭"><span class="nav-number">1.3.</span> <span class="nav-text">线程封闭</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不变性"><span class="nav-number">1.4.</span> <span class="nav-text">不变性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全发布"><span class="nav-number">1.5.</span> <span class="nav-text">安全发布</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安全发布的常用模式"><span class="nav-number">1.5.1.</span> <span class="nav-text">安全发布的常用模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
