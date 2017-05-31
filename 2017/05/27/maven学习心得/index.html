@@ -98,7 +98,7 @@
 <meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fg4n1kpaihj31e20c240v.jpg">
 <meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4nfoiketj30vi0tyafm.jpg">
 <meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fg4ne7ph5rj31080ccn1l.jpg">
-<meta property="og:updated_time" content="2017-05-31T09:01:01.000Z">
+<meta property="og:updated_time" content="2017-05-31T09:06:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="maven学习心得">
 <meta name="twitter:description" content="简介工作之后，用的最多的就是maven，可是也没深入的去研究maven的内部实现原理，今天看了《Maven实战2》
@@ -437,6 +437,18 @@
 <p>validate<br>generate-sources<br>process-sources<br>generate-resources<br>process-resources：复制并处理资源文件至目标目录，准备打包<br>compile：编译项目源代码<br>process-clases<br>generate-test-sources<br>procss-test-sources<br>generate-test-resources<br>process-test-resources：复制并处理资源文件至目标测试目录<br>test-compile：编译测试源代码<br>process-test-classes<br>test：使用合适的单元测试框架测试运行，这些测试代码将不会被打包或部署<br>prepare-package<br>package：接受编译好的代码，打包成可发布的格式，如jar<br>pre-integration-test<br>integration-test<br>post-integration-test<br>verify<br>install：将包安装至本地仓库，以便让其它项目依赖<br>deploy：将最终的包复制到远程仓库，以便让其它开发人员与项目共享</p>
 <p><strong>基本上，只要根据名称我们就可以猜测出每个阶段的用途。要记住的是，任何一个阶段的时候，它前面的所有阶段都会被运行，这也就是为什么我们运行mvn clean install的时候，代码会被编译、测试、打包。</strong></p>
 <p>mvn clean 中的clean就是上面的clean，在一个生命周期中，运行某个阶段的时候，它之前的所有阶段都会被运行，也就是说，mvn clean 等同于 mvn pre-clean clean ，如果我们运行 mvn post-clean ，那么 pre-clean，clean 都会被运行。这是Maven很重要的一个规则，可以大大简化命令行的输入。  </p>
+<p><strong>常用插件介绍：</strong></p>
+<ul>
+<li><a href="http://maven.apache.org/plugins/maven-antrun-plugin/" target="_blank" rel="external">maven-antrun-plugin</a></li>
+<li><a href="http://maven.apache.org/archetype/maven-archetype-plugin/" target="_blank" rel="external">maven-archetype-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-assembly-plugin/" target="_blank" rel="external">maven-assembly-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-dependency-plugin/" target="_blank" rel="external">maven-dependency-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-enforcer-plugin/" target="_blank" rel="external">maven-enforcer-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-help-plugin/" target="_blank" rel="external">maven-help-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-release-plugin/" target="_blank" rel="external">maven-release-plugin</a></li>
+<li><a href="http://maven.apache.org/plugins/maven-resources-plugin/" target="_blank" rel="external">maven-resources-plugin</a></li>
+</ul>
+<p>…..</p>
 <h2 id="聚合与继承"><a href="#聚合与继承" class="headerlink" title="聚合与继承"></a>聚合与继承</h2><p>聚合：就是用一个总的maven项目包含其他子maven项目，这样，就不需要一个个打包运行mvn命令了，也可以方便继承的体现，优化pom.xml的重复项。</p>
 <p>继承：最好的方式是使用dependencyManagement 可以免去一些配置.<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fg4nfoiketj30vi0tyafm.jpg" alt=""></p>
 <p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fg4ne7ph5rj31080ccn1l.jpg" alt=""></p>
@@ -446,6 +458,7 @@
 <p><a href="http://blog.csdn.net/sunnyyoona/article/details/50609297" target="_blank" rel="external"> [Maven实战]（8）依赖配置与依赖范围</a></p>
 <p><a href="http://www.cnblogs.com/tian830937/p/5145603.html" target="_blank" rel="external">maven3实战之仓库(快照版本)</a></p>
 <p><a href="Maven实战：Maven生命周期">http://www.cnblogs.com/xrq730/p/5527254.html</a></p>
+<p><a href="http://www.cnblogs.com/avivaye/p/5341341.html" target="_blank" rel="external">[maven] 常用插件解析</a></p>
 
       
     </div>
