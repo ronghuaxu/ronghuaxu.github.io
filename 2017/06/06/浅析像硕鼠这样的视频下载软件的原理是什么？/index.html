@@ -1,0 +1,1020 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="视频下载器," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介各个视频网站的视频本质就是下载 FLV文件来播放，无论它怎么隐藏下载地址，做多少次跳转，搞什么身份认证，做多少文件分片，最后都是要下载一个flv文件。所以视频下载软件只需要精确地模拟网站上那个flash的行为就可以把FLV下载下来。FLV是一种很简单的视频封装格式，去掉封包，里面就是h264 aac等媒体的裸流，很容易重新打包成其他格式比如mp4。
+写一个也不难。
+首先用网络抓包工具，分析视频">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅析像硕鼠这样的视频下载软件的原理是什么？">
+<meta property="og:url" content="http://morningsun.net.cn/2017/06/06/浅析像硕鼠这样的视频下载软件的原理是什么？/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="简介各个视频网站的视频本质就是下载 FLV文件来播放，无论它怎么隐藏下载地址，做多少次跳转，搞什么身份认证，做多少文件分片，最后都是要下载一个flv文件。所以视频下载软件只需要精确地模拟网站上那个flash的行为就可以把FLV下载下来。FLV是一种很简单的视频封装格式，去掉封包，里面就是h264 aac等媒体的裸流，很容易重新打包成其他格式比如mp4。
+写一个也不难。
+首先用网络抓包工具，分析视频">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tNbRwgy1fgbkrez3r9j30aa02aaa9.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tNbRwgy1fgbkv82dp5j30ea0k0jug.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNbRwgy1fgbkxxbsbqj30p00pftcu.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tNbRwgy1fgbkyc5xbxj30p002x757.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tNbRwgy1fgbkzkm7hqj30fg0nmjut.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tNbRwgy1fgbkzx4zb0j31ae0c6adr.jpg">
+<meta property="og:updated_time" content="2017-06-06T08:58:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浅析像硕鼠这样的视频下载软件的原理是什么？">
+<meta name="twitter:description" content="简介各个视频网站的视频本质就是下载 FLV文件来播放，无论它怎么隐藏下载地址，做多少次跳转，搞什么身份认证，做多少文件分片，最后都是要下载一个flv文件。所以视频下载软件只需要精确地模拟网站上那个flash的行为就可以把FLV下载下来。FLV是一种很简单的视频封装格式，去掉封包，里面就是h264 aac等媒体的裸流，很容易重新打包成其他格式比如mp4。
+写一个也不难。
+首先用网络抓包工具，分析视频">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/006tNbRwgy1fgbkrez3r9j30aa02aaa9.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/06/06/浅析像硕鼠这样的视频下载软件的原理是什么？/"/>
+
+
+
+
+
+  <title> 浅析像硕鼠这样的视频下载软件的原理是什么？ | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/06/06/浅析像硕鼠这样的视频下载软件的原理是什么？/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                浅析像硕鼠这样的视频下载软件的原理是什么？
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-06T17:46:04+08:00">
+                2017-06-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/软件破解/" itemprop="url" rel="index">
+                    <span itemprop="name">软件破解</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/06/浅析像硕鼠这样的视频下载软件的原理是什么？/" class="leancloud_visitors" data-flag-title="浅析像硕鼠这样的视频下载软件的原理是什么？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>各个视频网站的视频本质就是下载 FLV文件来播放，无论它怎么隐藏下载地址，做多少次跳转，搞什么身份认证，做多少文件分片，最后都是要下载一个flv文件。<br>所以视频下载软件只需要精确地模拟网站上那个flash的行为就可以把FLV下载下来。<br>FLV是一种很简单的视频封装格式，去掉封包，里面就是h264 aac等媒体的裸流，很容易重新打包成其他格式比如mp4。</p>
+<p>写一个也不难。</p>
+<p>首先用网络抓包工具，分析视频网站的请求，找出下载flash 文件的地址。<br>用Fiddler 或者 wireshark 可以抓包。<br>先把flash本身下载下来。</p>
+<a id="more"></a>
+<p>然后，找个反编译 flash的工具，有很多这种工具，哪个好用我也不知道，没用过。<br>反编译后看看里面的脚本，配合抓包工具，搞清楚它是怎么做下载身份验证的。</p>
+<p>最后，一点点模拟flash的行为去下载flv，你发的请求包如果和视频网站的完全一样，服务器就不知道你是非法的终端了。</p>
+<p>做这种软件最麻烦不是做出第一版，而是持续的维护升级，视频网站也很讨厌盗链的，总会不停变化验证方法，你要不停地跟着改，很累的。<br>而且你会把视频网站的开发搞的也很累，所以你最好不要让他们找出你住哪里，否则，嘿嘿。<br>大家都是码农，不要互相挤兑，最后谁都没好处，有时间不如去干点儿有建设性的事情。</p>
+<h2 id="B站视频下载器示例"><a href="#B站视频下载器示例" class="headerlink" title="B站视频下载器示例"></a>B站视频下载器示例</h2><p>想要对B站进行爬虫，首先要准备好技术手段和相关工具，对B站的网站结构和数据流向进行一些分析，进行可行性的调研</p>
+<p>首先打开B站任意一个视频，可以看到地址都是这样的格式：</p>
+<p><img src="https://ww2.sinaimg.cn/large/006tNbRwgy1fgbkrez3r9j30aa02aaa9.jpg" alt=""></p>
+<p>然后用Fidder工具，分析一下网页，可以看到有如下一些资源</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tNbRwgy1fgbkv82dp5j30ea0k0jug.jpg" alt=""></p>
+<p>其中找到一个特殊的资源：</p>
+<pre><code>https://interface.bilibili.com/playurl?cid=18266854&amp;appkey=84956560bc028eb7&amp;otype=json&amp;type=&amp;quality=3&amp;sign=dd0d7342203ee42485de7f12fb5a9ebe
+</code></pre><p>返回的response为：</p>
+<pre><code>{
+    &quot;from&quot;: &quot;local&quot;,
+    &quot;result&quot;: &quot;suee&quot;,
+    &quot;format&quot;: &quot;flv&quot;,
+    &quot;timelength&quot;: 250301,
+    &quot;accept_format&quot;: &quot;flv,hdmp4,mp4&quot;,
+    &quot;accept_quality&quot;: [3, 2, 1],
+    &quot;seek_param&quot;: &quot;start&quot;,
+    &quot;seek_type&quot;: &quot;offset&quot;,
+    &quot;durl&quot;: [{
+        &quot;order&quot;: 1,
+        &quot;length&quot;: 250301,
+        &quot;size&quot;: 60158020,
+        &quot;url&quot;: &quot;http://cn-jsyz-dx-v-07.acgvideo.com/vg3/1/cf/18266854-1.flv?expires=1496749500&amp;platform=pc&amp;ssig=MKCYO7cUmTNlM8_WXdBhsg&amp;oi=2061529490&amp;nfa=zn2OTN7O9p3rqnr0+3S2RQ==&amp;dynamic=1&amp;hfa=2063945584&quot;,
+        &quot;backup_url&quot;: [&quot;http://ws.acgvideo.com/c/26/18266854-1.flv?wsTime=1496749639&amp;platform=pc&amp;wsSecret2=881fb75631f4339a5ee3065bfdb32b5d&amp;oi=2061529490&amp;rate=1280&quot;, &quot;http://ws.acgvideo.com/c/26/18266854-1-hd.mp4?wsTime=1496749639&amp;platform=pc&amp;wsSecret2=3bd45cca7a71a1ad4defa272e9b11243&amp;oi=2061529490&amp;rate=1280&quot;]
+    }]
+}
+</code></pre><p>太好了，一下子就给了<strong>视频尺寸（length字段）</strong>和视频最终的<strong>下载地址（url字段）</strong>，那么我们用浏览器打开一下这个URL看一下，可以成功下载！</p>
+<h3 id="请求分析碰到的困难"><a href="#请求分析碰到的困难" class="headerlink" title="请求分析碰到的困难"></a>请求分析碰到的困难</h3><p>注意看这个URL可以发现，尾部有一个sign，说明做了客户端和服务端的签名验证，并不是很傻瓜的有直接通过AID或者CID关联的下载地址，分析进入到这一步后，我很快的就打了自己的脸，我曾在文章《关于.NET玩爬虫这些事》中说过，一切网站行为都可以分析出HTTP+Javascript来，只要分析得当，根本不需要用浏览器来进行爬虫模拟，但这尼玛B站鬼的Web结构<strong>（忍不住想骂人，典型的垃圾Python、PHP向的开发人员做出来的鬼东西，代码逻辑混乱、随便一看就是到处修补修改的痕迹，生成出来的HTML、JS的逻辑和层次毫无美感）</strong>，看了2个小时，眼睛都看疼了，楞是没分析出签名方法，也许再看看会有结果，但是我等不及了，所以这时候祭出爬虫神器-无头浏览器</p>
+<p>这里我选择了PhantomJS这个无头浏览器，具体的使用过程就不详述了，有兴趣可以到官网了解一下，写了如下分析代码</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNbRwgy1fgbkxxbsbqj30p00pftcu.jpg" alt=""></p>
+<p>通过代码我们可以很清楚的看到，主要是两个目的，输出包含interface.bilibili.com的URL以及本次视频的标题</p>
+<p>测试一下，确实可以得到URL和标题，这里有个要注意的是，B站默认是GB2312编码，所以PhantomJS要加一个参数，就是输出编码改为GB2312</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tNbRwgy1fgbkyc5xbxj30p002x757.jpg" alt=""></p>
+<p>到此为止，可以说完成了整个爬虫部分的调研，至少是有完整的可行性了。</p>
+<h2 id="爱奇艺视频下载可行性分析"><a href="#爱奇艺视频下载可行性分析" class="headerlink" title="爱奇艺视频下载可行性分析"></a>爱奇艺视频下载可行性分析</h2><p>分析爱奇艺 的过程:</p>
+<p>爱奇艺的视频在 cache.m.iqiyi.com 里面</p>
+<p>使用抓包工具发现:</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tNbRwgy1fgbkzkm7hqj30fg0nmjut.jpg" alt=""></p>
+<p>优酷爱奇艺都是类似的，只不过有的是给分块的地址，如下：</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tNbRwgy1fgbkzx4zb0j31ae0c6adr.jpg" alt=""></p>
+<p><strong>F4V格式结尾的文件：(视频格式，可以合成mp4等其他视频文件)：</strong>  </p>
+<blockquote>
+<p>F4V是Adobe公司为了迎接高清时代而推出继FLV格式后的支持H.264的流媒体格式。它和FLV主要的区别在于，FLV格式采用的是H263编码，而F4V则支持H.264编码的高清晰视频，码率最高可达50Mbps。</p>
+</blockquote>
+<p>这个json数据中很多类似以f4v为后缀结尾的视频请求。</p>
+<p>请求了一些网上的高人：</p>
+<p><strong>他说：“不过爱奇艺的别去搞，这个违法的，视频都是购买了版权的！”</strong></p>
+<p>我就放弃了这次调研。</p>
+<p>我的初衷也只是为了避开爱奇艺的冗长的广告。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.cnblogs.com/printhelloworld/p/6944343.html" target="_blank" rel="external">【初码干货】记一次分布式B站爬虫任务系统的完整设计和实施</a></p>
+<p><a href="https://www.zhihu.com/search?type=content&amp;q=%E7%A1%95%E9%BC%A0" target="_blank" rel="external">知乎下关于硕鼠软件的回答</a></p>
+<p><a href="http://www.flvcd.com/" target="_blank" rel="external">硕鼠软件官网</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/视频下载器/" rel="tag"># 视频下载器</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/05/低成本健身/" rel="next" title="低成本健身">
+                <i class="fa fa-chevron-left"></i> 低成本健身
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">58</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">100</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#B站视频下载器示例"><span class="nav-number">2.</span> <span class="nav-text">B站视频下载器示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#请求分析碰到的困难"><span class="nav-number">2.1.</span> <span class="nav-text">请求分析碰到的困难</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爱奇艺视频下载可行性分析"><span class="nav-number">3.</span> <span class="nav-text">爱奇艺视频下载可行性分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
