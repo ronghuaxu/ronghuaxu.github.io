@@ -1,0 +1,1016 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="爬虫,优秀chrome插件," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介做爬虫很久了，一直愁于如何来实现一个通配的工具，可以让所有人都可以使用爬虫来批量获取自己想要的数据。难点：
+
+新人对页面元素汲取（Xpath和Jsoup的语法不是很清楚）
+碰到需要滚动下拉和点击换页的站点，新人感觉到乏力
+
+那么今天我要介绍的这款chrome插件很好的帮助新人来实现一个简单的爬虫，你要做的仅仅是几个普通的配置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不写代码的爬虫">
+<meta property="og:url" content="http://morningsun.net.cn/2017/06/21/不写代码的爬虫/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="简介做爬虫很久了，一直愁于如何来实现一个通配的工具，可以让所有人都可以使用爬虫来批量获取自己想要的数据。难点：
+
+新人对页面元素汲取（Xpath和Jsoup的语法不是很清楚）
+碰到需要滚动下拉和点击换页的站点，新人感觉到乏力
+
+那么今天我要介绍的这款chrome插件很好的帮助新人来实现一个简单的爬虫，你要做的仅仅是几个普通的配置。">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fgsl5avd03j30fa062aap.jpg">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fgsl9fzs41j31kw0ahgog.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fgslej9128j31kw0fh431.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fgslp2xb49j311m0nwtg7.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fgslqk0lfzj30m607yjry.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fgsls7khslj31kw0f4dsd.jpg">
+<meta property="og:updated_time" content="2017-06-21T02:16:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不写代码的爬虫">
+<meta name="twitter:description" content="简介做爬虫很久了，一直愁于如何来实现一个通配的工具，可以让所有人都可以使用爬虫来批量获取自己想要的数据。难点：
+
+新人对页面元素汲取（Xpath和Jsoup的语法不是很清楚）
+碰到需要滚动下拉和点击换页的站点，新人感觉到乏力
+
+那么今天我要介绍的这款chrome插件很好的帮助新人来实现一个简单的爬虫，你要做的仅仅是几个普通的配置。">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fgsl5avd03j30fa062aap.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/06/21/不写代码的爬虫/"/>
+
+
+
+
+
+  <title> 不写代码的爬虫 | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/06/21/不写代码的爬虫/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                不写代码的爬虫
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-21T17:46:04+08:00">
+                2017-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/爬虫/" itemprop="url" rel="index">
+                    <span itemprop="name">爬虫</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/21/不写代码的爬虫/" class="leancloud_visitors" data-flag-title="不写代码的爬虫">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>做爬虫很久了，一直愁于如何来实现一个通配的工具，可以让所有人都可以使用爬虫来批量获取自己想要的数据。<br>难点：</p>
+<ul>
+<li>新人对页面元素汲取（Xpath和Jsoup的语法不是很清楚）</li>
+<li>碰到需要滚动下拉和点击换页的站点，新人感觉到乏力</li>
+</ul>
+<p>那么今天我要介绍的这款chrome插件很好的帮助新人来实现一个简单的爬虫，你要做的仅仅是几个普通的配置。</p>
+<a id="more"></a>
+<h2 id="webscraper"><a href="#webscraper" class="headerlink" title="webscraper"></a>webscraper</h2><p>使用我们的扩展程序，您可以创建一个计划（站点地图）如何遍历网站以及应该提取的内容。 使用这些站点地图，Web Scraper将相应地导航站点并提取所有数据。 爬取结果的数据可以导出为CSV。</p>
+<h3 id="webscraper安装教程"><a href="#webscraper安装教程" class="headerlink" title="webscraper安装教程"></a>webscraper安装教程</h3><p>webscraper是一个Chrome插件，<a href="https://pan.baidu.com/s/1i5CA9nf" target="_blank" rel="external">Chrome插件下载链接</a>。<br>附上一个离线下载的Chrome插件如何在Chrome中安装的教程：<br><a href="http://chromecj.com/utilities/2014-09/181.html" target="_blank" rel="external">怎么在谷歌浏览器中安装.crx扩展名的离线Chrome插件？</a></p>
+<h3 id="创建一个站点爬虫"><a href="#创建一个站点爬虫" class="headerlink" title="创建一个站点爬虫"></a>创建一个站点爬虫</h3><p>创建站点地图时需要做的第一件事是指定起始网址。 这是从其开始的URL。 如果从多个地方开始爬取，也可以指定多个起始网址。 例如，如果要分别爬取多个搜索结果，则可以为每个搜索结果创建一个单独的起始网址。</p>
+<h4 id="创建动态的站点起始URL"><a href="#创建动态的站点起始URL" class="headerlink" title="创建动态的站点起始URL"></a>创建动态的站点起始URL</h4><p>在网站使用页面网址编号的情况下，创建范围启动网址要比创建链接选择器来导航网站要简单得多。 要使用范围定义 - [1-100]指定范围网址替换起始网址的数字部分。 如果网站在网址中使用零填充，则将零填充添加到范围定义 - [001-100]。 如果你想跳过一些url，那么你也可以指定这样的增量[0-100：10]。<br>比如：<br><a href="http://example.com/page/[1-3]这样的配置会得到：" target="_blank" rel="external">http://example.com/page/[1-3]这样的配置会得到：</a></p>
+<ul>
+<li><a href="http://example.com/page/1" target="_blank" rel="external">http://example.com/page/1</a></li>
+<li><a href="http://example.com/page/2" target="_blank" rel="external">http://example.com/page/2</a></li>
+<li><a href="http://example.com/page/3" target="_blank" rel="external">http://example.com/page/3</a></li>
+</ul>
+<p>比如：<br><a href="http://example.com/page/[001-100]这样的配置会得到：" target="_blank" rel="external">http://example.com/page/[001-100]这样的配置会得到：</a></p>
+<ul>
+<li><a href="http://example.com/page/001" target="_blank" rel="external">http://example.com/page/001</a></li>
+<li><a href="http://example.com/page/002" target="_blank" rel="external">http://example.com/page/002</a></li>
+<li><a href="http://example.com/page/003" target="_blank" rel="external">http://example.com/page/003</a></li>
+</ul>
+<p>比如：<br><a href="http://example.com/page/[0-100:10]这样的配置会得到：" target="_blank" rel="external">http://example.com/page/[0-100:10]这样的配置会得到：</a></p>
+<ul>
+<li><a href="http://example.com/page/0" target="_blank" rel="external">http://example.com/page/0</a></li>
+<li><a href="http://example.com/page/10" target="_blank" rel="external">http://example.com/page/10</a></li>
+<li><a href="http://example.com/page/20" target="_blank" rel="external">http://example.com/page/20</a></li>
+</ul>
+<h4 id="创建抽取器Selectors"><a href="#创建抽取器Selectors" class="headerlink" title="创建抽取器Selectors"></a>创建抽取器Selectors</h4><p>比如如下一个新闻网站：</p>
+<p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fgsl5avd03j30fa062aap.jpg" alt=""></p>
+<p>解释： 首先通过 Link selector 获取当前页面下的link，然后每个link下都配置一个Text selector，这样就可以得到新闻的url链接 和 新闻的标题。</p>
+<h4 id="实例展示"><a href="#实例展示" class="headerlink" title="实例展示"></a>实例展示</h4><p>安装好插件后，打开chrome 控制台：<br><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fgsl9fzs41j31kw0ahgog.jpg" alt=""></p>
+<p>选择Web Scrapy菜单，即可开始你的表演。</p>
+<p><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fgslej9128j31kw0fh431.jpg" alt=""></p>
+<h4 id="树形结构的理解"><a href="#树形结构的理解" class="headerlink" title="树形结构的理解"></a>树形结构的理解</h4><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fgslp2xb49j311m0nwtg7.jpg" alt=""></p>
+<p>红色区域包裹的是父节点 Element，然后每个Element又包含Title 和 Description。</p>
+<p>树形图如下：<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fgslqk0lfzj30m607yjry.jpg" alt=""></p>
+<p>爬取结果展示：</p>
+<p><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fgsls7khslj31kw0f4dsd.jpg" alt=""></p>
+<p>可以导出文件到Excel</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.jianshu.com/p/d0a730464e0c" target="_blank" rel="external">不写代码的爬虫，10分钟搞定</a></p>
+<p><a href="https://www.zhihu.com/question/47883186/answer/155560145" target="_blank" rel="external">Web Scraper 使用详解</a></p>
+<p><a href="http://webscraper.io/" target="_blank" rel="external">webscraper官网</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+          
+            <a href="/tags/优秀chrome插件/" rel="tag"># 优秀chrome插件</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/15/Reactjs初探/" rel="next" title="Reactjs初探">
+                <i class="fa fa-chevron-left"></i> Reactjs初探
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">61</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webscraper"><span class="nav-number">2.</span> <span class="nav-text">webscraper</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#webscraper安装教程"><span class="nav-number">2.1.</span> <span class="nav-text">webscraper安装教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建一个站点爬虫"><span class="nav-number">2.2.</span> <span class="nav-text">创建一个站点爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建动态的站点起始URL"><span class="nav-number">2.2.1.</span> <span class="nav-text">创建动态的站点起始URL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建抽取器Selectors"><span class="nav-number">2.2.2.</span> <span class="nav-text">创建抽取器Selectors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例展示"><span class="nav-number">2.2.3.</span> <span class="nav-text">实例展示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#树形结构的理解"><span class="nav-number">2.2.4.</span> <span class="nav-text">树形结构的理解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
