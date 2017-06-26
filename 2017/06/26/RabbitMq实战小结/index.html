@@ -1,0 +1,1024 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RabbitMq,消息队列," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介目前做的项目是一个爬虫项目，想要达到分布式爬虫的效果，故需要将待爬取的链接url放入一个消息队列中，团队选择了Rabbitmq，因为之前接触过mq消息的发送，但是针对其原理还是一无所知。这边我主要采取Spring + rabbitmq 结合的方式来讲解，当然原生的rabbitmq 的java包也可以参考地址：rabbitmq官方文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMq实战小结">
+<meta property="og:url" content="http://morningsun.net.cn/2017/06/26/RabbitMq实战小结/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="简介目前做的项目是一个爬虫项目，想要达到分布式爬虫的效果，故需要将待爬取的链接url放入一个消息队列中，团队选择了Rabbitmq，因为之前接触过mq消息的发送，但是针对其原理还是一无所知。这边我主要采取Spring + rabbitmq 结合的方式来讲解，当然原生的rabbitmq 的java包也可以参考地址：rabbitmq官方文档">
+<meta property="og:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fgycsc82irj30ns07q3zj.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fgycpf47ydj30n20qugo1.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fgycpumoinj30lw0rcgn8.jpg">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tKfTcgy1fgycq9k9syj30li0qyac5.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fgydboyfrrj30sc0akmyg.jpg">
+<meta property="og:updated_time" content="2017-06-26T02:09:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RabbitMq实战小结">
+<meta name="twitter:description" content="简介目前做的项目是一个爬虫项目，想要达到分布式爬虫的效果，故需要将待爬取的链接url放入一个消息队列中，团队选择了Rabbitmq，因为之前接触过mq消息的发送，但是针对其原理还是一无所知。这边我主要采取Spring + rabbitmq 结合的方式来讲解，当然原生的rabbitmq 的java包也可以参考地址：rabbitmq官方文档">
+<meta name="twitter:image" content="https://ww3.sinaimg.cn/large/006tKfTcgy1fgycsc82irj30ns07q3zj.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/06/26/RabbitMq实战小结/"/>
+
+
+
+
+
+  <title> RabbitMq实战小结 | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/06/26/RabbitMq实战小结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RabbitMq实战小结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-26T17:46:04+08:00">
+                2017-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/编程/" itemprop="url" rel="index">
+                    <span itemprop="name">编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/06/26/RabbitMq实战小结/" class="leancloud_visitors" data-flag-title="RabbitMq实战小结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>目前做的项目是一个爬虫项目，想要达到分布式爬虫的效果，故需要将待爬取的链接url放入一个消息队列中，团队选择了Rabbitmq，因为之前接触过mq消息的发送，但是针对其原理还是一无所知。这边我主要采取Spring + rabbitmq 结合的方式来讲解，当然原生的rabbitmq 的java包也可以参考地址：<a href="http://www.rabbitmq.com/documentation.html" target="_blank" rel="external">rabbitmq官方文档</a></p>
+<a id="more"></a>
+<h2 id="RabbitMQ优势"><a href="#RabbitMQ优势" class="headerlink" title="RabbitMQ优势"></a>RabbitMQ优势</h2><ul>
+<li>RabbitMQ是最广泛部署的开源消息队列。</li>
+<li>在小型创业公司和大型企业，全球范围内拥有超过35,000个RabbitMQ生产部署</li>
+<li>RabbitMQ是轻量级的，易于部署在内部和云端。 它支持多种消息协议。 </li>
+<li>RabbitMQ可以部署在分布式和联合配置中，以满足高规模，高可用性要求。</li>
+<li>RabbitMQ在许多操作系统和云环境中运行，并为大多数流行语言提供了广泛的开发工具。</li>
+</ul>
+<h3 id="下载与安装"><a href="#下载与安装" class="headerlink" title="下载与安装"></a>下载与安装</h3><p><a href="http://www.rabbitmq.com/download.html" target="_blank" rel="external">Downloading and Installing RabbitMQ</a></p>
+<h2 id="理解RabbitMQ的消息通信"><a href="#理解RabbitMQ的消息通信" class="headerlink" title="理解RabbitMQ的消息通信"></a>理解RabbitMQ的消息通信</h2><p><img src="https://ww3.sinaimg.cn/large/006tKfTcgy1fgycsc82irj30ns07q3zj.jpg" alt=""></p>
+<p>上面图片的理解：  </p>
+<p>你必须首先连接到Rabbit,才能消费或者发布消息。你在应用程序和Rabbit代理服务器之间创建一条TCP连接。一旦TCP连接打开（你通过了认证），应用程序就可以创建一条AMQP信道。信道是建立在“真实的”TCP连接内的虚拟连接。AMQP命令都是通过信道发送出去的。每条信道都会被指派一个唯一ID(AMQP库会帮你记住ID的）。不论是发布消息、订阅队列或是接收消息，这些动作都是通过信道完成的。</p>
+<p>你也许会问为什么我们需要信道呢？为什么不直接通过TCP连接发送AMQP命令呢？主要原因在于对操作系统来说建立和销毁TCP会话是非常昂贵的开销。假设应用程序从队列消费消息，并根据服务需求合理调度线程。假设你只进行TCP连接，那么每个线程都需要自行连接到Rabbit。也就是说高峰期有每秒成百上千条连接。<strong>这不仅造成TCP连接的巨大浪费，而且操作系统每秒也就只能建立这点数量的连接。</strong>因此，你可能很快就碰到性能瓶颈了。如果我们为所有线程只使用一条TCP连接以满足性能方面的要求，但又能确保每个线程的私密性，就像拥有独立连接一样的话，那不就非常完美吗？这就是要引入信道概念的原因。线程启动后，会在现成的连接上创建一条信道，也就获得了连接到Rabbit上的私密通信路径，而不会给操作系统的TCP栈造成额外负担，如图所示。<strong>因此，你可以每秒成百上千次地创建信道而不会影响操作系统</strong>。在一条TCP连接上创建多少条信道是没有限制的。把它想象成一束光纤电缆就可以了。</p>
+<h2 id="RabbitMQ三种Exchange模式及RPC"><a href="#RabbitMQ三种Exchange模式及RPC" class="headerlink" title="RabbitMQ三种Exchange模式及RPC"></a>RabbitMQ三种Exchange模式及RPC</h2><p>三种模式是在《RabbitMQ实战》中看到并做总结：</p>
+<p><strong>一.Direct Exchange</strong></p>
+<p>任何发送到Direct Exchange的消息都会被转发到RouteKey中指定的Queue。<br><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fgycpf47ydj30n20qugo1.jpg" alt=""></p>
+<p><strong>二.Fanout Exchange</strong></p>
+<p>任何发送到Fanout Exchange的消息都会被转发到与该Exchange绑定(Binding)的<strong>所有</strong>Queue上。<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fgycpumoinj30lw0rcgn8.jpg" alt=""></p>
+<p><strong>三.Topic Exchange</strong></p>
+<p>任何发送到Topic Exchange的消息都会被转发到所有关心RouteKey中指定话题的Queue上<br><img src="https://ww2.sinaimg.cn/large/006tKfTcgy1fgycq9k9syj30li0qyac5.jpg" alt=""></p>
+<p>还有一种形式Header 形式就直接略过了，Header和Direct实现完全一致，但性能会差很多。</p>
+<h3 id="实现RPC"><a href="#实现RPC" class="headerlink" title="实现RPC"></a>实现RPC</h3><p>首先要弄明白，RPC是个什么东西。</p>
+<p>(RPC) Remote Procedure Call Protocol 远程过程调用协议</p>
+<p>在一个大型的公司，系统由大大小小的服务构成，不同的团队维护不同的代码，部署在不同的机器。但是在做开发时候往往要用到其它团队的方法，因为已经有了实现。但是这些服务部署不同的机器上，想要调用就需要网络通信，这些代码繁琐且复杂，一不小心就会写的很低效。RPC协议定义了规划，其它的公司都给出了不同的实现。比如微软的wcf，以及现在火热的WebApi。</p>
+<h2 id="Spring-结合MQ"><a href="#Spring-结合MQ" class="headerlink" title="Spring 结合MQ"></a>Spring 结合MQ</h2><p>发送消息的Spring 配置模板（<strong>需要配置exchange和routerkey</strong>）,解释：有了exchange和routerkey就会找到相应的Queue队列。</p>
+<p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fgydboyfrrj30sc0akmyg.jpg" alt=""></p>
+<pre><code>&lt;bean id=&quot;cmdTemplate&quot; class=&quot;org.springframework.amqp.rabbit.core.RabbitTemplate&quot;&gt;
+    &lt;constructor-arg ref=&quot;connectionFactory&quot;/&gt;
+    &lt;property name=&quot;exchange&quot; value=&quot;${filter.schedule.cmd.exchange}&quot;/&gt;
+    &lt;property name=&quot;routingKey&quot; value=&quot;${filter.schedule.cmd.routingKey}&quot;/&gt;
+    &lt;property name=&quot;retryTemplate&quot; ref=&quot;retryTemplate&quot;/&gt;
+    &lt;property name=&quot;messageConverter&quot; ref=&quot;jsonMessageConverter&quot;/&gt;
+&lt;/bean&gt;
+</code></pre><p><strong>配置监听器</strong></p>
+<pre><code>&lt;bean id=&quot;connectionFactory&quot;
+          class=&quot;org.springframework.amqp.rabbit.connection.CachingConnectionFactory&quot;&gt;
+        &lt;property name=&quot;addresses&quot; value=&quot;${filter.schedule.mq.addresses}&quot;/&gt;
+        &lt;property name=&quot;username&quot; value=&quot;${filter.schedule.mq.username}&quot;/&gt;
+        &lt;property name=&quot;password&quot; value=&quot;${filter.schedule.mq.password}&quot;/&gt;
+        &lt;property name=&quot;virtualHost&quot; value=&quot;${filter.schedule.mq.virtualHost}&quot;/&gt;
+        &lt;property name=&quot;connectionTimeout&quot; value=&quot;${filter.schedule.mq.connectionTimeout}&quot;/&gt;
+        &lt;property name=&quot;connectionLimit&quot; value=&quot;${filter.schedule.mq.connectionLimit}&quot;/&gt;
+        &lt;property name=&quot;executor&quot; ref=&quot;taskExecutor&quot;/&gt;
+    &lt;/bean&gt;
+&lt;bean name=&quot;cmdListener&quot; class=&quot;com.unionpay.spiderframework.parserservice.AwareMqListener&quot;&gt;
+    &lt;/bean&gt;
+    &lt;rabbit:listener-container connection-factory=&quot;connectionFactory&quot; acknowledge=&quot;manual&quot;  prefetch=&quot;5&quot;&gt;
+        &lt;rabbit:listener queues=&quot;${filter.schedule.spider.listener.queue}&quot; ref=&quot;cmdListener&quot;/&gt;
+    &lt;/rabbit:listener-container&gt;
+</code></pre><p>消息确认代码可以参考<a href="http://blog.csdn.net/u010841296/article/details/52253684" target="_blank" rel="external"> rabbitMq集成Spring后，消费者设置手动ack，并且在业务上控制是否ack</a></p>
+<p>AwareMqListener class代码（可以实现消息确认ACK）：</p>
+<pre><code>public class AwareMqListener implements ChannelAwareMessageListener {
+
+    private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
+
+    @Override
+    public void onMessage(Message message, Channel channel) throws Exception {
+
+        channel.basicQos(5);
+        fixedThreadPool.submit(new ParserTask(message, channel));
+    }
+}
+</code></pre><p>不用消息确认，就直接实现MessageListener接口的onMessage接口。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/u010841296/article/details/52253684" target="_blank" rel="external"> rabbitMq集成Spring后，消费者设置手动ack，并且在业务上控制是否ack</a></p>
+<p><a href="http://www.rabbitmq.com/" target="_blank" rel="external">rabbitmq官网</a></p>
+<p><a href="https://book.douban.com/subject/26649178/" target="_blank" rel="external">《RabbitMQ实战：高效部署分布式消息队列》</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RabbitMq/" rel="tag"># RabbitMq</a>
+          
+            <a href="/tags/消息队列/" rel="tag"># 消息队列</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/21/不写代码的爬虫/" rel="next" title="不写代码的爬虫">
+                <i class="fa fa-chevron-left"></i> 不写代码的爬虫
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">63</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ优势"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ优势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载与安装"><span class="nav-number">2.1.</span> <span class="nav-text">下载与安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解RabbitMQ的消息通信"><span class="nav-number">3.</span> <span class="nav-text">理解RabbitMQ的消息通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ三种Exchange模式及RPC"><span class="nav-number">4.</span> <span class="nav-text">RabbitMQ三种Exchange模式及RPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现RPC"><span class="nav-number">4.1.</span> <span class="nav-text">实现RPC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-结合MQ"><span class="nav-number">5.</span> <span class="nav-text">Spring 结合MQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
