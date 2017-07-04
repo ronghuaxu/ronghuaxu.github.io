@@ -103,7 +103,7 @@
 应用程序事件
 错误
 关闭">
-<meta property="og:updated_time" content="2017-07-04T09:34:02.000Z">
+<meta property="og:updated_time" content="2017-07-04T09:35:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《Java并发编程实战》第七章 取消与关闭 读书笔记">
 <meta name="twitter:description" content="取消操作的原因：
@@ -557,44 +557,7 @@ public class BlockingInterruptTest {
     t.interrupt();  
 }  
 }
-</code></pre><p>使用Future退出方法</p>
-<h2 id="响应中断"><a href="#响应中断" class="headerlink" title="响应中断"></a>响应中断</h2><p>阻塞库方法，例如Thread.sleep和Object.wait等，都会检杏线程何时中断，并且在发现中断时提前返回。它们在响应中断时执行的操作包括：<br><strong>1.清除中断状态</strong><br><strong>2.抛出InterruptedException</strong><br>表示阻塞操作由于中断而提前结束。JVM并不能保证阻塞方法检测到中断的速度，但在实际情况中响应速度还是非常快的。</p>
-<h3 id="响应中断的方法"><a href="#响应中断的方法" class="headerlink" title="响应中断的方法"></a>响应中断的方法</h3><p>1.传递异常（throws InterruptedException）</p>
-<p>2.恢复中断状态，从而事调用栈的上层代码能够对其进行处理（Thread.currentThread().interrupt();）<br>例子：</p>
-<pre><code>import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-
-public class Test implements Runnable {
-    private BlockingQueue&lt;String&gt; queue;
-
-public Test(BlockingQueue&lt;String&gt; queue) {
-    this.queue = queue;
-}
-
-public void run() {
-    try {
-        while (true) {
-            String task = queue.take();
-            System.out.println(task);
-        }
-    } catch (InterruptedException e) {
-        // Restore the interrupted status
-        // 当抛出中断异常后，如果此时不能向上抛出，则需要恢复中断状态，否则中断状态会丢失
-        Thread.currentThread().interrupt();
-    }
-}
-
-
-public static void main(String[] args) {
-    BlockingQueue&lt;String&gt; queue = new ArrayBlockingQueue&lt;String&gt;(1);
-    Test test = new Test(queue);
-    Thread t = new Thread(test);
-    t.start();
-    t.interrupt();
-}
-}
-</code></pre><p>3.通过Future来实现取消</p>
-<pre><code>import java.util.concurrent.*;
+</code></pre><h3 id="通过Future来实现取消"><a href="#通过Future来实现取消" class="headerlink" title="通过Future来实现取消"></a>通过Future来实现取消</h3><pre><code>import java.util.concurrent.*;
 
 /**
  * Created by huazi on 17/7/4.
@@ -643,6 +606,41 @@ public static void main(String[] args) {
 
 }
 }    
+</code></pre><h2 id="响应中断"><a href="#响应中断" class="headerlink" title="响应中断"></a>响应中断</h2><p>阻塞库方法，例如Thread.sleep和Object.wait等，都会检杏线程何时中断，并且在发现中断时提前返回。它们在响应中断时执行的操作包括：<br><strong>1.清除中断状态</strong><br><strong>2.抛出InterruptedException</strong><br>表示阻塞操作由于中断而提前结束。JVM并不能保证阻塞方法检测到中断的速度，但在实际情况中响应速度还是非常快的。</p>
+<h3 id="响应中断的方法"><a href="#响应中断的方法" class="headerlink" title="响应中断的方法"></a>响应中断的方法</h3><p>1.传递异常（throws InterruptedException）</p>
+<p>2.恢复中断状态，从而事调用栈的上层代码能够对其进行处理（Thread.currentThread().interrupt();）<br>例子：</p>
+<pre><code>import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+
+public class Test implements Runnable {
+    private BlockingQueue&lt;String&gt; queue;
+
+public Test(BlockingQueue&lt;String&gt; queue) {
+    this.queue = queue;
+}
+
+public void run() {
+    try {
+        while (true) {
+            String task = queue.take();
+            System.out.println(task);
+        }
+    } catch (InterruptedException e) {
+        // Restore the interrupted status
+        // 当抛出中断异常后，如果此时不能向上抛出，则需要恢复中断状态，否则中断状态会丢失
+        Thread.currentThread().interrupt();
+    }
+}
+
+
+public static void main(String[] args) {
+    BlockingQueue&lt;String&gt; queue = new ArrayBlockingQueue&lt;String&gt;(1);
+    Test test = new Test(queue);
+    Thread t = new Thread(test);
+    t.start();
+    t.interrupt();
+}
+}
 </code></pre><h3 id="处理不可中断的阻塞"><a href="#处理不可中断的阻塞" class="headerlink" title="处理不可中断的阻塞"></a>处理不可中断的阻塞</h3><p>Java.io包中的同步Socket I/O。虽然InputStream和OutputStream中的read和write等方法都不会响应中断，但通过关闭底层的套接字，可以使得由于执行read或write等方法而被阻塞的线程抛出一个SocketException。</p>
 <p>Java.io包中的同步I/O。当中断一个正在InterruptibleChannel上等待的线程时，将抛出ClosedByInterruptedException）并关闭链路（这还会使得其他在这条链路上阻塞的线程同样抛出ClosedByInterruptException）。当关闭一个InterruptibleChannel时，将导致所有在链路操作上阻塞的线程抛出AsynchronousCloseException。大多数标准的Channel都实现了InterruptibleChannel。</p>
 <p>Selector的异步I/O。如果一个线程在调用Selector.select方法（在java.nio.channels中）时阻塞了，那么调用close或wakeup方法会使线程抛出ClosedSelectorException并提前返回。</p>
@@ -990,7 +988,7 @@ static class Run implements Runnable{
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#取消操作的原因："><span class="nav-number">1.</span> <span class="nav-text">取消操作的原因：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务中断的三种方式："><span class="nav-number">2.</span> <span class="nav-text">任务中断的三种方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用请求关闭标记（例如boolean开关）"><span class="nav-number">2.1.</span> <span class="nav-text">使用请求关闭标记（例如boolean开关）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用中断机制"><span class="nav-number">2.2.</span> <span class="nav-text">使用中断机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断"><span class="nav-number">3.</span> <span class="nav-text">响应中断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#响应中断的方法"><span class="nav-number">3.1.</span> <span class="nav-text">响应中断的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理不可中断的阻塞"><span class="nav-number">3.2.</span> <span class="nav-text">处理不可中断的阻塞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止基于线程的服务"><span class="nav-number">4.</span> <span class="nav-text">停止基于线程的服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志服务示例"><span class="nav-number">4.1.</span> <span class="nav-text">日志服务示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭ExecutorService"><span class="nav-number">4.2.</span> <span class="nav-text">关闭ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“毒丸”对象——当得到这个对象时，立即停止"><span class="nav-number">4.3.</span> <span class="nav-text">“毒丸”对象——当得到这个对象时，立即停止</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只执行一次的服务"><span class="nav-number">4.4.</span> <span class="nav-text">只执行一次的服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理非正常的线程终止"><span class="nav-number">5.</span> <span class="nav-text">处理非正常的线程终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jvm关闭"><span class="nav-number">6.</span> <span class="nav-text">jvm关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭钩子"><span class="nav-number">6.1.</span> <span class="nav-text">关闭钩子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护线程-一个线程来执行一些辅助工作，但有不希望这个线程阻碍JVM的关闭"><span class="nav-number">6.2.</span> <span class="nav-text">守护线程  一个线程来执行一些辅助工作，但有不希望这个线程阻碍JVM的关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终结器（清理文件句柄或套接字句柄等）——避免使用"><span class="nav-number">6.3.</span> <span class="nav-text">终结器（清理文件句柄或套接字句柄等）——避免使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#取消操作的原因："><span class="nav-number">1.</span> <span class="nav-text">取消操作的原因：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务中断的三种方式："><span class="nav-number">2.</span> <span class="nav-text">任务中断的三种方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用请求关闭标记（例如boolean开关）"><span class="nav-number">2.1.</span> <span class="nav-text">使用请求关闭标记（例如boolean开关）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用中断机制"><span class="nav-number">2.2.</span> <span class="nav-text">使用中断机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Future来实现取消"><span class="nav-number">2.3.</span> <span class="nav-text">通过Future来实现取消</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应中断"><span class="nav-number">3.</span> <span class="nav-text">响应中断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#响应中断的方法"><span class="nav-number">3.1.</span> <span class="nav-text">响应中断的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#处理不可中断的阻塞"><span class="nav-number">3.2.</span> <span class="nav-text">处理不可中断的阻塞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止基于线程的服务"><span class="nav-number">4.</span> <span class="nav-text">停止基于线程的服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#日志服务示例"><span class="nav-number">4.1.</span> <span class="nav-text">日志服务示例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭ExecutorService"><span class="nav-number">4.2.</span> <span class="nav-text">关闭ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#“毒丸”对象——当得到这个对象时，立即停止"><span class="nav-number">4.3.</span> <span class="nav-text">“毒丸”对象——当得到这个对象时，立即停止</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只执行一次的服务"><span class="nav-number">4.4.</span> <span class="nav-text">只执行一次的服务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理非正常的线程终止"><span class="nav-number">5.</span> <span class="nav-text">处理非正常的线程终止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jvm关闭"><span class="nav-number">6.</span> <span class="nav-text">jvm关闭</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭钩子"><span class="nav-number">6.1.</span> <span class="nav-text">关闭钩子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护线程-一个线程来执行一些辅助工作，但有不希望这个线程阻碍JVM的关闭"><span class="nav-number">6.2.</span> <span class="nav-text">守护线程  一个线程来执行一些辅助工作，但有不希望这个线程阻碍JVM的关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#终结器（清理文件句柄或套接字句柄等）——避免使用"><span class="nav-number">6.3.</span> <span class="nav-text">终结器（清理文件句柄或套接字句柄等）——避免使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
