@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://morningsun.net.cn/2017/07/05/HttpClient%204.5.x%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2017-07-05T09:56:39.000Z</lastmod>
+    <data>
+        <display>
+        <title>HttpClient 4.5.x教程</title>
+        <pubTime>2017-07-05T09:46:04.000Z</pubTime>
+        
+        <tag>爬虫</tag>
+         
+        <tag>HttpClient</tag>
+         
+         
+           
+             
+              <breadCrumb title="java" url="http://morningsun.net.cn/categories/java/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://morningsun.net.cn/2017/07/04/%E3%80%8AJava%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E3%80%8B%E7%AC%AC%E4%B8%83%E7%AB%A0%20%E5%8F%96%E6%B6%88%E4%B8%8E%E5%85%B3%E9%97%AD%20%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2017-07-05T01:18:56.000Z</lastmod>
+    <lastmod>2017-07-05T02:03:43.000Z</lastmod>
     <data>
         <display>
         <title>《Java并发编程实战》第七章 取消与关闭 读书笔记</title>

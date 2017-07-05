@@ -1,0 +1,981 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="爬虫,HttpClient," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="简介之前一直使用httpclient进行爬虫的接口，但是一直对实现的底层原理不是很理解。尤其是httpclient这个对象十分庞大。对这个类的详细的理解是出于对http底层的原理有了一定的理解之后，想着java这边对httpclient的封装又是如何支持http协议的，出于这个好奇心，就花了一天的时间去研究，总算有所收获。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HttpClient 4.5.x教程">
+<meta property="og:url" content="http://morningsun.net.cn/2017/07/05/HttpClient 4.5.x教程/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="简介之前一直使用httpclient进行爬虫的接口，但是一直对实现的底层原理不是很理解。尤其是httpclient这个对象十分庞大。对这个类的详细的理解是出于对http底层的原理有了一定的理解之后，想着java这边对httpclient的封装又是如何支持http协议的，出于这个好奇心，就花了一天的时间去研究，总算有所收获。">
+<meta property="og:image" content="https://ww2.sinaimg.cn/large/006tNc79gy1fh959lnwblj31h20m8n7l.jpg">
+<meta property="og:updated_time" content="2017-07-05T09:56:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HttpClient 4.5.x教程">
+<meta name="twitter:description" content="简介之前一直使用httpclient进行爬虫的接口，但是一直对实现的底层原理不是很理解。尤其是httpclient这个对象十分庞大。对这个类的详细的理解是出于对http底层的原理有了一定的理解之后，想着java这边对httpclient的封装又是如何支持http协议的，出于这个好奇心，就花了一天的时间去研究，总算有所收获。">
+<meta name="twitter:image" content="https://ww2.sinaimg.cn/large/006tNc79gy1fh959lnwblj31h20m8n7l.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/07/05/HttpClient 4.5.x教程/"/>
+
+
+
+
+
+  <title> HttpClient 4.5.x教程 | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/07/05/HttpClient 4.5.x教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                HttpClient 4.5.x教程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-05T17:46:04+08:00">
+                2017-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/05/HttpClient 4.5.x教程/" class="leancloud_visitors" data-flag-title="HttpClient 4.5.x教程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>之前一直使用httpclient进行爬虫的接口，但是一直对实现的底层原理不是很理解。尤其是httpclient这个对象十分庞大。<br>对这个类的详细的理解是出于对http底层的原理有了一定的理解之后，想着java这边对httpclient的封装又是如何支持http协议的，出于这个好奇心，就花了一天的时间去研究，总算有所收获。</p>
+<a id="more"></a>
+<h2 id="如何构建一个可做请求的Httpclient"><a href="#如何构建一个可做请求的Httpclient" class="headerlink" title="如何构建一个可做请求的Httpclient"></a>如何构建一个可做请求的Httpclient</h2><p>这节的内容主要参考了webmagic的源码里面的构造,主要涉及到三个主要对象的构建，HttpClient，HttpUriRequest，HttpClientContext。</p>
+<h3 id="HttpClient对象"><a href="#HttpClient对象" class="headerlink" title="HttpClient对象"></a>HttpClient对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> CloseableHttpClient <span class="title">generateClient</span><span class="params">(Site site)</span> </span>&#123;</div><div class="line">        HttpClientBuilder httpClientBuilder = HttpClients.custom();</div><div class="line">        httpClientBuilder.setConnectionManager(<span class="keyword">this</span>.connectionManager);</div><div class="line">        <span class="keyword">if</span>(site.getUserAgent() != <span class="keyword">null</span>) &#123;</div><div class="line">            httpClientBuilder.setUserAgent(site.getUserAgent());</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            httpClientBuilder.setUserAgent(<span class="string">""</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span>(site.isUseGzip()) &#123;</div><div class="line">            httpClientBuilder.addInterceptorFirst(<span class="keyword">new</span> HttpRequestInterceptor() &#123;</div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(HttpRequest request, HttpContext context)</span> <span class="keyword">throws</span> HttpException, IOException </span>&#123;</div><div class="line">                    <span class="keyword">if</span>(!request.containsHeader(<span class="string">"Accept-Encoding"</span>)) &#123;</div><div class="line">                        request.addHeader(<span class="string">"Accept-Encoding"</span>, <span class="string">"gzip"</span>);</div><div class="line">                    &#125;</div><div class="line"></div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        httpClientBuilder.setRedirectStrategy(<span class="keyword">new</span> CustomRedirectStrategy());</div><div class="line">        Builder socketConfigBuilder = SocketConfig.custom();</div><div class="line">        socketConfigBuilder.setSoKeepAlive(<span class="keyword">true</span>).setTcpNoDelay(<span class="keyword">true</span>);</div><div class="line">        socketConfigBuilder.setSoTimeout(site.getTimeOut());</div><div class="line">        SocketConfig socketConfig = socketConfigBuilder.build();</div><div class="line">        httpClientBuilder.setDefaultSocketConfig(socketConfig);</div><div class="line">        <span class="keyword">this</span>.connectionManager.setDefaultSocketConfig(socketConfig);</div><div class="line">        httpClientBuilder.setRetryHandler(<span class="keyword">new</span> DefaultHttpRequestRetryHandler(site.getRetryTimes(), <span class="keyword">true</span>));</div><div class="line">        <span class="keyword">this</span>.generateCookie(httpClientBuilder, site);</div><div class="line">        <span class="keyword">return</span> httpClientBuilder.build();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>解析： 上述代码主要是设置了UserAgent，Socket的一些基本配置，DefaultHttpRequestRetryHandler，HttpRequestInterceptor，ConnectionManager。<br>其中对于ConnectionManager的设置，我这边进行了深入的研究。</p>
+<h4 id="ConnectionManager"><a href="#ConnectionManager" class="headerlink" title="ConnectionManager"></a>ConnectionManager</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> PoolingHttpClientConnectionManager connectionManager;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="title">HttpClientGenerator</span><span class="params">()</span> </span>&#123;</div><div class="line">       Registry&lt;ConnectionSocketFactory&gt; reg = RegistryBuilder.create().register(<span class="string">"http"</span>, PlainConnectionSocketFactory.INSTANCE).register(<span class="string">"https"</span>, <span class="keyword">this</span>.buildSSLConnectionSocketFactory()).build();</div><div class="line">       <span class="keyword">this</span>.connectionManager = <span class="keyword">new</span> PoolingHttpClientConnectionManager(reg);</div><div class="line">       <span class="keyword">this</span>.connectionManager.setDefaultMaxPerRoute(<span class="number">100</span>);</div><div class="line">       <span class="keyword">this</span>.connectionManager.setMaxTotal(<span class="number">200</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><strong>DefaultMaxPerRoute代表一个TCP连接最大可以连接的不同远程主机（ip+端口）最大数量为100</strong></p>
+<p><strong>MaxTotal代表主机最大的连接数相当于最大可以开200个端口进行tcp连接。</strong></p>
+<p>PoolingHttpClientConnectionManager与BasicHttpClientConnectionManager的区别：<br><strong>前者代表多线程，后者代表单线程。</strong></p>
+<h3 id="HttpUriRequest"><a href="#HttpUriRequest" class="headerlink" title="HttpUriRequest"></a>HttpUriRequest</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> HttpUriRequest <span class="title">convertHttpUriRequest</span><span class="params">(Request request, Site site, Proxy proxy)</span> </span>&#123;</div><div class="line">        RequestBuilder requestBuilder = <span class="keyword">this</span>.selectRequestMethod(request).setUri(request.getUrl());</div><div class="line">        <span class="keyword">if</span>(site.getHeaders() != <span class="keyword">null</span>) &#123;</div><div class="line">            Iterator var5 = site.getHeaders().entrySet().iterator();</div><div class="line"></div><div class="line">            <span class="keyword">while</span>(var5.hasNext()) &#123;</div><div class="line">                Entry&lt;String, String&gt; headerEntry = (Entry)var5.next();</div><div class="line">                requestBuilder.addHeader((String)headerEntry.getKey(), (String)headerEntry.getValue());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        Builder requestConfigBuilder = RequestConfig.custom();</div><div class="line">        <span class="keyword">if</span>(site != <span class="keyword">null</span>) &#123;</div><div class="line">            requestConfigBuilder.setConnectionRequestTimeout(site.getTimeOut()).setSocketTimeout(site.getTimeOut()).setConnectTimeout(site.getTimeOut()).setCookieSpec(<span class="string">"standard"</span>);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">if</span>(proxy != <span class="keyword">null</span>) &#123;</div><div class="line">            requestConfigBuilder.setProxy(<span class="keyword">new</span> HttpHost(proxy.getHost(), proxy.getPort()));</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        requestBuilder.setConfig(requestConfigBuilder.build());</div><div class="line">        HttpUriRequest httpUriRequest = requestBuilder.build();</div><div class="line">        <span class="keyword">if</span>(request.getHeaders() != <span class="keyword">null</span> &amp;&amp; !request.getHeaders().isEmpty()) &#123;</div><div class="line">            Iterator var7 = request.getHeaders().entrySet().iterator();</div><div class="line"></div><div class="line">            <span class="keyword">while</span>(var7.hasNext()) &#123;</div><div class="line">                Entry&lt;String, String&gt; header = (Entry)var7.next();</div><div class="line">                httpUriRequest.addHeader((String)header.getKey(), (String)header.getValue());</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> httpUriRequest;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>主要是设置这次请求的Proxy和Header。</p>
+<h3 id="HttpClientContext"><a href="#HttpClientContext" class="headerlink" title="HttpClientContext"></a>HttpClientContext</h3><p>主要用于设置这次请求需要的cookie。</p>
+<p>如果需要使用HttpClient池，并且想要做到一次登录的会话供多个HttpClient连接使用，就需要自己保存会话信息。因为客户端的会话信息是保存在cookie中的（JSESSIONID），所以只需要将登录成功返回的cookie复制到各个HttpClient使用即可。</p>
+<p>使用Cookie的方法有<strong>两种</strong>，可以自己使用CookieStore来保存（见TestCookieStore()方法），也可以通过HttpClientContext上下文来维持（见TestContext()方法）。</p>
+<p>使用CookieStore：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCookieStore</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">   System.out.println(<span class="string">"----testCookieStore"</span>);</div><div class="line">   <span class="comment">// 使用cookieStore方式</span></div><div class="line">   CloseableHttpClient client = HttpClients.custom()</div><div class="line">       .setDefaultCookieStore(cookieStore).build();</div><div class="line">   HttpGet httpGet = <span class="keyword">new</span> HttpGet(testUrl);</div><div class="line">   System.out.println(<span class="string">"request line:"</span> + httpGet.getRequestLine());</div><div class="line">   <span class="keyword">try</span> &#123;</div><div class="line">     <span class="comment">// 执行get请求</span></div><div class="line">     HttpResponse httpResponse = client.execute(httpGet);</div><div class="line">     System.out.println(<span class="string">"cookie store:"</span> + cookieStore.getCookies());</div><div class="line">     printResponse(httpResponse);</div><div class="line">   &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">     e.printStackTrace();</div><div class="line">   &#125; <span class="keyword">finally</span> &#123;</div><div class="line">     <span class="keyword">try</span> &#123;</div><div class="line">       <span class="comment">// 关闭流并释放资源</span></div><div class="line">       client.close();</div><div class="line">     &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">       e.printStackTrace();</div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line"></div><div class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printResponse</span><span class="params">(HttpResponse httpResponse)</span></span></div><div class="line">     <span class="keyword">throws</span> ParseException, IOException &#123;</div><div class="line">   <span class="comment">// 获取响应消息实体</span></div><div class="line">   HttpEntity entity = httpResponse.getEntity();</div><div class="line">   <span class="comment">// 响应状态</span></div><div class="line">   System.out.println(<span class="string">"status:"</span> + httpResponse.getStatusLine());</div><div class="line">   System.out.println(<span class="string">"headers:"</span>);</div><div class="line">   HeaderIterator iterator = httpResponse.headerIterator();</div><div class="line">   <span class="keyword">while</span> (iterator.hasNext()) &#123;</div><div class="line">     System.out.println(<span class="string">"\t"</span> + iterator.next());</div><div class="line">   &#125;</div><div class="line">   <span class="comment">// 判断响应实体是否为空</span></div><div class="line">   <span class="keyword">if</span> (entity != <span class="keyword">null</span>) &#123;</div><div class="line">     String responseString = EntityUtils.toString(entity);</div><div class="line">     System.out.println(<span class="string">"response length:"</span> + responseString.length());</div><div class="line">     System.out.println(<span class="string">"response content:"</span></div><div class="line">         + responseString.replace(<span class="string">"\r\n"</span>, <span class="string">""</span>));</div><div class="line">   &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>使用context方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Test</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testContext</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">    System.out.println(<span class="string">"----testContext"</span>);</div><div class="line">    <span class="comment">// 使用context方式</span></div><div class="line">    CloseableHttpClient client = HttpClients.createDefault();</div><div class="line">    HttpGet httpGet = <span class="keyword">new</span> HttpGet(testUrl);</div><div class="line">    System.out.println(<span class="string">"request line:"</span> + httpGet.getRequestLine());</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">      <span class="comment">// 执行get请求</span></div><div class="line">      HttpResponse httpResponse = client.execute(httpGet, context);</div><div class="line">      System.out.println(<span class="string">"context cookies:"</span></div><div class="line">          + context.getCookieStore().getCookies());</div><div class="line">      printResponse(httpResponse);</div><div class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">      e.printStackTrace();</div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 关闭流并释放资源</span></div><div class="line">        client.close();</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h2 id="TCP连接"><a href="#TCP连接" class="headerlink" title="TCP连接"></a>TCP连接</h2><p>端对端的连接，端口到端口的连接。</p>
+<p>用wireshark抓包发现，每一个http请求都是先发起一个tcp的连接，每个tcp都带有一个端口。</p>
+<h3 id="端口的复用"><a href="#端口的复用" class="headerlink" title="端口的复用"></a>端口的复用</h3><p><img src="https://ww2.sinaimg.cn/large/006tNc79gy1fh959lnwblj31h20m8n7l.jpg" alt=""></p>
+<p>[Full request URI: <a href="http://www.cnblogs.com/cate/java/" target="_blank" rel="external">http://www.cnblogs.com/cate/java/</a>]   ：Source Port: 55212   Destination Port: 80</p>
+<p>[Full request URI: <a href="http://www.cnblogs.com/bundles/aggsite.css?v=IhfFDNk6saBQuSizNqMno4eFb5L3OoXlsUCqkaSgNvA1" target="_blank" rel="external">http://www.cnblogs.com/bundles/aggsite.css?v=IhfFDNk6saBQuSizNqMno4eFb5L3OoXlsUCqkaSgNvA1</a>]  ：Source Port: 55212   Destination Port: 80</p>
+<p>[Full request URI: <a href="http://www.cnblogs.com/bundles/aggsite.js?v=vWqa5z-vvnUBiauXGl6S0-ZbtOAq_fbE-A1hKZngtlw1" target="_blank" rel="external">http://www.cnblogs.com/bundles/aggsite.js?v=vWqa5z-vvnUBiauXGl6S0-ZbtOAq_fbE-A1hKZngtlw1</a>] Source Port: 55213 Destination Port: 80</p>
+<p>当用chrome访问一个链接<a href="http://www.cnblogs.com/cate/java/时，其中一个端口55212分别进行了两次http的获取，一次是html，一次是css。" target="_blank" rel="external">http://www.cnblogs.com/cate/java/时，其中一个端口55212分别进行了两次http的获取，一次是html，一次是css。</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://hc.apache.org/httpcomponents-client-4.5.x/tutorial/html/index.html" target="_blank" rel="external">httpclient 4.5.x官方文档</a></p>
+<p><a href="http://webmagic.io/docs/zh/" target="_blank" rel="external">WebMagic in Action</a></p>
+<p><a href="http://www.cnblogs.com/yaowen/p/3757571.html" target="_blank" rel="external">HttpClient4.x 使用cookie保持会话</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/爬虫/" rel="tag"># 爬虫</a>
+          
+            <a href="/tags/HttpClient/" rel="tag"># HttpClient</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/04/《Java并发编程实战》第七章 取消与关闭 读书笔记/" rel="next" title="《Java并发编程实战》第七章 取消与关闭 读书笔记">
+                <i class="fa fa-chevron-left"></i> 《Java并发编程实战》第七章 取消与关闭 读书笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">66</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">111</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何构建一个可做请求的Httpclient"><span class="nav-number">2.</span> <span class="nav-text">如何构建一个可做请求的Httpclient</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpClient对象"><span class="nav-number">2.1.</span> <span class="nav-text">HttpClient对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ConnectionManager"><span class="nav-number">2.1.1.</span> <span class="nav-text">ConnectionManager</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpUriRequest"><span class="nav-number">2.2.</span> <span class="nav-text">HttpUriRequest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HttpClientContext"><span class="nav-number">2.3.</span> <span class="nav-text">HttpClientContext</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP连接"><span class="nav-number">3.</span> <span class="nav-text">TCP连接</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口的复用"><span class="nav-number">3.1.</span> <span class="nav-text">端口的复用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
