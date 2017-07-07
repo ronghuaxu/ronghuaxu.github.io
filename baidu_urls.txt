@@ -1,5 +1,8 @@
+http://morningsun.net.cn/2017/07/06/如何学习魔方？/
 http://morningsun.net.cn/2017/07/05/HttpClient 4.5.x教程/
 http://morningsun.net.cn/2017/07/04/《Java并发编程实战》第七章 取消与关闭 读书笔记/
+http://morningsun.net.cn/2017/07/03/怎么做才能天天开心呢/
+http://morningsun.net.cn/2017/07/02/java和python的并发比较/
 http://morningsun.net.cn/2017/06/28/如何快速将json文件转化为java实体类/
 http://morningsun.net.cn/2017/06/26/RabbitMq实战小结/
 http://morningsun.net.cn/2017/06/21/不写代码的爬虫/

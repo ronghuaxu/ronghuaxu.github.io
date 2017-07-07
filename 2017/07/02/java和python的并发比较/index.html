@@ -1,0 +1,1016 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java,python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="个人猜想为什么 CPU 主频很难超过 4GHz？ —— 知乎
+
+需要权衡的瓶颈包括是内存读取瓶颈，指令行并行处理瓶颈，和散热瓶颈。而散热瓶颈被认为是最难以跨越的。
+
+惊人的服务器核数：
+既然cpu的主频因为散热的限制无法增快，那么多核的替代方式成为必然。那么多线程，多进程编程也至关重要。
+​">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java和python的并发比较">
+<meta property="og:url" content="http://morningsun.net.cn/2017/07/02/java和python的并发比较/index.html">
+<meta property="og:site_name" content="morningsun的个人博客">
+<meta property="og:description" content="个人猜想为什么 CPU 主频很难超过 4GHz？ —— 知乎
+
+需要权衡的瓶颈包括是内存读取瓶颈，指令行并行处理瓶颈，和散热瓶颈。而散热瓶颈被认为是最难以跨越的。
+
+惊人的服务器核数：
+既然cpu的主频因为散热的限制无法增快，那么多核的替代方式成为必然。那么多线程，多进程编程也至关重要。
+​">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fha4gy6sk4j30z60c6dj2.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fha30fqszbj30js0ekq3w.jpg">
+<meta property="og:image" content="https://ww1.sinaimg.cn/large/006tKfTcgy1fha3g3ydmfj30v60j6aj3.jpg">
+<meta property="og:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fha4zplyenj30mx02gt93.jpg">
+<meta property="og:updated_time" content="2017-07-07T01:00:01.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java和python的并发比较">
+<meta name="twitter:description" content="个人猜想为什么 CPU 主频很难超过 4GHz？ —— 知乎
+
+需要权衡的瓶颈包括是内存读取瓶颈，指令行并行处理瓶颈，和散热瓶颈。而散热瓶颈被认为是最难以跨越的。
+
+惊人的服务器核数：
+既然cpu的主频因为散热的限制无法增快，那么多核的替代方式成为必然。那么多线程，多进程编程也至关重要。
+​">
+<meta name="twitter:image" content="https://ww4.sinaimg.cn/large/006tKfTcgy1fha4gy6sk4j30z60c6dj2.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://morningsun.net.cn/2017/07/02/java和python的并发比较/"/>
+
+
+
+
+
+  <title> java和python的并发比较 | morningsun的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">morningsun的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://morningsun.net.cn/2017/07/02/java和python的并发比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="华子">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="morningsun的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                java和python的并发比较
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T17:46:04+08:00">
+                2017-07-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/02/java和python的并发比较/" class="leancloud_visitors" data-flag-title="java和python的并发比较">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">热度 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+			<span>℃</span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="个人猜想"><a href="#个人猜想" class="headerlink" title="个人猜想"></a>个人猜想</h2><p>为什么 CPU 主频很难超过 4GHz？ —— 知乎</p>
+<blockquote>
+<p>需要权衡的瓶颈包括是内存读取瓶颈，指令行并行处理瓶颈，和散热瓶颈。而散热瓶颈被认为是最难以跨越的。</p>
+</blockquote>
+<p>惊人的服务器核数：<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fha4gy6sk4j30z60c6dj2.jpg" alt=""></p>
+<p>既然cpu的主频因为散热的限制无法增快，那么多核的替代方式成为必然。那么多线程，多进程编程也至关重要。</p>
+<p>​<a id="more"></a></p>
+<h2 id="进程的基本概念"><a href="#进程的基本概念" class="headerlink" title="进程的基本概念"></a>进程的基本概念</h2><h3 id="进程图"><a href="#进程图" class="headerlink" title="进程图"></a>进程图</h3><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fha30fqszbj30js0ekq3w.jpg" alt=""><br>进程图是用于描述一个进程的家族关系的有向树，如图2-11所示。图中的结点(圆圈)代表进程。在进程D创建了进程I之后，称D是I的父进程(ParentProcess)，I是D的子进程(ProgenyProcess)。</p>
+<p>了解进程间的这种关系是十分重要的。因为子进程可以继承父进程所拥有的资源，例如，继承父进程打开的文件，继承父进程所分配到的缓冲区等。当子进程被撤消时，应将其从父进程那里获得的资源归还给父进程。此外，在撤消父进程时，也必须同时撤消其所有的子进程。</p>
+<p>初始化进程控制块PCB</p>
+<h2 id="线程的基本概念"><a href="#线程的基本概念" class="headerlink" title="线程的基本概念"></a>线程的基本概念</h2><h3 id="线程的引入"><a href="#线程的引入" class="headerlink" title="线程的引入"></a>线程的引入</h3><p>如果说，在操作系统中引入进程的目的，是为了使多个程序能并发执行，以提高资源利用率和系统吞吐量，那么，在操作系统中再引入线程，则是为了减少程序在并发执行时所付出的时空开销，使OS具有更好的并发性。</p>
+<p>在多线程OS中，通常是在一个进程中包括多个线程，每个线程都是作为利用CPU的基本单位，是花费最小开销的实体。</p>
+<p>线程具有许多传统进程所具有的特征，所以又称为<strong>轻型进程(Light-WeightProcess)</strong>或进程元，相应地把传统进程称为<strong>重型进程(Heavy-WeightProcess)</strong>，传统进程相当于只有一个线程的任务。在引入了线程的操作系统中，通常一个进程都拥有若干个线程，至少也有一个线程。</p>
+<h3 id="内核支持线程的实现"><a href="#内核支持线程的实现" class="headerlink" title="内核支持线程的实现"></a>内核支持线程的实现</h3><p>每当进程要创建一个线程时，便为新线程分配一个TCB，将有关信息填入该TCB中，并为之分配必要的资源，如为线程分配数百至数千个字节的栈空间和局部存储区，于是新创建的线程便有条件立即执行。当PTDA图2-15任务数据区空间中的所有TCB空间已用完，而进程又要创建新的线程时，只要其所创建的线程数目未超过系统的允许值(通常为数十至数百个)，系统可再为之分配新的TCB空间；在撤消一个线程时，也应回收该线程的所有资源和TCB。</p>
+<h2 id="java中的进程和线程"><a href="#java中的进程和线程" class="headerlink" title="java中的进程和线程"></a>java中的进程和线程</h2><h3 id="java进程"><a href="#java进程" class="headerlink" title="java进程"></a>java进程</h3><p>Java编写程序都运行在在Java虚拟机(JVM)中，在JVM的内部，程序的多任务是通过线程来实现的。每用java命令启动一个java应用程序，就会启动一个JVM进程。在同一个JVM进程中，有且只有一个进程，就是它自己。在这个JVM环境中，所有程序代码的运行都是以线程来运行。一个JVM进程对应一个JAVA程序。一个java的应用程序对应于一个JVM实例，当一个java程序运行的时候，一个jvm实例就诞生了。</p>
+<h3 id="java线程"><a href="#java线程" class="headerlink" title="java线程"></a>java线程</h3><p>在JDK1.2中，线程模型替换为基于操作系统原生线程模型来实现。因此，在目前的JDK版本中，操作系统支持怎样的线程模型，在很大程度上决定了Java虚拟机的线程是怎样映射的，这点在不同的平台上没有办法达成一致，虚拟机规范中也并未限定Java线程需要使用哪种线程模型来实现。线程模型只对线程的并发规模和操作成本产生影响，对Java程序的编码和运行过程来说，这些差异都是透明的。</p>
+<p>对于SunJDK来说，它的Windows版与Linux版都是使用一对一的线程模型实现的，<strong>一条Java线程就映射到一条轻量级进程（LWP）之中</strong>，因为Windows和Linux系统提供的线程模型就是一对一的。</p>
+<h4 id="一对一线程模型"><a href="#一对一线程模型" class="headerlink" title="一对一线程模型"></a>一对一线程模型</h4><p><img src="https://ww1.sinaimg.cn/large/006tKfTcgy1fha3g3ydmfj30v60j6aj3.jpg" alt=""></p>
+<p>LWP :轻量级进程（Light Weight Process,LWP）</p>
+<p>KLT :内核线程（Kernel-LevelThread,KLT）就是直接由操作系统内核（Kernel，下称内核）支持的线程，这种线程由内核来完成线程切换，内核通过操纵调度器（Scheduler）对线程进行调度，并负责将线程的任务映射到各个处理器上。</p>
+<h2 id="python中的进程和线程"><a href="#python中的进程和线程" class="headerlink" title="python中的进程和线程"></a>python中的进程和线程</h2><h3 id="python线程"><a href="#python线程" class="headerlink" title="python线程"></a>python线程</h3><h4 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> threading</div><div class="line"><span class="keyword">import</span> time</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">'the curent threading  %s is running'</span> % threading.current_thread().name</div><div class="line">    time.sleep(<span class="number">1</span>)</div><div class="line">    <span class="keyword">print</span> <span class="string">'the curent threading  %s is ended'</span> % threading.current_thread().name</div><div class="line"> </div><div class="line"><span class="keyword">print</span> <span class="string">'the curent threading  %s is running'</span> % threading.current_thread().name</div><div class="line">t = threading.Thread(target=target)</div><div class="line"> </div><div class="line">t.start()</div><div class="line">t.join()</div><div class="line"><span class="keyword">print</span> <span class="string">'the curent threading  %s is ended'</span> % threading.current_thread().name</div></pre></td></tr></table></figure>
+<p>但如果为线程实例添加t.setDaemon(True)之后，如果不加join语句，那么当主线程结束之后，会杀死子线程。</p>
+<h4 id="线程锁"><a href="#线程锁" class="headerlink" title="线程锁"></a>线程锁</h4><p>当访问某个资源之前，用Lock.acquire()锁住资源,访问之后，用Lock.release()释放资源。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">a = <span class="number">3</span></div><div class="line">lock = threading.Lock()</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">target</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">'the curent threading  %s is running'</span> % threading.current_thread().name</div><div class="line">    time.sleep(<span class="number">4</span>)</div><div class="line">    <span class="keyword">global</span> a</div><div class="line">    lock.acquire()</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        a += <span class="number">3</span></div><div class="line">    <span class="keyword">finally</span>:</div><div class="line">        lock.release()</div><div class="line">    <span class="keyword">print</span> <span class="string">'the curent threading  %s is ended'</span> % threading.current_thread().name</div><div class="line">    <span class="keyword">print</span> <span class="string">'yes'</span></div></pre></td></tr></table></figure>
+<h4 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> urllib2</div><div class="line"> </div><div class="line"><span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool <span class="keyword">as</span> ThreadPool</div><div class="line"> </div><div class="line">urls = [<span class="string">'http://www.baidu.com'</span>,<span class="string">'http://www.sina.com'</span>,<span class="string">'http://www.qq.com'</span>]</div><div class="line"> </div><div class="line">pool = ThreadPool()</div><div class="line"> </div><div class="line">results = pool.map(urllib2.urlopen,urls)</div><div class="line"><span class="keyword">print</span> results</div><div class="line">pool.close()</div><div class="line">pool.join()</div><div class="line"> </div><div class="line"><span class="keyword">print</span> <span class="string">'main ended'</span></div></pre></td></tr></table></figure>
+<h3 id="Python多线程的缺陷"><a href="#Python多线程的缺陷" class="headerlink" title="Python多线程的缺陷"></a>Python多线程的缺陷</h3><p>上面说了那么多关于多线程的用法，但Python多线程并不能真正能发挥作用，因为在Python中，有一个GIL，即全局解释锁，该锁的存在保证在同一个时间只能有一个线程执行任务，也就是多线程并不是真正的并发，只是交替得执行。假如有10个线程炮在10核CPU上，<strong>当前工作的也只能是一个CPU上的线程。</strong></p>
+<p>Python开始支持多线程。而解决多线程之间数据完整性和状态同步的最简单方法自然就是加锁。 于是有了GIL这把超级大锁，而当越来越多的代码库开发者接受了这种设定后，他们开始大量依赖这种特性（即默认python内部对象是thread-safe的，无需在实现时考虑额外的内存锁和同步操作）。但当大家试图去拆分和去除GIL的时候，发现大量库代码开发者已经重度依赖GIL而非常难以去除了。</p>
+<p>为了直观的理解GIL对于多线程带来的性能影响，这里直接借用的一张测试结果图（见下图）。图中表示的是两个线程在双核CPU上得执行情况。两个线程均为CPU密集型运算线程。绿色部分表示该线程在运行，且在执行有用的计算，<strong>红色部分为线程被调度唤醒，但是无法获取GIL导致无法进行有效运算等待的时间。</strong> GIL Performance 由图可见，GIL的存在导致多线程无法很好的立即多核CPU的并发处理能力。<br><img src="https://ww4.sinaimg.cn/large/006tKfTcgy1fha4zplyenj30mx02gt93.jpg" alt=""></p>
+<blockquote>
+<p>由于Python的GIL的限制，多线程更适合于I/O密集型应用（I/O释放了GIL，可以允许更多的并发），而不是计算密集型应用。对于后一种情况而言，为了实现更好的并行性，你需要使用多进程，以便让CPU的其他内核来执行。</p>
+</blockquote>
+<h3 id="python进程"><a href="#python进程" class="headerlink" title="python进程"></a>python进程</h3><h3 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> multiprocessing</div><div class="line"><span class="keyword">import</span> time</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker_1</span><span class="params">(interval)</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"worker_1"</span></div><div class="line">    time.sleep(interval)</div><div class="line">    <span class="keyword">print</span> <span class="string">"end worker_1"</span></div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker_2</span><span class="params">(interval)</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"worker_2"</span></div><div class="line">    time.sleep(interval)</div><div class="line">    <span class="keyword">print</span> <span class="string">"end worker_2"</span></div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker_3</span><span class="params">(interval)</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"worker_3"</span></div><div class="line">    time.sleep(interval)</div><div class="line">    <span class="keyword">print</span> <span class="string">"end worker_3"</span></div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    p1 = multiprocessing.Process(target = worker_1, args = (<span class="number">2</span>,))</div><div class="line">    p2 = multiprocessing.Process(target = worker_2, args = (<span class="number">3</span>,))</div><div class="line">    p3 = multiprocessing.Process(target = worker_3, args = (<span class="number">4</span>,))</div><div class="line"> </div><div class="line">    p1.start()</div><div class="line">    p2.start()</div><div class="line">    p3.start()</div><div class="line"> </div><div class="line">    print(<span class="string">"The number of CPU is:"</span> + str(multiprocessing.cpu_count()))</div><div class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> multiprocessing.active_children():</div><div class="line">        print(<span class="string">"child   p.name:"</span> + p.name + <span class="string">"\tp.id"</span> + str(p.pid))</div><div class="line">    <span class="keyword">print</span> <span class="string">"END!!!!!!!!!!!!!!!!!"</span></div></pre></td></tr></table></figure>
+<h3 id="使用进程池"><a href="#使用进程池" class="headerlink" title="使用进程池"></a>使用进程池</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding: utf-8</span></div><div class="line"><span class="keyword">import</span> multiprocessing</div><div class="line"><span class="keyword">import</span> time</div><div class="line"> </div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(msg)</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"msg:"</span>, msg</div><div class="line">    time.sleep(<span class="number">3</span>)</div><div class="line">    <span class="keyword">print</span> <span class="string">"end"</span></div><div class="line"> </div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    pool = multiprocessing.Pool(processes = <span class="number">3</span>)</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">4</span>):</div><div class="line">        msg = <span class="string">"hello %d"</span> %(i)</div><div class="line">        pool.apply_async(func, (msg, ))   <span class="comment">#维持执行的进程总数为processes，当一个进程执行完毕后会添加新的进程进去</span></div><div class="line"> </div><div class="line">    <span class="keyword">print</span> <span class="string">"Mark~ Mark~ Mark~~~~~~~~~~~~~~~~~~~~~~"</span></div><div class="line">    pool.close()</div><div class="line">    pool.join()   <span class="comment">#调用join之前，先调用close函数，否则会出错。执行完close后不会有新的进程加入到pool,join函数等待所有子进程结束</span></div><div class="line">    <span class="keyword">print</span> <span class="string">"Sub-process(es) done."</span></div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.csdn.net/bitcarmanlee/article/details/51577014" target="_blank" rel="external">python GIL 全局锁</a></p>
+<p><a href="https://book.douban.com/subject/24722612/" target="_blank" rel="external">《深入理解Java虚拟机（第2版）》</a></p>
+<p><a href="https://book.douban.com/subject/26801374/" target="_blank" rel="external">《Python核心编程（第3版）》</a></p>
+<p><a href="http://python.jobbole.com/82045/" target="_blank" rel="external">Python多进程编程</a></p>
+<p><a href="http://python.jobbole.com/85050/" target="_blank" rel="external">Python多线程详解</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    
+    
+    <div style="text-align:center">
+    <span style="text-align:center">
+    
+    欢迎大家关注：huazi's微信公众号
+    
+    </span>
+    <br>
+    
+    <a href="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" class="fancybox" rel="article0"       style="">
+    <img src="https://ww2.sinaimg.cn/large/006tKfTcgy1feszettikgj30nm0nk0up.jpg" title="huazi's微信公众号" height="164px" width="164px">
+    </a>
+    
+    </div>
+    
+    
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/28/如何快速将json文件转化为java实体类/" rel="next" title="如何快速将json文件转化为java实体类">
+                <i class="fa fa-chevron-left"></i> 如何快速将json文件转化为java实体类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/03/怎么做才能天天开心呢/" rel="prev" title="怎么做才能天天开心呢">
+                怎么做才能天天开心呢 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="华子" />
+          <p class="site-author-name" itemprop="name">华子</p>
+           
+              <p class="site-description motion-element" itemprop="description">展示自己的一些技术文章,以及自己克服的一些技术障碍,为以后回顾打好基础.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">112</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ronghuaxu" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/hua-zi-xu-95" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-zhihu"></i>
+                  
+                  知乎
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/aikisshua" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/148249272" target="_blank" title="豆瓣">
+                  
+                    <i class="fa fa-fw fa-douban"></i>
+                  
+                  豆瓣
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#个人猜想"><span class="nav-number">1.</span> <span class="nav-text">个人猜想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进程的基本概念"><span class="nav-number">2.</span> <span class="nav-text">进程的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程图"><span class="nav-number">2.1.</span> <span class="nav-text">进程图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的基本概念"><span class="nav-number">3.</span> <span class="nav-text">线程的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程的引入"><span class="nav-number">3.1.</span> <span class="nav-text">线程的引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核支持线程的实现"><span class="nav-number">3.2.</span> <span class="nav-text">内核支持线程的实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#java中的进程和线程"><span class="nav-number">4.</span> <span class="nav-text">java中的进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#java进程"><span class="nav-number">4.1.</span> <span class="nav-text">java进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#java线程"><span class="nav-number">4.2.</span> <span class="nav-text">java线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一对一线程模型"><span class="nav-number">4.2.1.</span> <span class="nav-text">一对一线程模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python中的进程和线程"><span class="nav-number">5.</span> <span class="nav-text">python中的进程和线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#python线程"><span class="nav-number">5.1.</span> <span class="nav-text">python线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建线程"><span class="nav-number">5.1.1.</span> <span class="nav-text">创建线程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程锁"><span class="nav-number">5.1.2.</span> <span class="nav-text">线程锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程池"><span class="nav-number">5.1.3.</span> <span class="nav-text">线程池</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python多线程的缺陷"><span class="nav-number">5.2.</span> <span class="nav-text">Python多线程的缺陷</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python进程"><span class="nav-number">5.3.</span> <span class="nav-text">python进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建进程"><span class="nav-number">5.4.</span> <span class="nav-text">创建进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用进程池"><span class="nav-number">5.5.</span> <span class="nav-text">使用进程池</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">华子</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      本站访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      人次
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("HSa3tE5eQUy5RUsLuqgnfQRo-gzGzoHsz", "qXsTceP43mDATXJNO9gq3nXr");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
